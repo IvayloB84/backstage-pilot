@@ -22,3 +22,14 @@ data:
           port: 5432
           user: postgres
           password: secret
+    auth:
+      environment: production
+      providers:
+        github:
+          production:
+            clientId: ${GITHUB_CLIENT_ID}
+            clientSecret: ${GITHUB_CLIENT_SECRET}
+    integrations:
+      github:
+        - host: github.com
+          token: ${GITHUB_TOKEN}
