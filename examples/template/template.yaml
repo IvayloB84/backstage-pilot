@@ -41,7 +41,7 @@ spec:
       name: Publish App Code to GitHub
       action: publish:github
       input:
-        repoUrl: ://github.com{{ parameters.name }}&owner=IvayloB84
+        repoUrl: "://github.com{{ parameters.name }}&owner=IvayloB84"
         repoVisibility: public
         defaultBranch: main
 
@@ -56,13 +56,12 @@ spec:
       name: Register App inside ArgoCD-RootApps
       action: publish:github:pull-request
       input:
-        repoUrl: ://github.com
-        branchName: argocd-sync-${{ parameters.name }}
+        repoUrl: "://github.com"
+        branchName: "argocd-sync-${{ parameters.name }}"
         title: "infra: automatically register tracking manifest for ${{ parameters.name }}"
         description: "Brought to you automatically by your Backstage Software Template engine."
-        supportsInterleavedMins: true
         updateFiles:
-          - path: apps/${{ parameters.name }}.yaml
+          - path: "apps/${{ parameters.name }}.yaml"
             content: |
               apiVersion: argoproj.io/v1alpha1
               kind: Application
