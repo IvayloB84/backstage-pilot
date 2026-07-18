@@ -60,6 +60,7 @@ spec:
       labels:
         app: backstage-pilot
     spec:
+      serviceAccountName: backstage-cluster-reader
       containers:
       - name: backstage
         image: backstage-pilot:latest
