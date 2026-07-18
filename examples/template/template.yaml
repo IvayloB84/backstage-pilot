@@ -84,7 +84,7 @@ spec:
               spec:
                 project: default
                 source:
-                  repoURL: https://github.com{{ parameters.name }}.git
+                  repoURL: https://github.com/IvayloB84/${{ parameters.name }}.git
                   targetRevision: HEAD
                   path: k8s
                 destination:
