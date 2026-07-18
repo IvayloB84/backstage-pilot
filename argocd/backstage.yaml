@@ -66,6 +66,9 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 7007
+        env:
+        - name: APP_ENV
+          value: "development"
         envFrom:
         - secretRef:
             name: backstage-postgres-secrets
