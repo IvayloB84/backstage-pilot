@@ -69,10 +69,18 @@ spec:
         envFrom:
         - secretRef:
             name: backstage-postgres-secrets
+        volumeMounts:
+        - name: prod-config-volume
+          mountPath: /app/app-config.production.yaml
+          subPath: app-config.production.yaml
         securityContext:
           runAsNonRoot: true
           runAsUser: 1000
           allowPrivilegeEscalation: false
+      volumes:
+      - name: prod-config-volume
+        configMap:
+          name: backstage-production-config
 ---
 apiVersion: v1
 kind: Service

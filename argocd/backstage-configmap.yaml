@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backstage-production-config
+  namespace: default
+data:
+  app-config.production.yaml: |
+    app:
+      title: Backstage Pilot Deployed
+      baseUrl: http://localhost:7007
+    backend:
+      baseUrl: http://localhost:7007
+      listen:
+        port: 7007
+      cors:
+        origin: http://localhost:7007
