@@ -11,7 +11,7 @@ spec:
   parameters:
     - title: Provide Service Metadata
       required:
-        - name:
+        - name
         - owner
       properties:
         name:
