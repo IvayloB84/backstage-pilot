@@ -5,7 +5,7 @@ metadata:
   title: Automated GitOps Node.js Service
   description: Create a Node.js microservice with automated k3s and ArgoCD tracking built-in.
 spec:
-  owner: group:development
+  owner: user:guest
   type: service
 
   parameters:
@@ -19,16 +19,16 @@ spec:
           type: string
           description: Unique name for your service (lowercase, alphanumeric, no spaces).
         owner:
-          title: Owner group
+          title: Owner
           type: string
           description: Owner of the component
           ui:field: OwnerPicker
           ui:options:
             allowedKinds:
+              - User
               - Group
 
   steps:
-    # Step 1: Unpack your starter code files
     - id: fetch-base
       name: Fetch Base Skeleton
       action: fetch:template
@@ -37,7 +37,6 @@ spec:
         values:
           name: ${{ parameters.name }}
 
-    # Step 2: Push the new application code repository to GitHub
     - id: publish-app
       name: Publish App Code to GitHub
       action: publish:github
@@ -48,7 +47,6 @@ spec:
         repoVisibility: public
         defaultBranch: main
 
-    # Step 3: Register the tracking catalog component entity with Backstage
     - id: register
       name: Register Component in Catalog
       action: catalog:register
@@ -56,7 +54,6 @@ spec:
         repoContentsUrl: ${{ steps['publish-app'].output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
 
-    # Step 4: Automatically add the new deployment tracking file to ArgoCD-RootApps
     - id: register-argocd
       name: Register App inside ArgoCD-RootApps
       action: publish:github:pull-request
