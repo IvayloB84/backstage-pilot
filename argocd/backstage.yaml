@@ -69,6 +69,8 @@ spec:
         envFrom:
         - secretRef:
             name: backstage-postgres-secrets
+        - secretRef:
+            name: backstage-env-secrets
         volumeMounts:
         - name: prod-config-volume
           mountPath: /app/app-config.production.yaml

@@ -14,3 +14,17 @@ data:
         port: 7007
       cors:
         origin: http://localhost:7007
+      database:
+        client: pg
+        connection:
+          host: backstage-db-service
+          port: 5432
+          user: postgres
+          password: secret
+    auth:
+      environment: production
+      providers:
+        github:
+          production:
+            clientId: ${AUTH_CLIENT_ID}
+            clientSecret: ${AUTH_CLIENT_SECRET}
