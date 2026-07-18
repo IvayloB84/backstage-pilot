@@ -1,5 +1,5 @@
 app:
-  title: Scaffolded Backstage Pilot
+  title: Scaffolded Backstage App
   baseUrl: http://localhost:7000
 
   packages: all
@@ -19,17 +19,12 @@ backend:
   csp:
     connect-src: ["'self'", 'http:', 'https:']
   cors:
-    origin: [http://localhost:7000, http://127.0.0.1:7000]
-    methods: [GET, POST, PUT, DELETE, OPTIONS]
+    origin: http://localhost:7000
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
   database:
-    client: pg
-    connection:
-      host: ${POSTGRES_HOST}
-      port: 5432
-      user: ${POSTGRES_USER}
-      password: ${POSTGRES_PASSWORD}
-      database: 
+    client: better-sqlite3
+    connection: ':memory:'
   actions:
     pluginSources:
       - auth
@@ -46,33 +41,24 @@ proxy: {}
 techdocs:
   builder: 'local' # Alternatives - 'external'
   generator:
-    runIn: 'local' # Alternatives - 'local'
+    runIn: 'docker' # Alternatives - 'local'
   publisher:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
 auth:
-  environment: development
   providers:
     guest: {}
-    github:
-      development:
-        clientId: ${GITHUB_CLIENT_ID}
-        clientSecret: ${GITHUB_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            - resolver: usernameMatchingUserEntityName
+  clientIdMetadataDocuments:
+    enabled: false
 
-  # clientIdMetadataDocuments:
-  #   enabled: false
-
-# scaffolder: {}
+scaffolder: {}
 
 catalog:
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location, Template, User, Group]
+    - allow: [Component, System, API, Resource, Location]
   locations:
     - type: file
       target: ../../examples/entities.yaml
@@ -89,11 +75,11 @@ catalog:
 
 
 
-# kubernetes: {}
+kubernetes: {}
 
-# permission:
-#   enabled: true
+permission:
+  enabled: true
 
-# mcpActions:
-#   name: 'My Company Backstage' # defaults to "backstage"
-#   description: 'Tools for managing your software catalog, creating new services from templates, and exploring your developer portal' # optional
+mcpActions:
+  name: 'My Company Backstage' # defaults to "backstage"
+  description: 'Tools for managing your software catalog, creating new services from templates, and exploring your developer portal' # optional

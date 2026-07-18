@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backstage-pilot-gitops
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/IvayloB84'
+    targetRevision: HEAD
+    path: argocd
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+

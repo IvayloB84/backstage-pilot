@@ -1,5 +1,4 @@
 ---
-# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
@@ -7,7 +6,6 @@ metadata:
 spec:
   memberOf: [guests]
 ---
-# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
@@ -15,3 +13,10 @@ metadata:
 spec:
   type: team
   children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: IvayloB84
+spec:
+  memberOf: [guests]

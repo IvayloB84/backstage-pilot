@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backstage-db
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: backstage-db
+  template:
+    metadata:
+      labels:
+        app: backstage-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16-alpine
+        env:
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: secret
+        ports:
+        - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backstage-db-service
+  namespace: default
+spec:
+  ports:
+  - port: 5432
+  selector:
+    app: backstage-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backstage-pilot
+  namespace: default
+  labels:
+    app: backstage-pilot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backstage-pilot
+  template:
+    metadata:
+      labels:
+        app: backstage-pilot
+    spec:
+      containers:
+      - name: backstage
+        image: backstage-pilot:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 7007
+        envFrom:
+        - secretRef:
+            name: backstage-postgres-secrets
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backstage-pilot-service
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 7007
+    targetPort: 7007
+  selector:
+    app: backstage-pilot
