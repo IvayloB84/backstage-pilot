@@ -41,7 +41,7 @@ spec:
       name: Publish App Code to GitHub
       action: publish:github
       input:
-        repoUrl: ://github.com{{ parameters.name }}
+        repoUrl: ://github.com{{ parameters.name }}&owner=IvayloB84
         repoVisibility: public
         defaultBranch: main
 
