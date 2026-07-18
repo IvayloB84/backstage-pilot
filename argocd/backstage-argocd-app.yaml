@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/IvayloB84'
+    repoURL: 'https://github.com/IvayloB84/backstage-pilot'
     targetRevision: HEAD
     path: argocd
   destination:
