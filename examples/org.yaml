@@ -19,4 +19,6 @@ kind: User
 metadata:
   name: IvayloB84
 spec:
+  profile:
+    displayName: IvayloB84
   memberOf: [guests]
