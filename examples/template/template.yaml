@@ -34,9 +34,10 @@ spec:
           type: string
           description: The destination tracking repository (e.g., ArgoCD-RootApps).
         repoOwner:
-          title: IvayloB84
+          title: GitHub Owner
           type: string
           description: Your explicit GitHub username or profile organization (e.g., IvayloB84).
+          default: IvayloB84
 
   steps:
     - id: fetch-base
@@ -52,7 +53,7 @@ spec:
       name: Publish App Code to GitHub
       action: publish:github
       input:
-        repoUrl: 'github.com?repo=${{ parameters.name }}&owner=IvayloB84'
+        repoUrl: 'github.com?repo=${{ parameters.name }}&owner=${{ parameters.repoOwner }}'
         repoVisibility: public
         defaultBranch: main
 
@@ -67,7 +68,7 @@ spec:
       name: Register App inside ArgoCD-RootApps
       action: publish:github:pull-request
       input:
-        repoUrl: github.com?repo=${{ parameters.repoName }}&owner=${{ parameters.repoOwner }}
+        repoUrl: 'github.com?repo=${{ parameters.repoName }}&owner=${{ parameters.repoOwner }}'
         branchName: "argocd-sync-${{ parameters.name }}"
         title: "infra: automatically register tracking manifest for ${{ parameters.name }}"
         description: "Brought to you automatically by your Backstage Software Template engine."
@@ -84,7 +85,7 @@ spec:
               spec:
                 project: default
                 source:
-                  repoURL: https://github.com/IvayloB84/${{ parameters.name }}.git
+                  repoURL: https://github.com/${{ parameters.repoOwner }}/${{ parameters.name }}.git
                   targetRevision: HEAD
                   path: k8s
                 destination:
