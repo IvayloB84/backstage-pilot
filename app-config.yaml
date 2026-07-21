@@ -1,13 +1,7 @@
 app:
   title: Scaffolded Backstage Pilot
   baseUrl: http://localhost:7000
-
   packages: all
-
-  # extensions:
-  #   - page:catalog:
-  #       config:
-  #         path: /
 
 organization:
   name: My Company
@@ -19,7 +13,7 @@ backend:
   csp:
     connect-src: ["'self'", 'http:', 'https:']
   cors:
-    origin: [http://localhost:7000, http://127.0.0.1:7000, http://localhost:7007]
+    origin: [http://localhost:7000, http://127.0.0.1:7000, http://localhost:7007, http://127.0.0.1:7007]
     methods: [GET, POST, PUT, DELETE, OPTIONS]
     credentials: true
   database:
@@ -29,7 +23,12 @@ backend:
       port: 5432
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
-      database: 
+      database: ""
+  reading:
+    allow:
+      - host: localhost
+      - host: 127.0.0.1
+
   actions:
     pluginSources:
       - auth
@@ -41,19 +40,42 @@ integrations:
     - host: github.com
       token: ${GITHUB_TOKEN}
 
-proxy: {}
+argocd:
+  baseUrl: https://127.0.0.1:8443
+
+proxy:
+  endpoints:
+    '/argocd/api':
+      target: https://127.0.0.1:8443/api/v1/
+      changeOrigin: true
+      secure: false
+      headers:
+        Authorization: Bearer ${ARGOCD_TOKEN}
+
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: https://127.0.0.1:33427
+          name: k3s-cluster
+          authProvider: 'serviceAccount'
+          serviceAccountToken: ${K3S_TOKEN}
+          skipTLSVerify: true
+          namespaces:
+            - default
 
 techdocs:
-  builder: 'local' # Alternatives - 'external'
+  builder: 'local'
   generator:
-    runIn: 'local' # Alternatives - 'local'
+    runIn: 'local'
   publisher:
-    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+    type: 'local'
 
 auth:
   environment: development
   providers:
-    guest: {}
     github:
       development:
         clientId: ${GITHUB_CLIENT_ID}
@@ -62,43 +84,18 @@ auth:
           resolvers:
             - resolver: usernameMatchingUserEntityName
 
-  # clientIdMetadataDocuments:
-  #   enabled: false
-
-# scaffolder: {}
-
 catalog:
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
+
+  # Using full absolute locations to guarantee that your User entity is forced into the catalog on startup
   locations:
     - type: file
-      target: ../../examples/entities.yaml
-
+      target: /media/theone/HDD/docker-files/github_projects/backstage-pilot/catalog-info.yaml
     - type: file
-      target: ../../examples/template/template.yaml
-      rules:
-        - allow: [Template]
-
+      target: /media/theone/HDD/docker-files/github_projects/backstage-pilot/examples/org.yaml
     - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
-
-    - type: url
-      target: https://github.com/IvayloB84/backstage-pilot
-      rules:
-        - allow: [Template]
-
-
-
-# kubernetes: {}
-
-# permission:
-#   enabled: true
-
-# mcpActions:
-#   name: 'My Company Backstage' # defaults to "backstage"
-#   description: 'Tools for managing your software catalog, creating new services from templates, and exploring your developer portal' # optional
+      target: /media/theone/HDD/docker-files/github_projects/backstage-pilot/examples/template/template.yaml

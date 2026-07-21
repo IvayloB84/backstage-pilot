@@ -1,0 +1,52 @@
+name: Repository Security Guard
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  scan-secrets:
+    name: Check for Hardcoded Secrets and Variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 1. Official TruffleHog Action to deep-scan the commit history for true credentials
+      - name: Run TruffleHog Secret Scanner
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+
+      # 2. Custom Validation step to flag any hardcoded strings in your config schemas
+      - name: Validate App Configuration Formatting Schema
+        run: |
+          echo "🔍 Auditing app-config.yaml for un-templated private assets..."
+          
+          # Target file path check
+          TARGET_CONFIG="app-config.yaml"
+          
+          if [ -f "$TARGET_CONFIG" ]; then
+            # Look for explicit ghp_ (GitHub Tokens) or eyJ (JWTs) typed out in the config
+            if grep -E 'ghp_[A-Za-z0-9]{36}|eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+' "$TARGET_CONFIG"; then
+              echo "❌ ERROR: Hardcoded credentials or JWT tokens detected inside $TARGET_CONFIG!"
+              exit 1
+            fi
+            
+            # Ensure kubernetes url variable matches a standard variable hook context template
+            if grep -q "serviceAccountToken:" "$TARGET_CONFIG" && ! grep -q "serviceAccountToken: \${" "$TARGET_CONFIG"; then
+              echo "❌ ERROR: Hardcoded serviceAccountToken string value detected! Use \${K3S_TOKEN} instead."
+              exit 1
+            fi
+            
+            echo "✅ app-config.yaml schema parameters verified successfully."
+          else
+            echo "⚠️  No local app-config.yaml located in root context slot. Skipping formatting checks."
+          fi
