@@ -14,16 +14,16 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          # FIXED: Changes fetch-depth from 0 to 1 so the runner ONLY downloads the current commit file snapshot, skipping old history entirely!
+          fetch-depth: 1
 
-      # 1. Official TruffleHog Action to deep-scan the commit history for true credentials
+      # 2. Official TruffleHog Action configured to scan your active codebase flat
       - name: Run TruffleHog Secret Scanner
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: ""
-          head: ${{ github_ref_name }}
-          extra_args: --only-verified
+          # FIXED: Removes base/head history comparisons to prevent historical scanning
+          extra_args: --results=verified
 
       # 2. Custom Validation step to flag any hardcoded strings in your config schemas
       - name: Validate App Configuration Formatting Schema

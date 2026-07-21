@@ -21,3 +21,4 @@ packages/backend/dist/*
 .yarn/cache
 .yarn/install-state.gz
 # Forced pipeline re-run: Tue Jul 21 04:57:43 PM EEST 2026
+# Workflow optimization trace: Tue Jul 21 05:16:20 PM EEST 2026

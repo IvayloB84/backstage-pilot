@@ -2,11 +2,9 @@ import { createApp } from '@backstage/frontend-defaults';
 import catalogPlugin from '@backstage/plugin-catalog/alpha';
 import scaffolderPlugin from '@backstage/plugin-scaffolder/alpha';
 import userSettingsPlugin from '@backstage/plugin-user-settings/alpha';
-// FIXED: Import the standard new architecture alpha plugin natively
 import kubernetesPlugin from '@backstage/plugin-kubernetes/alpha';
 import { navModule } from './modules/nav';
 
-import React from 'react';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { SignInPageBlueprint } from '@backstage/plugin-app-react';
 import { SignInPage } from '@backstage/core-components';
@@ -33,24 +31,21 @@ const signInPageModule = SignInPageBlueprint.make({
   },
 });
 
-// Modern UI Blueprint Extension using the corrected capitalized export signature class name
+// FIXED: Created the extension object via blueprint first to satisfy strict catalog plugin options
+const kubernetesExtension = EntityContentBlueprint.make({
+  name: 'kubernetes',
+  params: {
+    title: 'Kubernetes',
+    path: '/kubernetes',
+    filter: 'kind:component',
+    loader: async () => <EntityKubernetesContent refreshIntervalMs={10000} />,
+  },
+});
+
+// FIXED: Passed the extension via the extensions array wrapper to match your framework schema rules
 const kubernetesCatalogTabModule = createFrontendModule({
   pluginId: 'catalog',
-  moduleId: 'kubernetes-entity-content',
-  register(reg) {
-    reg.registerExtension(
-      EntityContentBlueprint.make({
-        name: 'kubernetes',
-        params: {
-          title: 'Kubernetes',
-          path: '/kubernetes',
-          filter: 'kind:component',
-          // FIXED: Uses the explicit components wrapper renderer to trigger /resources/ API calls instead of /services/
-          loader: async () => <EntityKubernetesContent refreshInterval={10000} />,
-        },
-      }),
-    );
-  },
+  extensions: [kubernetesExtension],
 });
 
 export default createApp({

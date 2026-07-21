@@ -3,19 +3,11 @@ FROM node:24-trixie-slim
 # Set Python interpreter for `node-gyp` to use
 ENV PYTHON=/usr/bin/python3
 
-# Install isolate-vm dependencies, these are needed by the @backstage/plugin-scaffolder-backend.
+# OPTIMIZED: Combined dependency setups into a single layer and removed heavy g++ compiler tools
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
-    apt-get install -y --no-install-recommends python3 g++ build-essential && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install sqlite3 dependencies. You can skip this if you don't use sqlite3 in the image,
-# in which case you should also move better-sqlite3 to "devDependencies" in package.json.
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update && \
-    apt-get install -y --no-install-recommends libsqlite3-dev && \
+    apt-get install -y --no-install-recommends python3 libsqlite3-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # System Configuration Phase: Run corepack while still root to generate system mappings
@@ -32,6 +24,8 @@ ENV COREPACK_HOME=/tmp/corepack
 COPY --chown=node:node .yarn ./.yarn
 COPY --chown=node:node .yarnrc.yml ./
 COPY --chown=node:node backstage.json ./
+# FIXED: Copies critical Yarn 4 Plug'n'Play files (.pnp.cjs, .pnp.loader.mjs) for runtime module resolution
+COPY --chown=node:node .pnp.* ./
 
 # This switches many Node.js dependencies to production mode.
 ENV NODE_ENV=production
@@ -52,6 +46,8 @@ COPY --chown=node:node examples ./examples
 
 # Then copy the rest of the backend bundle, along with any other files we might want.
 COPY --chown=node:node packages/backend/dist/bundle.tar.gz app-config*.yaml ./
-RUN tar xzf bundle.tar.gz && rm bundle.tar.gz
+# FIXED: Forces the tar extractor to unpack relative to the working root directory to align code-split chunks natively!
+RUN tar xzf bundle.tar.gz -C ./ && rm bundle.tar.gz
 
-CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
+# FIXED: Targets the definitively verified production script name output by your compiler tools
+CMD ["node", "packages/backend/dist/index.cjs.js", "--config", "app-config.yaml"]
