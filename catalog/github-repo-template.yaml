@@ -10,27 +10,7 @@
           repoOwner: ${{ parameters.repoOwner }}
           description: ${{ parameters.description }}
 
-    # 🤖 Step 2: Fetch the raw ArgoCD Application file securely without API translation
-    - id: fetch-argocd
-      name: Fetch ArgoCD Control Manifest
-      action: fetch:plain:file
-      input:
-        # 🎯 Pulls the file text cleanly across the network
-        url: https://github.com/IvayloB84/backstage-pilot/raw/main/catalog/argocd-app.tmpl.yaml
-        targetPath: ./argocd-application.
-
-    # ⚙️ Step 3: Parse and inject your dynamic variables right inside the file
-    - id: render-argocd
-      name: Inject ArgoCD Target Variables
-      action: template:replace
-      input:
-        files:
-          - ./argocd-application.yaml
-        values:
-          repoName: ${{ parameters.repoName }}
-          repoOwner: ${{ parameters.repoOwner }}
-
-    # 🔗 Step 4: Publish the generated catalog file directly to a new GitHub repo
+    # 🔗 Step 2: Publish the generated catalog file directly to a new GitHub repo
     - id: publish
       name: Publish to GitHub
       action: publish:github
@@ -40,10 +20,16 @@
         description: ${{ parameters.description }}
         defaultBranch: main
 
-    # 📁 Step 5: Register the new repository location back into your Backstage catalog
+    # 📁 Step 3: Register the new repository location back into your Backstage catalog
     - id: register
       name: Register in Backstage Catalog
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
+
+
+  output:
+    links:
+      - title: Open GitHub Repository
+        url: ${{ steps.publish.output.remoteUrl }}
