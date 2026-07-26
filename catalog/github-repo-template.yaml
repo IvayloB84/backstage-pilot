@@ -21,7 +21,8 @@ spec:
         repoName:
           title: Repository Name
           type: string
-          description: What should the GitHub repository be named?
+          pattern: '^[a-z0-9-]+$'
+          description: What should the GitHub repository be named? (Lowercase letters and hyphens only).
         repoOwner:
           title: GitHub Owner
           type: string
@@ -54,7 +55,18 @@ spec:
         description: ${{ parameters.description }}
         defaultBranch: main
 
-    # ⚙️ Step 3: Register the new application directly inside your cluster catalog
+    # 🤖 Step 3: Fetch and process your automated ArgoCD manifest file from GitHub
+    - id: fetch-argocd
+      name: Generate ArgoCD Control Manifest
+      action: fetch:template
+      input:
+        url: https://github.com
+        values:
+          repoName: ${{ parameters.repoName }}
+          repoOwner: ${{ parameters.repoOwner }}
+        targetPath: ./argocd-application.yaml
+
+    # ⚙️ Step 4: Register the new application directly inside your cluster catalog
     - id: register
       name: Register in Backstage Catalog
       action: catalog:register
