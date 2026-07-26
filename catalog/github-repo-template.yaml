@@ -1,0 +1,70 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: create-github-repo-template
+  namespace: default
+  title: Create a New GitHub Repository
+  description: Automatically creates a clean repository and registers it into ArgoCD.
+  tags:
+    - github
+    - argocd
+spec:
+  type: service
+  owner: user:default/IvayloB84
+
+  parameters:
+    - title: Repository Information
+      required:
+        - repoName
+        - repoOwner
+      properties:
+        repoName:
+          title: Repository Name
+          type: string
+          description: What should the GitHub repository be named?
+        repoOwner:
+          title: GitHub Owner
+          type: string
+          description: Your explicit GitHub username or profile organization (e.g., IvayloB84).
+          default: IvayloB84
+        description:
+          title: Description
+          type: string
+          description: A short description for the repository.
+
+  steps:
+    # 📝 Step 1: Render your template catalog file inside the container workspace
+    # 📝 Step 1: Render your template catalog file inside the container workspace folder
+    - id: fetch-base
+      name: Fetch Base Skeleton
+      action: fetch:template
+      input:
+        # 🎯 FIX: Points to the directory context containing your boilerplate files
+        url: ./skeleton
+        values:
+          repoName: ${{ parameters.repoName }}
+          repoOwner: ${{ parameters.repoOwner }}
+          description: ${{ parameters.description }}
+
+    # 🔗 Step 2: Publish the new codebase cleanly to GitHub (WITHOUT allowedOwners)
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        repoUrl: 'github.com?repo=${{ parameters.repoName }}&owner=${{ parameters.repoOwner }}'
+        repoVisibility: public
+        description: ${{ parameters.description }}
+        defaultBranch: main
+
+    # ⚙️ Step 3: Register the new application directly inside your cluster catalog
+    - id: register
+      name: Register in Backstage Catalog
+      action: catalog:register
+      input:
+        repoUrl: 'github.com?repo=${{ parameters.repoName }}&owner=${{ parameters.repoOwner }}'
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: Open GitHub Repository
+        url: ${{ steps.publish.output.remoteUrl }}
