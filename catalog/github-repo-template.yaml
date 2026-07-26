@@ -60,7 +60,7 @@ spec:
       name: Generate ArgoCD Control Manifest
       action: fetch:template
       input:
-        url: https://github.com
+        url: https://github.com/IvayloB84/backstage-pilot/raw/main/catalog/argocd-app.tmpl.yaml
         values:
           repoName: ${{ parameters.repoName }}
           repoOwner: ${{ parameters.repoOwner }}
