@@ -4,9 +4,9 @@ metadata:
   name: ${{ values.repoName }}
   description: ${{ values.description }}
   annotations:
-    argocd/app-name: ${{ values.repoName | dump }}
-    backstage.io/kubernetes-id: ${{ values.repoName | dump }}
+    argocd/app-name: ${{ values.repoName }}
+    backstage.io/kubernetes-id: ${{ values.repoName }}
 spec:
   type: service
   lifecycle: experimental
-  owner: user:default/${{ values.repoOwner }}
+  owner: user:default/ivaylob84
