@@ -49,7 +49,7 @@ spec:
       name: Publish to GitHub
       action: publish:github
       input:
-        repoUrl: '://github.com{{ parameters.repoName }}&owner=${{ parameters.repoOwner }}'
+        repoUrl: 'github.com?repo=${{ parameters.repoName }}&owner=${{ parameters.repoOwner }}'
         repoVisibility: public
         description: ${{ parameters.description }}
         defaultBranch: main
