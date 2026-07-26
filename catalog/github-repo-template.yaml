@@ -1,40 +1,5 @@
-apiVersion: scaffolder.backstage.io/v1beta3
-kind: Template
-metadata:
-  name: create-github-repo-template
-  namespace: default
-  title: Create a New GitHub Repository
-  description: Automatically creates a clean repository and registers it into ArgoCD.
-  tags:
-    - github
-    - argocd
-spec:
-  type: service
-  owner: user:default/IvayloB84
-
-  parameters:
-    - title: Repository Information
-      required:
-        - repoName
-        - repoOwner
-      properties:
-        repoName:
-          title: Repository Name
-          type: string
-          pattern: '^[a-z0-9-]+$'
-          description: What should the GitHub repository be named? (Lowercase letters and hyphens only).
-        repoOwner:
-          title: GitHub Owner
-          type: string
-          description: Your explicit GitHub username or profile organization (e.g., IvayloB84).
-          default: IvayloB84
-        description:
-          title: Description
-          type: string
-          description: A short description for the repository.
-
   steps:
-    # 📝 Step 1: Fetch the skeleton structure directly from your GitHub repo
+    # 📝 Step 1: Fetch your template skeleton cleanly from GitHub
     - id: fetch-base
       name: Fetch Base Skeleton
       action: fetch:template
@@ -45,7 +10,7 @@ spec:
           repoOwner: ${{ parameters.repoOwner }}
           description: ${{ parameters.description }}
 
-    # 🔗 Step 2: Publish the new codebase cleanly to GitHub (WITHOUT allowedOwners)
+    # 🔗 Step 2: Publish the generated catalog file directly to a new GitHub repo
     - id: publish
       name: Publish to GitHub
       action: publish:github
@@ -55,26 +20,30 @@ spec:
         description: ${{ parameters.description }}
         defaultBranch: main
 
-    # 🤖 Step 3: Fetch and process your automated ArgoCD manifest file from GitHub
+    # 🤖 Step 3: Fetch the raw ArgoCD Application file securely without API translation
     - id: fetch-argocd
-      name: Generate ArgoCD Control Manifest
-      action: fetch:template
+      name: Fetch ArgoCD Control Manifest
+      action: fetch:plain:file
       input:
+        # 🎯 Pulls the file text cleanly across the network
         url: https://github.com/IvayloB84/backstage-pilot/raw/main/catalog/argocd-app.tmpl.yaml
+        targetPath: ./argocd-application.yaml
+
+    # ⚙️ Step 4: Parse and inject your dynamic variables right inside the file
+    - id: render-argocd
+      name: Inject ArgoCD Target Variables
+      action: template:replace
+      input:
+        files:
+          - ./argocd-application.yaml
         values:
           repoName: ${{ parameters.repoName }}
           repoOwner: ${{ parameters.repoOwner }}
-        targetPath: ./argocd-application.yaml
 
-    # ⚙️ Step 4: Register the new application directly inside your cluster catalog
+    # 📁 Step 5: Register the new repository location back into your Backstage catalog
     - id: register
       name: Register in Backstage Catalog
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
-
-  output:
-    links:
-      - title: Open GitHub Repository
-        url: ${{ steps.publish.output.remoteUrl }}
