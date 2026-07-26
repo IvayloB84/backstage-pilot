@@ -7,6 +7,7 @@ metadata:
     argocd/app-name: ${{ values.repoName }}
     argocd/app-namespace: argocd
     backstage.io/kubernetes-namespace: default
+    backstage.io/kubernetes-label-selector: 'app=${{ values.repoName }}'
 spec:
   type: service
   lifecycle: experimental
