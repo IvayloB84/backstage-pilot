@@ -36,6 +36,7 @@
       action: publish:github:file
       input:
         repoUrl: 'github.com?repo=ArgoCD-RootApps&owner=IvayloB84'
+        sourcePath: ./${{ parameters.repoName }}.yaml
         targetPath: 'argocd-apps/${{ parameters.repoName }}.yaml'
         branchName: main
 
