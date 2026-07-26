@@ -33,12 +33,13 @@
     # 🐙 Step 4: AUTOMATED GITOPS DISCOVERY TRACK
     - id: publish-gitops-manifest
       name: Commit Control Manifest to ArgoCD Root Apps Folder
-      action: publish:github:file
+      action: github:repo:push
       input:
         repoUrl: 'github.com?repo=ArgoCD-RootApps&owner=IvayloB84'
         sourcePath: ./${{ parameters.repoName }}.yaml
         targetPath: 'argocd-apps/${{ parameters.repoName }}.yaml'
         branchName: main
+        commitMessage: 'infra: register automated deployment loops for ${{ parameters.repoName }}'
 
     # 🔗 Step 5: Publish the generated catalog file directly to a new GitHub repo
     - id: publish
