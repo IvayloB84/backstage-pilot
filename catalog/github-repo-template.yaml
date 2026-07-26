@@ -33,14 +33,12 @@ spec:
           description: A short description for the repository.
 
   steps:
-    # 📝 Step 1: Render your template catalog file inside the container workspace
-    # 📝 Step 1: Render your template catalog file inside the container workspace folder
+    # 📝 Step 1: Fetch the skeleton structure directly from your GitHub repo
     - id: fetch-base
       name: Fetch Base Skeleton
       action: fetch:template
       input:
-        # 🎯 FIX: Points to the directory context containing your boilerplate files
-        url: ./skeleton
+        url: https://github.com/backstage-pilot
         values:
           repoName: ${{ parameters.repoName }}
           repoOwner: ${{ parameters.repoOwner }}
