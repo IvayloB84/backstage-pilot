@@ -1,3 +1,33 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: github-repo-demo-template-v2
+  title: Create GitHub Repository with GitOps Configs
+  description: Automatically provisions a new codebase and seeds tracking manifests straight into ArgoCD.
+spec:
+  owner: user:default/ivaylob84
+  type: service
+
+  parameters:
+    - title: Provide Repository Information
+      required:
+        - repoName
+        - repoOwner
+      properties:
+        repoName:
+          title: Repository Name
+          type: string
+          description: Unique name for your new application codebase
+        repoOwner:
+          title: Repository Owner
+          type: string
+          description: Your GitHub organization or account name
+          default: IvayloB84
+        description:
+          title: Description
+          type: string
+          description: A brief summary of this application service
+
   steps:
     # 📝 Step 1: Fetch your template skeleton cleanly from GitHub
     - id: fetch-base
@@ -13,27 +43,18 @@
     # 🤖 Step 2: Fetch the raw ArgoCD Application file securely without API translation
     - id: fetch-argocd
       name: Fetch ArgoCD Control Manifest
-      action: fetch:plain:file
+      action: fetch:template
       input:
         url: https://github.com/IvayloB84/backstage-pilot/raw/main/catalog/argocd-app.tmpl.yaml
-        # 🎯 FIX: Name it correctly in the workspace so the PR creates the right file name
         targetPath: ./${{ parameters.repoName }}.yaml
-
-    # ⚙️ Step 3: Parse and inject your dynamic variables right inside the file
-    - id: render-argocd
-      name: Inject ArgoCD Target Variables
-      action: template:replace
-      input:
-        files:
-          - ./${{ parameters.repoName }}.yaml
         values:
           repoName: ${{ parameters.repoName }}
           repoOwner: ${{ parameters.repoOwner }}
 
-    # 🐙 Step 4: AUTOMATED GITOPS DISCOVERY TRACK
+    # 🐙 Step 3: AUTOMATED GITOPS DISCOVERY TRACK
     - id: publish-gitops-manifest
       name: Commit Control Manifest to ArgoCD Root Apps Folder
-      action: github:repo:push
+      action: github:push
       input:
         repoUrl: 'github.com?repo=ArgoCD-RootApps&owner=IvayloB84'
         sourcePath: ./${{ parameters.repoName }}.yaml
@@ -41,20 +62,23 @@
         branchName: main
         commitMessage: 'infra: register automated deployment loops for ${{ parameters.repoName }}'
 
-    # 🔗 Step 5: Publish the generated catalog file directly to a new GitHub repo
+    # 🔗 Step 4: Publish the generated catalog file directly to a new GitHub repo
     - id: publish
       name: Publish to GitHub
-      action: publish:github
+      action: publish:github:pull-request
       input:
         repoUrl: 'github.com?repo=${{ parameters.repoName }}&owner=${{ parameters.repoOwner }}'
+        sourcePath: ./${{ parameters.repoName }}.yaml
+        targetPath: 'argocd-apps/${{ parameters.repoName }}.yaml'
+        branchName: main
         repoVisibility: public
         description: ${{ parameters.description }}
         defaultBranch: main
 
-    # 📁 Step 6: Register the new repository location back into your Backstage catalog
+    # 📁 Step 5: Register the new repository location back into your Backstage catalog
     - id: register
       name: Register in Backstage Catalog
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps.publish.output.remoteUrl }}
         catalogInfoPath: /catalog-info.yaml
