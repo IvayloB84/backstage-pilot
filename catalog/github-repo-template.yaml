@@ -38,7 +38,7 @@ spec:
       name: Fetch Base Skeleton
       action: fetch:template
       input:
-        url: https://github.com/backstage-pilot
+        url: https://github.com/IvayloB84/backstage-pilot/tree/main/catalog/skeleton
         values:
           repoName: ${{ parameters.repoName }}
           repoOwner: ${{ parameters.repoOwner }}
