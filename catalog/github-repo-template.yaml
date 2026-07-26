@@ -16,7 +16,8 @@
       action: fetch:plain:file
       input:
         url: https://github.com/IvayloB84/backstage-pilot/raw/main/catalog/argocd-app.tmpl.yaml
-        targetPath: ./argocd-application.yaml
+        # 🎯 FIX: Name it correctly in the workspace so the PR creates the right file name
+        targetPath: ./${{ parameters.repoName }}.yaml
 
     # ⚙️ Step 3: Parse and inject your dynamic variables right inside the file
     - id: render-argocd
@@ -24,7 +25,7 @@
       action: template:replace
       input:
         files:
-          - ./argocd-application.yaml
+          - ./${{ parameters.repoName }}.yaml
         values:
           repoName: ${{ parameters.repoName }}
           repoOwner: ${{ parameters.repoOwner }}
@@ -40,12 +41,12 @@
         defaultBranch: main
 
     # 🐙 Step 5: AUTOMATED GITOPS DISCOVERY TRACK
-    # This natively opens a PR with your manifest straight into your central control repo folder!
     - id: publish-gitops-manifest
       name: Commit Control Manifest to ArgoCD Root Apps Folder
       action: publish:github:pull-request
       input:
         repoUrl: 'github.com?repo=ArgoCD-RootApps&owner=IvayloB84'
+        # 🎯 FIX: Changed targetPath to backstage-apps to match your dynamic isolation folder
         targetPath: 'argocd-apps'
         title: 'infra: register automated deployment loops for ${{ parameters.repoName }}'
         description: 'Automated ArgoCD manifest addition generated from Backstage software template.'
