@@ -39,7 +39,20 @@
         description: ${{ parameters.description }}
         defaultBranch: main
 
-    # 📁 Step 5: Register the new repository location back into your Backstage catalog
+    # 🐙 Step 5: AUTOMATED GITOPS DISCOVERY TRACK
+    # This natively commits your newly generated control manifest STRAIGHT into your central ArgoCD control repo folder!
+    - id: publish-gitops-manifest
+      name: Commit Control Manifest to ArgoCD Root Apps Folder
+      action: publish:github:file
+      input:
+        # 🎯 Format: ://github.com{INFRA_REPO_NAME}&owner={GITHUB_OWNER}
+        repoUrl: 'github.com?repo=ArgoCD-RootApps&owner=IvayloB84'
+        # 🎯 Targets the exact path you just printed out on your terminal!
+        targetPath: 'argocd-apps/${{ parameters.repoName }}.yaml'
+        branchName: main
+        commitMessage: 'infra: register automated deployment loops for ${{ parameters.repoName }}'
+
+    # 📁 Step 6: Register the new repository location back into your Backstage catalog
     - id: register
       name: Register in Backstage Catalog
       action: catalog:register
