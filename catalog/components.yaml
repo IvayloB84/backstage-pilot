@@ -2,17 +2,14 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: argo-live-service-final
-  namespace: default
-  description: "Production service managed via ArgoCD."
+  description: Production service managed via ArgoCD.
   annotations:
-    argocd/app-name: argo-live-service-final
-    argocd/app-namespace: argocd
-    backstage.io/kubernetes-namespace: default
-    backstage.io/kubernetes-label-selector: 'app=backstage-pilot'
+    argocd/app-name: 'argo-live-service-final'
+    backstage.io/kubernetes-id: 'argo-live-service-final'
 spec:
   type: service
   lifecycle: experimental
-  owner: user:default/IvayloB84
+  owner: user:default/ivaylob84
 ---
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
