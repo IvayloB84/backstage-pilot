@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: github-repo-demo-template-v2
+  name: github-repo-demo-template-v3
   title: Create GitHub Repository with GitOps Configs
   description: Automatically provisions a new codebase and seeds tracking manifests straight into ArgoCD.
 spec:
