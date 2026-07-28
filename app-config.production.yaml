@@ -39,7 +39,7 @@ auth:
             - resolver: usernameMatchingUserEntityName
 
 argocd:
-  baseUrl: https://localhost:8443
+  baseUrl: https://127.0.0.1:8443
 
 proxy:
   endpoints:
@@ -69,17 +69,17 @@ catalog:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
 
   locations:
-    # 1. Your stable local components file
-    - type: file
-      target: ./catalog/components.yaml
-
-    # 2. Your local user account definitions (keeps you logged in!)
     - type: file
       target: ./catalog/org-users.yaml
 
-    # 3. Your cache-breaking template pulled safely over the GitHub URL link
-    - type: url
-      target: https://github.com/IvayloB84/backstage-pilot/blob/template-repaired-run/catalog/github-repo-template.yaml
+    - type: file
+      target: ./catalog/components.yaml
+
+    - type: file
+      target: ./catalog/github-repo-template.yaml
+
+    - type: file
+      target: ./catalog/argo-live-service-final.yaml
 
 organization:
   name: "My Company"
