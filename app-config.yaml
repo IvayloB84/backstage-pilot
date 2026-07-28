@@ -97,7 +97,7 @@ auth:
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            - resolver: usernameMatchingUserEntityName
+            - resolver: usernameMatchingUserEntityProfile
 
 catalog:
   import:
