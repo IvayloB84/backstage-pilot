@@ -44,7 +44,14 @@ argocd:
 proxy:
   endpoints:
     '/argocd/api':
-      target: https://argocd-server.argocd.svc.cluster.local/api/v1
+      target: https://argocd-server.argocd.svc.cluster.local/api/v1/
+      changeOrigin: true
+      secure: false
+      headers:
+        Authorization: Bearer ${ARGOCD_TOKEN}
+
+    '/argocd':
+      target: https://argocd-server.argocd.svc.cluster.local/api/v1/
       changeOrigin: true
       secure: false
       headers:
@@ -75,8 +82,8 @@ catalog:
     - type: file
       target: ./catalog/components.yaml
 
-    - type: file
-      target: ./catalog/github-repo-template.yaml
+    # - type: file
+    #   target: ./catalog/github-repo-template.yaml
 
     - type: file
       target: ./catalog/argo-live-service-final.yaml
