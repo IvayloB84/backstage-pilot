@@ -75,18 +75,17 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
 
+  # 🎯 PERMANENT COMPONENT ROUTE: Hardcoding files relative to root ensures Backstage reads them on boot
   locations:
     - type: file
-      target: ./catalog/org-users.yaml
+      target: /app/catalog/org-users.yaml
 
     - type: file
-      target: ./catalog/components.yaml
-
-    # - type: file
-    #   target: ./catalog/github-repo-template.yaml
+      target: /app/catalog/components.yaml
 
     - type: file
-      target: ./catalog/argo-live-service-final.yaml
+      target: /app/catalog/argo-live-service-final.yaml
+
 
 organization:
   name: "My Company"
