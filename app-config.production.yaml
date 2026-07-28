@@ -14,8 +14,8 @@ backend:
     origin: http://localhost:7007
     methods: [GET, POST, PUT, DELETE]
     credentials: true
-    keys:
-      - secret: ${BACKEND_SECRET}
+  keys:
+    - secret: ${BACKEND_SECRET}
   database:
     client: pg
     connection:
