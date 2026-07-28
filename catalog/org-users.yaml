@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
-  name: IvayloB84
+  name: ivaylob84
   namespace: default
 spec:
   profile:
