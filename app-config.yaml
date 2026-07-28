@@ -105,6 +105,8 @@ catalog:
     pullRequestBranchName: backstage-integration
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
+      rules:
+        - allow: [User]
 
   locations:
     - type: file
