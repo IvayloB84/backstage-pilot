@@ -90,14 +90,16 @@ techdocs:
 auth:
   environment: development
   providers:
-    guest: {}
+    guest:
+      userEntityRef: user:default/IvayloB84
+      dangerouslyAllowOutsideDevelopment: true
     github:
       development:
         clientId: ${GITHUB_CLIENT_ID}
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            - resolver: usernameMatchingUserEntityProfile
+            - resolver: usernameMatchingUserEntityName
 
 catalog:
   import:
