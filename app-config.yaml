@@ -1,6 +1,6 @@
 app:
   title: Scaffolded Backstage Pilot
-  baseUrl: http://localhost:7000
+  baseUrl: http://localhost:7007
   packages: all
 
   notifications:
