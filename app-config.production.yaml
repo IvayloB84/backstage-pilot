@@ -36,7 +36,7 @@ auth:
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            - resolver: usernameMatchingUserEntityName
+            - resolver: usernameMatchingUserEntityProfile
 
 argocd:
   baseUrl: https://127.0.0.1:8443
