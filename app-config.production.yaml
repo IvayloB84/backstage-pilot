@@ -30,9 +30,9 @@ catalog:
     - type: file
       target: ./catalog/components.yaml
 auth:
-  environment: production
+  environment: development
   providers:
-    production:
+    development:
       guest: {}
       github:
         clientId: ${GITHUB_CLIENT_ID}
