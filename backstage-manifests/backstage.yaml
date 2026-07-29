@@ -30,13 +30,14 @@ spec:
       volumes:
       - name: db-storage
         persistentVolumeClaim:
-          claimName: backstage-postgres-pvc-second
+          # Restored back to your original clean baseline storage name
+          claimName: backstage-postgres-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  # Named exactly what the backstage container is looking for
-  name: backstage-pilot-db
+  # Renamed back to what your container's environment configuration expects to see
+  name: backstage-pilot-db-service
   namespace: default
 spec:
   ports:
