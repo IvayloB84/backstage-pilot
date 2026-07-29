@@ -39,9 +39,9 @@ data:
     auth:
       environment: production
       providers:
-        guest: {}
-        github:
-          production:
+        production:
+          guest: {}
+          github:
             clientId: ${GITHUB_CLIENT_ID}
             clientSecret: ${GITHUB_CLIENT_SECRET}
             signIn:
