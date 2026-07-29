@@ -68,22 +68,19 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 7007
-        envFrom:
-        - secretRef:
-            name: backstage-postgres-secrets
-        - secretRef:
-            name: backstage-env-secrets
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
         - name: prod-config-volume
-          mountPath: /app/app-config.production.yaml
-          subPath: app-config.production.yaml
+          mountPath: /app/app-config.development.yaml
+          subPath: app-config.development.yaml
+        # Mounts your actual .env file directly into the container project root directory path
+        - name: env-file-volume
+          mountPath: /app/.env
+          subPath: .env
         securityContext:
-          # Container-level flag: Correctly nested inside the container spec layout
           allowPrivilegeEscalation: false
       securityContext:
-        # Pod-level fields: Explicitly separated out
         runAsNonRoot: true
         runAsUser: 1000
       volumes:
@@ -93,6 +90,9 @@ spec:
       - name: prod-config-volume
         configMap:
           name: backstage-production-config
+      - name: env-file-volume
+        configMap:
+          name: backstage-env-file-cm
 ---
 apiVersion: v1
 kind: Service
