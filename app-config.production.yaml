@@ -25,34 +25,8 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
   locations:
-    # Use bootstrap injection to stream your direct User metadata table records safely
-    - type: bootstrap
-      target:
-        apiVersion: backstage.io/v1alpha1
-        kind: User
-        metadata:
-          name: IvayloB84
-        spec:
-          profile:
-            displayName: IvayloB84
-          memberOf: [guests]
-auth:
-  environment: development
-  providers:
-    github:
-      development:
-        clientId: ${GITHUB_CLIENT_ID}
-        clientSecret: ${GITHUB_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            - resolver: usernameMatchingUserEntityName
-      production:
-        clientId: ${GITHUB_CLIENT_ID}
-        clientSecret: ${GITHUB_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            - resolver: usernameMatchingUserEntityName
-integrations:
-  github:
-    - host: github.com
-      token: ${GITHUB_TOKEN}
+    # Set targets using paths relative to the working directory structure
+    - type: file
+      target: ./catalog/org-users.yaml
+    - type: file
+      target: ./catalog/components.yaml
