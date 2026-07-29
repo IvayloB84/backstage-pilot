@@ -35,7 +35,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: backstage-db-service
+  name: backstage-pilot-db-service
   namespace: default
 spec:
   ports:
