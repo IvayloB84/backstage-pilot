@@ -25,8 +25,28 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
   locations:
-    # Set targets using paths relative to the working directory structure
+    # Restored to clean local working directory targets using relative dot syntax
     - type: file
       target: ./catalog/org-users.yaml
     - type: file
       target: ./catalog/components.yaml
+auth:
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: ${GITHUB_CLIENT_ID}
+        clientSecret: ${GITHUB_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            - resolver: usernameMatchingUserEntityName
+      production:
+        clientId: ${GITHUB_CLIENT_ID}
+        clientSecret: ${GITHUB_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            - resolver: usernameMatchingUserEntityName
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
