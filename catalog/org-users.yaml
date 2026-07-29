@@ -5,4 +5,4 @@ metadata:
 spec:
   profile:
     displayName: IvayloB84
-  memberOf: []
+  memberOf: [guests]

@@ -25,7 +25,6 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
   locations:
-    # Restored to clean local working directory targets using relative dot syntax
     - type: file
       target: ./catalog/org-users.yaml
     - type: file
@@ -35,12 +34,6 @@ auth:
   providers:
     github:
       development:
-        clientId: ${GITHUB_CLIENT_ID}
-        clientSecret: ${GITHUB_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            - resolver: usernameMatchingUserEntityName
-      production:
         clientId: ${GITHUB_CLIENT_ID}
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
