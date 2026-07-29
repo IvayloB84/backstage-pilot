@@ -30,13 +30,11 @@ spec:
       volumes:
       - name: db-storage
         persistentVolumeClaim:
-          # Restored back to your original clean baseline storage name
           claimName: backstage-postgres-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  # Renamed back to what your container's environment configuration expects to see
   name: backstage-pilot-db-service
   namespace: default
 spec:
@@ -75,10 +73,18 @@ spec:
             name: backstage-postgres-secrets
         - secretRef:
             name: backstage-env-secrets
+        volumeMounts:
+        # Mounts your actual project catalog directory right where the clean image targets expect them
+        - name: catalog-files-volume
+          mountPath: /app/catalog
         securityContext:
           runAsNonRoot: true
           runAsUser: 1000
           allowPrivilegeEscalation: false
+      volumes:
+      - name: catalog-files-volume
+        configMap:
+          name: backstage-local-users-cm
 ---
 apiVersion: v1
 kind: Service
