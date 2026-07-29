@@ -1,21 +1,15 @@
 app:
+  title: Backstage Pilot Deployed
   baseUrl: http://localhost:7007
-  title: "Scaffolded Backstage Pilot"
-  packages: "all"
-
 backend:
   baseUrl: http://localhost:7007
   listen:
     host: 0.0.0.0
     port: 7007
-  auth:
-    dangerouslyDisableDefaultAuthPolicy: true
   cors:
-    origin: http://localhost:7007
-    methods: [GET, POST, PUT, DELETE]
+    origin: [http://localhost:7007, http://127.0.0.1:7007]
+    methods: [GET, POST, PUT, DELETE, OPTIONS]
     credentials: true
-  keys:
-    - secret: ${BACKEND_SECRET}
   database:
     client: pg
     connection:
@@ -23,77 +17,17 @@ backend:
       port: 5432
       user: postgres
       password: secret
-
 auth:
-  environment: production
+  environment: development
   providers:
-    guest:
-      userEntityRef: user:default/IvayloB84
-      dangerouslyAllowOutsideDevelopment: true
     github:
+      development:
+        clientId: ${GITHUB_CLIENT_ID}
+        clientSecret: ${GITHUB_CLIENT_SECRET}
       production:
         clientId: ${GITHUB_CLIENT_ID}
         clientSecret: ${GITHUB_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            - resolver: usernameMatchingUserEntityProfile
-
-argocd:
-  baseUrl: https://127.0.0.1:8443
-
-proxy:
-  endpoints:
-    '/argocd/api':
-      target: https://argocd-server.argocd.svc.cluster.local/api/v1/
-      changeOrigin: true
-      secure: false
-      headers:
-        Authorization: Bearer ${ARGOCD_TOKEN}
-
-    '/argocd':
-      target: https://argocd-server.argocd.svc.cluster.local/api/v1/
-      changeOrigin: true
-      secure: false
-      headers:
-        Authorization: Bearer ${ARGOCD_TOKEN}
-
-kubernetes:
-  serviceLocatorMethod:
-    type: multiTenant
-  clusterLocatorMethods:
-    - type: config
-      clusters:
-        - name: k3d-my-rootless-cluster
-          url: https://kubernetes.default.svc
-          authProvider: serviceAccount
-          serviceAccountToken: ${K3S_TOKEN}
-          skipTLSVerify: true
-          skipMetricsLookup: false
-
-catalog:
-  providers: {}
-  rules:
-    - allow: [Component, System, API, Resource, Location, Template, User, Group]
-
-  # 🎯 PERMANENT COMPONENT ROUTE: Hardcoding files relative to root ensures Backstage reads them on boot
-  locations:
-    - type: file
-      target: /app/catalog/org-users.yaml
-
-    - type: file
-      target: /app/catalog/components.yaml
-
-    - type: file
-      target: /app/catalog/argo-live-service-final.yaml
-
-
-organization:
-  name: "My Company"
-
 integrations:
   github:
     - host: github.com
       token: ${GITHUB_TOKEN}
-
-techdocs:
-  builder: local
