@@ -74,17 +74,25 @@ spec:
         - secretRef:
             name: backstage-env-secrets
         volumeMounts:
-        # Mounts your actual project catalog directory right where the clean image targets expect them
         - name: catalog-files-volume
           mountPath: /app/catalog
+        - name: prod-config-volume
+          mountPath: /app/app-config.production.yaml
+          subPath: app-config.production.yaml
         securityContext:
-          runAsNonRoot: true
-          runAsUser: 1000
+          # Container-level flag: Correctly nested inside the container spec layout
           allowPrivilegeEscalation: false
+      securityContext:
+        # Pod-level fields: Explicitly separated out
+        runAsNonRoot: true
+        runAsUser: 1000
       volumes:
       - name: catalog-files-volume
         configMap:
           name: backstage-local-users-cm
+      - name: prod-config-volume
+        configMap:
+          name: backstage-production-config
 ---
 apiVersion: v1
 kind: Service
