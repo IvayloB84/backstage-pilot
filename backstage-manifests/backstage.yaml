@@ -73,8 +73,8 @@ spec:
           mountPath: /app/catalog
         - name: prod-config-volume
           mountPath: /app/app-config.development.yaml
+          # FIXED: Now matches the exact development data key name inside your cluster ConfigMap
           subPath: app-config.development.yaml
-        # Mounts your actual .env file directly into the container project root directory path
         - name: env-file-volume
           mountPath: /app/.env
           subPath: .env
