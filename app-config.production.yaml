@@ -23,22 +23,12 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location, Template]
-    - allow: [User, Group]
-      locations:
-        - type: bootstrap
+    - allow: [Component, System, API, Resource, Location, Template, User, Group]
   locations:
-    - type: bootstrap
-      target:
-        apiVersion: backstage.io/v1alpha1
-        kind: User
-        metadata:
-          name: IvayloB84
-          namespace: default
-        spec:
-          profile:
-            displayName: IvayloB84
-          memberOf: [guests]
+    - type: file
+      target: ./catalog/org-users.yaml
+    - type: file
+      target: ./catalog/components.yaml
 auth:
   environment: development
   providers:
@@ -48,7 +38,7 @@ auth:
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            - resolver: usernameMatchingUserEntityName
+            - resolver: usernameMatchingUserEntityProfile
 integrations:
   github:
     - host: github.com
