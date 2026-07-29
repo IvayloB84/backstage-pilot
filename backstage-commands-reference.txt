@@ -1,0 +1,59 @@
+======================================================================
+     BACKSTAGE CONTAINER INFRASTRUCTURE COMMAND REFERENCE GUIDE
+======================================================================
+
+--- 1. AUDIT LIVE CLUSTER INFRASTRUCTURE RESOURCES ---
+Command:
+  kubectl get deployments,services -n default
+Information:
+  Displays the exact names, ready states, cluster IPs, and port 
+  mappings of your active app and database components.
+
+--- 2. PRINT THE ACTIVE IN-CLUSTER CONFIGMAP PAYLOAD ---
+Command:
+  kubectl get configmap backstage-production-config -o jsonpath='{.data.app-config\.production\.yaml}'
+Information:
+  Reveals the exact YAML configuration text layer currently read by 
+  the pod container process on boot (verifies hostnames, paths, resolvers).
+
+--- 3. INSPECT INJECTED RUNTIME ENV SECRETS ---
+Command:
+  kubectl env deployment/backstage-pilot --list
+Information:
+  Lists all active tokens, client credentials, and environment 
+  variables parsed out of your .env file into the container runtime.
+
+--- 4. STREAM ACTIVE AUTHENTICATION & RESOLVER LOGS ---
+Command:
+  kubectl logs deployment/backstage-pilot -f --tail=100 | grep -iE "auth|signin|identity|github|resolver|error|crash"
+Information:
+  Tracks active HTTP request handshakes, callback frames, and database 
+  lookup logs to catch 404, 401, or 503 connection errors.
+
+--- 5. VIEW ARGOCD GITOPS ENGINE COMMIT STATUS ---
+Command:
+  kubectl get application backstage-pilot-gitops -n argocd -o yaml | grep -A 5 "sync:"
+Information:
+  Displays the exact Git hash revision that ArgoCD is actively 
+  enforcing on your cluster to confirm it matched your GitHub pushes.
+
+======================================================================
+               FAST DUAL-ENVIRONMENT WORKFLOW BLOCKS
+======================================================================
+
+--- ROUTE A: HOT-PATCH RUNNING CONTAINER CONFIGS (NO REBUILD) ---
+Commands:
+  kubectl create configmap backstage-production-config --from-file=app-config.production.yaml=app-config.production.yaml -n default --dry-run=client -o yaml | kubectl apply -f -
+  kubectl rollout restart deployment/backstage-pilot
+  kubectl rollout status deployment/backstage-pilot
+Information:
+  Overwrites the active Kubernetes ConfigMap using your local edits 
+  and cycles the container pods to apply changes instantly.
+
+--- ROUTE B: LAUNCH THE PLATFORM LOCALLY ON THE HOST MACHINE ---
+Command:
+  yarn --cwd packages/backend start --config ../../app-config.yaml --config ../../app-config.local.yaml
+Information:
+  Launches the live TypeScript compilation development engine on your 
+  Debian host, merging local config targets on port 7007.
+

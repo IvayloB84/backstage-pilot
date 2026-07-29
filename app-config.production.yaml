@@ -30,15 +30,17 @@ catalog:
     - type: file
       target: ./catalog/components.yaml
 auth:
-  environment: development
+  environment: production
   providers:
+    guest: {}
     github:
-      development:
+      production:
         clientId: ${GITHUB_CLIENT_ID}
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            - resolver: usernameMatchingUserEntityProfile
+            # Reverted back to the standard database-backed resolver
+            - resolver: usernameMatchingUserEntityName
 integrations:
   github:
     - host: github.com

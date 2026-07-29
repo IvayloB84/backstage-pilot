@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/IvayloB84/backstage-pilot'
     targetRevision: HEAD
-    path: argocd
+    path: backstage-manifests
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
@@ -16,4 +16,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
