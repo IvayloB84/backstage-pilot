@@ -34,13 +34,14 @@ catalog:
 auth:
   environment: production
   providers:
-    github:
-      production:
+    production:
+      guest: {}
+      github:
         clientId: ${GITHUB_CLIENT_ID}
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            - resolver: usernameMatchingUserEntityProfile
+            - resolver: usernameMatchingUserEntityName
 
 integrations:
   github:

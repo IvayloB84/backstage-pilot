@@ -13,7 +13,7 @@ backend:
   database:
     client: pg
     connection:
-      host: backstage-pilot-db-service
+      host: backstage-db-service
       port: 5432
       user: postgres
       password: secret
@@ -32,14 +32,13 @@ catalog:
 auth:
   environment: production
   providers:
-    guest: {}
-    github:
-      production:
+    production:
+      guest: {}
+      github:
         clientId: ${GITHUB_CLIENT_ID}
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            # Reverted back to the standard database-backed resolver
             - resolver: usernameMatchingUserEntityName
 integrations:
   github:
