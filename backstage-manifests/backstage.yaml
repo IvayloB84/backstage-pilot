@@ -68,14 +68,9 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 7007
-        # HARDCODED CLEAN ENV INJECTION (Bypasses .env map errors)
         env:
-        - name: GITHUB_CLIENT_ID
-          value: "YOUR_ACTUAL_GITHUB_CLIENT_ID_HERE"
-        - name: GITHUB_CLIENT_SECRET
-          value: "YOUR_ACTUAL_GITHUB_CLIENT_SECRET_HERE"
-        - name: GITHUB_TOKEN
-          value: "YOUR_ACTUAL_GITHUB_TOKEN_HERE"
+        - name: NODE_TLS_REJECT_UNAUTHORIZED
+          value: "0"
         - name: POSTGRES_HOST
           value: "backstage-pilot-db-service"
         - name: POSTGRES_PORT
@@ -84,6 +79,21 @@ spec:
           value: "postgres"
         - name: POSTGRES_PASSWORD
           value: "secret"
+        - name: GITHUB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: backstage-github-secrets
+              key: GITHUB_CLIENT_ID
+        - name: GITHUB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: backstage-github-secrets
+              key: GITHUB_CLIENT_SECRET
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: backstage-github-secrets
+              key: GITHUB_TOKEN
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog

@@ -37,3 +37,12 @@ spec:
     links:
       - title: View Dashboard
         url: http://localhost:7007/catalog/default/component/argo-live-service-final
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: k3s-pilot
+  description: "Primary active K3s cluster tracking boundary"
+spec:
+  type: kubernetes-cluster
+  owner: user:default/ivaylob84

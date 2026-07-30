@@ -49,4 +49,7 @@ backend.add(import('@backstage/plugin-signals-backend'));
 // MCP actions plugin
 backend.add(import('@backstage/plugin-mcp-actions-backend'));
 
+// RESTORES BACKEND ROUTING FOR ARGOCD CLIENT COMMUNICATORS
+backend.add(import('@roadiehq/backstage-plugin-argo-cd-backend'));
+
 backend.start();

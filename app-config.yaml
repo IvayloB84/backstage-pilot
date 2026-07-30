@@ -38,7 +38,8 @@ argocd:
       instances:
         - name: main-argo
           url: http://argocd-server.argocd.svc.cluster.local:80
-          token: ${ARGOCD_TOKEN}
+          token: Bearer ${ARGOCD_TOKEN}
+          secure: false
 
 proxy:
   endpoints:
@@ -61,9 +62,6 @@ catalog:
       target: ./catalog/org-users.yaml
     - type: file
       target: ./catalog/components.yaml
-    # 🧪 Isolated Test Template Location (Safe and completely separate)
-    - type: url
-      target: https://github.com/IvayloB84/backstage-templates/blob/feature/test-dynamic-ports/github-repo-template.yaml
 
 auth:
   environment: development
@@ -75,9 +73,14 @@ auth:
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            - resolver: usernameMatchingUserEntityName
+            - resolver: matchingUserEntityName
 
 integrations:
   github:
     - host: github.com
       token: ${GITHUB_TOKEN}
+
+# FRONTEND DISCOVERY ALIGNMENT: Disables the default discovered module loader to collapse duplicate tabs
+features:
+  - id: kubernetes
+    enabled: false
