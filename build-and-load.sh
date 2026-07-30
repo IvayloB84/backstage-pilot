@@ -29,7 +29,7 @@ function run_official_host_and_docker_build() {
     yarn build:backend
 
     echo "=== 2. Building official Docker image ==="
-    docker build -t backstage-pilot:latest "$PROJECT_DIR"
+    docker build --no-cache -t backstage-pilot:latest "$PROJECT_DIR"
 }
 
 function load_into_cluster() {

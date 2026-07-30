@@ -68,16 +68,31 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 7007
+        # HARDCODED CLEAN ENV INJECTION (Bypasses .env map errors)
+        env:
+        - name: GITHUB_CLIENT_ID
+          value: "YOUR_ACTUAL_GITHUB_CLIENT_ID_HERE"
+        - name: GITHUB_CLIENT_SECRET
+          value: "YOUR_ACTUAL_GITHUB_CLIENT_SECRET_HERE"
+        - name: GITHUB_TOKEN
+          value: "YOUR_ACTUAL_GITHUB_TOKEN_HERE"
+        - name: POSTGRES_HOST
+          value: "backstage-pilot-db-service"
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "secret"
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
+        - name: main-config-volume
+          mountPath: /app/app-config.yaml
+          subPath: app-config.yaml
         - name: prod-config-volume
           mountPath: /app/app-config.development.yaml
-          # FIXED: Now matches the exact development data key name inside your cluster ConfigMap
           subPath: app-config.development.yaml
-        - name: env-file-volume
-          mountPath: /app/.env
-          subPath: .env
         securityContext:
           allowPrivilegeEscalation: false
       securityContext:
@@ -87,12 +102,12 @@ spec:
       - name: catalog-files-volume
         configMap:
           name: backstage-local-users-cm
+      - name: main-config-volume
+        configMap:
+          name: backstage-config
       - name: prod-config-volume
         configMap:
           name: backstage-production-config
-      - name: env-file-volume
-        configMap:
-          name: backstage-env-file-cm
 ---
 apiVersion: v1
 kind: Service

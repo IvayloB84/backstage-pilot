@@ -14,11 +14,42 @@ backend:
   database:
     client: pg
     connection:
-      host: backstage-pilot-db-service
-      port: 5432
-      user: postgres
-      password: secret
-      database: ""
+      host: ${POSTGRES_HOST}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      database: postgres
+
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: https://kubernetes.default.svc.cluster.local
+          name: k3s-cluster
+          authProvider: 'serviceAccount'
+          skipTLSVerify: true
+          id: k3s-pilot
+
+argocd:
+  appLocatorMethods:
+    - type: 'config'
+      instances:
+        - name: main-argo
+          url: http://argocd-server.argocd.svc.cluster.local:80
+          token: ${ARGOCD_TOKEN}
+
+proxy:
+  endpoints:
+    # 🤖 The proxy endpoint MUST match the plugin routing definitions exactly!
+    '/argocd/api':
+      target: http://argocd-server.argocd.svc.cluster.local/api/v1 # <--- Ensure /api/v1 or the correct api suffix is appended!
+      changeOrigin: true
+      secure: false # Set to false if you are using self-signed certificates inside your cluster
+      headers:
+        Authorization: Bearer ${ARGOCD_TOKEN}
+
 
 catalog:
   import:
@@ -30,18 +61,20 @@ catalog:
       target: ./catalog/org-users.yaml
     - type: file
       target: ./catalog/components.yaml
+    # 🧪 Isolated Test Template Location (Safe and completely separate)
+    - type: url
+      target: https://github.com/IvayloB84/backstage-templates/blob/feature/test-dynamic-ports/github-repo-template.yaml
 
 auth:
-  environment: production
+  environment: development
   providers:
-    production:
-      guest: {}
-      github:
+    guest: {}
+    github:
+      development:
         clientId: ${GITHUB_CLIENT_ID}
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            # Corrected standard resolver name
             - resolver: usernameMatchingUserEntityName
 
 integrations:

@@ -58,3 +58,21 @@ e2e-test-report/
 
 # Private local reference sheets
 local-cheat-sheets/
+
+# Local Backstage Cluster Operational Backups (Contains decrypted secure keys)
+cluster_state_backups/
+
+# Dependency directories
+node_modules/
+/node_modules
+
+# Build outputs and cache artifacts
+dist/
+dist-types/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.pnp.*
+
+# Accidentally generated truncation folder
+efault/
