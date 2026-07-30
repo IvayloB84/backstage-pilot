@@ -76,3 +76,4 @@ dist-types/
 
 # Accidentally generated truncation folder
 efault/
+build-and-load.sh
