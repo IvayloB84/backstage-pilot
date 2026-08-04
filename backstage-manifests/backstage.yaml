@@ -82,17 +82,17 @@ spec:
         - name: GITHUB_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: backstage-github-secrets
+              name: backstage-app-config
               key: GITHUB_CLIENT_ID
         - name: GITHUB_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: backstage-github-secrets
+              name: backstage-app-config
               key: GITHUB_CLIENT_SECRET
         - name: GITHUB_TOKEN
           valueFrom:
             secretKeyRef:
-              name: backstage-github-secrets
+              name: backstage-app-config
               key: GITHUB_TOKEN
         volumeMounts:
         - name: catalog-files-volume
