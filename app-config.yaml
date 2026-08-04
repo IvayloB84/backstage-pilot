@@ -2,6 +2,9 @@ app:
   title: Scaffolded Backstage Pilot
   baseUrl: http://localhost:7007
   packages: all
+  extensions:
+    - entity-content:catalog/kubernetes:
+        disabled: true
 
 backend:
   baseUrl: http://localhost:7007
@@ -68,12 +71,13 @@ catalog:
     - type: file
       target: ./catalog/components.yaml
     - type: url
-      target: https://raw.githubusercontent.com/IvayloB84/backstage-templates/refs/heads/main/manifests/deactivate-component-template.yaml
+      target: https://github.com/IvayloB84/backstage-templates/blob/main/manifests/*.yaml
 
 auth:
   environment: development
   providers:
-    guest: {}
+    guest:
+      dangerouslyAllowUnauthenticatedGuests: true
     github:
       development:
         clientId: ${GITHUB_CLIENT_ID}
@@ -86,8 +90,3 @@ integrations:
   github:
     - host: github.com
       token: ${GITHUB_TOKEN}
-
-# FRONTEND DISCOVERY ALIGNMENT: Disables the default discovered module loader to collapse duplicate tabs
-features:
-  - id: kubernetes
-    enabled: false
