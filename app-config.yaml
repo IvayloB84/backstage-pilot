@@ -84,7 +84,7 @@ auth:
         clientSecret: ${GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            - resolver: matchingUserEntityName
+            - resolver: usernameMatchingUserEntityName
 
 integrations:
   github:
