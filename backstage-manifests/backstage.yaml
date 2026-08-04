@@ -94,6 +94,7 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: GITHUB_TOKEN
+        # 🎯 AUTOMATION KEY REFERENCE INJECTED SECURELY
         - name: BACKSTAGE_SECRET
           valueFrom:
             secretKeyRef:
