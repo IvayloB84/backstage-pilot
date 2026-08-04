@@ -94,6 +94,11 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: GITHUB_TOKEN
+        - name: BACKSTAGE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: GITHUB_TOKEN
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
