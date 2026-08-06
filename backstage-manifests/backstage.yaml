@@ -71,7 +71,7 @@ spec:
       containers:
       - name: backstage
         image: backstage-pilot:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Never
         ports:
         - containerPort: 7007
         env:
@@ -117,18 +117,24 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: GITHUB_TOKEN
-        - name: ARGOCD_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: ARGOCD_TOKEN
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
+        - name: main-config-volume
+          mountPath: /app/app-config.yaml
+          subPath: app-config.yaml
+        securityContext:
+          allowPrivilegeEscalation: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
       volumes:
       - name: catalog-files-volume
         configMap:
           name: backstage-local-users-cm
+      - name: main-config-volume
+        configMap:
+          name: backstage-config
 ---
 apiVersion: v1
 kind: Service
