@@ -97,13 +97,11 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: POSTGRES_PASSWORD
-        # FIXED SECURE BACKEND SYSTEM SECRET ENGINES
         - name: BACKEND_SECRET
           valueFrom:
             secretKeyRef:
               name: backstage-app-config
               key: BACKEND_SECRET
-        # SECURE GITHUB API HANDSHAKE INTEGRATIONS
         - name: GITHUB_CLIENT_ID
           valueFrom:
             secretKeyRef:
@@ -125,9 +123,6 @@ spec:
         - name: main-config-volume
           mountPath: /app/app-config.yaml
           subPath: app-config.yaml
-        - name: prod-config-volume
-          mountPath: /app/app-config.development.yaml
-          subPath: app-config.development.yaml
         securityContext:
           allowPrivilegeEscalation: false
       securityContext:
@@ -140,9 +135,6 @@ spec:
       - name: main-config-volume
         configMap:
           name: backstage-config
-      - name: prod-config-volume
-        configMap:
-          name: backstage-production-config
 ---
 apiVersion: v1
 kind: Service
