@@ -17,9 +17,15 @@ spec:
         image: postgres:16-alpine
         env:
         - name: POSTGRES_USER
-          value: postgres
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: POSTGRES_USER
         - name: POSTGRES_PASSWORD
-          value: secret
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: POSTGRES_PASSWORD
         - name: PGDATA
           value: /var/lib/postgresql/data/pgdata
         ports:
@@ -72,13 +78,32 @@ spec:
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: "0"
         - name: POSTGRES_HOST
-          value: "backstage-pilot-db-service"
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: POSTGRES_HOST
         - name: POSTGRES_PORT
-          value: "5432"
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: POSTGRES_PORT
         - name: POSTGRES_USER
-          value: "postgres"
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: POSTGRES_USER
         - name: POSTGRES_PASSWORD
-          value: "secret"
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: POSTGRES_PASSWORD
+        # FIXED SECURE BACKEND SYSTEM SECRET ENGINES
+        - name: BACKEND_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: BACKEND_SECRET
+        # SECURE GITHUB API HANDSHAKE INTEGRATIONS
         - name: GITHUB_CLIENT_ID
           valueFrom:
             secretKeyRef:
@@ -90,12 +115,6 @@ spec:
               name: backstage-app-config
               key: GITHUB_CLIENT_SECRET
         - name: GITHUB_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: GITHUB_TOKEN
-        # 🎯 AUTOMATION KEY REFERENCE INJECTED SECURELY
-        - name: BACKSTAGE_SECRET
           valueFrom:
             secretKeyRef:
               name: backstage-app-config
