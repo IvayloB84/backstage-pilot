@@ -6,12 +6,13 @@ import { navModule } from './modules/nav';
 
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { SignInPageBlueprint } from '@backstage/plugin-app-react';
-import { SignInPage } from '@backstage/core-components';
+import { SignInPage, Button } from '@backstage/core-components';
 import { createFrontendModule } from '@backstage/frontend-plugin-api';
-import { EntityContentBlueprint } from '@backstage/plugin-catalog-react/alpha';
+import { EntityContentBlueprint, EntityCardBlueprint } from '@backstage/plugin-catalog-react/alpha';
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
+import { useEntity } from '@backstage/plugin-catalog-react';
 
-// 🚀 THE ROADIE NEW FRONTEND SYSTEM IMPORT
+// THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
 const signInPageModule = SignInPageBlueprint.make({
@@ -33,20 +34,58 @@ const signInPageModule = SignInPageBlueprint.make({
   },
 });
 
-// 🛠️ Custom Kubernetes Layout Module (10000ms custom poll speed configuration)
+// Custom Kubernetes Layout Module (10000ms custom poll speed configuration)
 const kubernetesExtension = EntityContentBlueprint.make({
   name: 'kubernetes',
   params: {
-    title: 'Kubernetes',                            // ✨ Aligned Key
-    path: '/kubernetes',                            // ✨ Aligned Key
+    title: 'Kubernetes',                            
+    path: '/kubernetes',                            
     filter: 'kind:component',
     loader: async () => <EntityKubernetesContent refreshIntervalMs={10000} />,
   },
 });
 
+// React UI Component for the Danger Zone Button
+const DangerZoneButton = () => {
+  const { entity } = useEntity();
+  
+  const queryParams = new URLSearchParams({
+    formData: JSON.stringify({
+      repoName: entity?.metadata?.name || '',
+      repoOwner: 'IvayloB84',
+      isAutomated: true
+    })
+  }).toString();
+
+  const targetUrl = `/create/templates/default/deactivate-component-template?${queryParams}`;
+
+  return (
+    <Button
+      variant="contained"
+      color="secondary"
+      to={targetUrl}
+      style={{ backgroundColor: '#d32f2f', color: '#fff', marginTop: '16px', width: '100%' }}
+    >
+      Request Deactivate Component
+    </Button>
+  );
+};
+
+// Platform Infrastructure Deactivation Shortcut Card Extension Fix
+const dangerZoneCardExtension = EntityCardBlueprint.make({
+  name: 'danger-zone-sidebar-card',
+  params: {
+    filter: 'kind:component',
+    loader: async () => <DangerZoneButton />,
+  },
+});
+
 const kubernetesCatalogTabModule = createFrontendModule({
   pluginId: 'catalog',
-  extensions: [kubernetesExtension],
+  extensions: [
+    kubernetesExtension,
+    dangerZoneCardExtension, 
+  ],
 });
 
 export default createApp({
@@ -56,10 +95,10 @@ export default createApp({
     userSettingsPlugin,
     navModule,
     
-    // 🎯 Registers exactly ONE custom fast-refresh Kubernetes tab
+    // Registers custom catalog view components via a single NFS module
     kubernetesCatalogTabModule, 
     
-    // 🤖 Loads the native Roadie ArgoCD Plugin Extension
+    // Loads the native Roadie ArgoCD Plugin Extension
     argoCdPlugin,
 
     createFrontendModule({
