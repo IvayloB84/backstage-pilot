@@ -45,39 +45,56 @@ const kubernetesExtension = EntityContentBlueprint.make({
   },
 });
 
-// Platform Infrastructure Deactivation Shortcut Card Extension
+// Platform Infrastructure Deactivation Shortcut Card Extension Fix
 const dangerZoneCardExtension = EntityCardBlueprint.make({
   name: 'danger-zone-sidebar-card',
   params: {
-    filter: 'kind:component',
+    // FIX: Using a predicate function instead of a string to satisfy New Frontend System requirements
+    filter: entity => entity.kind.toLowerCase() === 'component',
     loader: async () => {
       const DangerZoneButton = () => {
         const { entity } = useEntity();
         
-        const handleRedirect = (e: React.MouseEvent) => {
+        const handleRedirect = (e: React.MouseEvent<HTMLButtonElement>) => {
           e.preventDefault();
           
+          if (!entity?.metadata?.name) {
+            console.error('Backstage Context Error: Entity metadata name is missing.');
+            return;
+          }
+
           const queryParams = new URLSearchParams({
             formData: JSON.stringify({
-              repoName: entity?.metadata?.name || '',
+              repoName: entity.metadata.name,
               repoOwner: 'IvayloB84',
             })
           }).toString();
 
-          // Standard location mapping pushes the parameters safely past the SPA router limits
-          window.location.assign(`/create/templates/default/deactivate-component-template?${queryParams}`);
+          // Native execution completely forces parameters past the layout cache limits
+          window.location.href = `/create/templates/default/deactivate-component-template?${queryParams}`;
         };
 
         return (
-          <Button
-            variant="contained"
-            color="secondary"
-            to="" // Added to satisfy Backstage's strict Link TypeScript constraint
+          <button
+            type="button"
             onClick={handleRedirect}
-            style={{ backgroundColor: '#d32f2f', color: '#fff', marginTop: '16px', width: '100%' }}
+            style={{
+              backgroundColor: '#d32f2f',
+              color: '#fff',
+              marginTop: '16px',
+              width: '100%',
+              padding: '10px 16px',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: 500,
+              fontSize: '0.875rem',
+              textTransform: 'uppercase',
+              boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)'
+            }}
           >
             Request Deactivate Component
-          </Button>
+          </button>
         );
       };
       return <DangerZoneButton />;
