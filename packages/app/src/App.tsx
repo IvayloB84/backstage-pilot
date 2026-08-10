@@ -54,7 +54,7 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
       const DangerZoneButton = () => {
         const { entity } = useEntity();
         
-        // Backstage form initialization handles mapping using the 'formData' root parameter
+        // Encode the component data inside the standardized formData container
         const queryParams = new URLSearchParams({
           formData: JSON.stringify({
             repoName: entity?.metadata?.name || '',
@@ -62,7 +62,8 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
           })
         }).toString();
 
-        const targetUrl = `/create/templates/default/deactivate-component-template?${queryParams}`;
+        // Appends the UI freeze directly onto the query path so step 1 processes the lock instantly
+        const targetUrl = `/create/templates/default/deactivate-component-template?${queryParams}&uiSchema={"repoName":{"ui:disabled":true}}`;
 
         return (
           <Button
