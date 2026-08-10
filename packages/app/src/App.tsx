@@ -54,21 +54,26 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
       const DangerZoneButton = () => {
         const { entity } = useEntity();
         
-        // Wrap parameters inside the standard formData container object
-        const queryParams = new URLSearchParams({
-          formData: JSON.stringify({
-            repoName: entity?.metadata?.name || '',
-            repoOwner: 'IvayloB84',
-          })
-        }).toString();
+        const handleRedirect = (e: React.MouseEvent) => {
+          e.preventDefault();
+          
+          const queryParams = new URLSearchParams({
+            formData: JSON.stringify({
+              repoName: entity?.metadata?.name || '',
+              repoOwner: 'IvayloB84',
+            })
+          }).toString();
 
-        const targetUrl = `/create/templates/default/deactivate-component-template?${queryParams}`;
+          // Standard location mapping pushes the parameters safely past the SPA router limits
+          window.location.assign(`/create/templates/default/deactivate-component-template?${queryParams}`);
+        };
 
         return (
           <Button
             variant="contained"
             color="secondary"
-            to={targetUrl}
+            to="" // Added to satisfy Backstage's strict Link TypeScript constraint
+            onClick={handleRedirect}
             style={{ backgroundColor: '#d32f2f', color: '#fff', marginTop: '16px', width: '100%' }}
           >
             Request Deactivate Component
