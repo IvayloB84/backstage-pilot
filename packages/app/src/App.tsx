@@ -11,6 +11,7 @@ import { createFrontendModule } from '@backstage/frontend-plugin-api';
 import { EntityContentBlueprint, EntityCardBlueprint } from '@backstage/plugin-catalog-react/alpha';
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
 import { useEntity } from '@backstage/plugin-catalog-react';
+import { useNavigate } from 'react-router-dom';
 
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
@@ -49,7 +50,6 @@ const kubernetesExtension = EntityContentBlueprint.make({
 const dangerZoneCardExtension = EntityCardBlueprint.make({
   name: 'danger-zone-sidebar-card',
   params: {
-    // FIX: Using a predicate function instead of a string to satisfy New Frontend System requirements
     filter: entity => entity.kind.toLowerCase() === 'component',
     loader: async () => {
       const DangerZoneButton = () => {
@@ -58,11 +58,9 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
         const handleRedirect = (e: React.MouseEvent<HTMLButtonElement>) => {
           e.preventDefault();
           
-          if (!entity?.metadata?.name) {
-            console.error('Backstage Context Error: Entity metadata name is missing.');
-            return;
-          }
+          if (!entity?.metadata?.name) return;
 
+          // Native 1.52 / Roadie safe pattern: Serialize query string parameter manually
           const queryParams = new URLSearchParams({
             formData: JSON.stringify({
               repoName: entity.metadata.name,
@@ -70,7 +68,6 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
             })
           }).toString();
 
-          // Native execution completely forces parameters past the layout cache limits
           window.location.href = `/create/templates/default/deactivate-component-template?${queryParams}`;
         };
 
@@ -101,7 +98,6 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
     },
   },
 });
-
 
 const kubernetesCatalogTabModule = createFrontendModule({
   pluginId: 'catalog',
