@@ -54,7 +54,7 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
       const DangerZoneButton = () => {
         const { entity } = useEntity();
         
-        // Pass the metadata using standard formData query injection
+        // Backstage form initialization handles mapping using the 'formData' root parameter
         const queryParams = new URLSearchParams({
           formData: JSON.stringify({
             repoName: entity?.metadata?.name || '',
@@ -79,7 +79,6 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
     },
   },
 });
-
 
 const kubernetesCatalogTabModule = createFrontendModule({
   pluginId: 'catalog',
