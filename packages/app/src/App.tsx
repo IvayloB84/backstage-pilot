@@ -46,7 +46,7 @@ const kubernetesExtension = EntityContentBlueprint.make({
   },
 });
 
-// Platform Infrastructure Deactivation Shortcut Card Extension
+// Platform Infrastructure Deactivation Shortcut Card Extension Fix
 const dangerZoneCardExtension = EntityCardBlueprint.make({
   name: 'danger-zone-sidebar-card',
   params: {
@@ -54,22 +54,44 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
     loader: async () => {
       const DangerZoneButton = () => {
         const { entity } = useEntity();
-        const targetUrl = `/create/templates/default/deactivate-component-template?template_args=${encodeURIComponent(
-          JSON.stringify({
-            targetRepoName: entity?.metadata?.name || '', // Changed to targetRepoName
-            repoOwner: 'IvayloB84',
-          })
-        )}`;
+        
+        const handleRedirect = (e: React.MouseEvent<HTMLButtonElement>) => {
+          e.preventDefault();
+          
+          if (!entity?.metadata?.name) return;
+
+          // Native 1.52 / Roadie safe pattern: Serialize query string parameter manually
+          const queryParams = new URLSearchParams({
+            formData: JSON.stringify({
+              repoName: entity.metadata.name,
+              repoOwner: 'IvayloB84',
+            })
+          }).toString();
+
+          window.location.href = `/create/templates/default/deactivate-component-template?${queryParams}`;
+        };
 
         return (
-          <Button
-            variant="contained"
-            color="secondary"
-            to={targetUrl}
-            style={{ backgroundColor: '#d32f2f', color: '#fff', marginTop: '16px' }}
+          <button
+            type="button"
+            onClick={handleRedirect}
+            style={{
+              backgroundColor: '#d32f2f',
+              color: '#fff',
+              marginTop: '16px',
+              width: '100%',
+              padding: '10px 16px',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: 500,
+              fontSize: '0.875rem',
+              textTransform: 'uppercase',
+              boxShadow: '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)'
+            }}
           >
             Request Deactivate Component
-          </Button>
+          </button>
         );
       };
       return <DangerZoneButton />;
