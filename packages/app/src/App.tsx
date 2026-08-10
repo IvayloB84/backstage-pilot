@@ -54,11 +54,12 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
       const DangerZoneButton = () => {
         const { entity } = useEntity();
         
-        // Target parameters must be wrapped inside the formData container object
+        // Construct the query parameters using standard formData stringified JSON
         const queryParams = new URLSearchParams({
           formData: JSON.stringify({
             repoName: entity?.metadata?.name || '',
             repoOwner: 'IvayloB84',
+            isAutomated: true // The critical hidden key that switches the layout step
           })
         }).toString();
 
