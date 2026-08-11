@@ -18,7 +18,7 @@ spec:
         image: node:alpine
         command: ["sh", "-c"]
         args:
-        - "npx smee-client --url https://smee.io/vVvKlKpQsKv5zv0W --target https://172.17.0.1:8443/api/webhook"
+        - "npx smee-client --url https://smee.io/vVvKlKpQsKv5zv0W --target https://argocd-server.argocd.svc.cluster.local/api/webhook"
         env:
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: "0"
