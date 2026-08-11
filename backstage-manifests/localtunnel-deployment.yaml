@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: localtunnel-webhook-proxy
+  namespace: argocd
+  labels:
+    app: localtunnel-webhook-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: localtunnel-webhook-proxy
+  template:
+    metadata:
+      labels:
+        app: localtunnel-webhook-proxy
+    spec:
+      containers:
+      - name: localtunnel
+        image: boro/localtunnel-client:latest
+        args:
+        - "--host"
+        - "https://localtunnel.me"
+        - "--port"
+        - "8443"
+        - "--subdomain"
+        - "argocd-on-k8s-with-backstage-theone"
+        - "--local-host"
+        - "argocd-server.argocd.svc.cluster.local"
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "128Mi"
+          requests:
+            cpu: "50m"
+            memory: "64Mi"
+
