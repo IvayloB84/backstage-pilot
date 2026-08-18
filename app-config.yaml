@@ -61,6 +61,16 @@ argocd:
           secure: false
 
 catalog:
+  providers:
+    keycloakOrg:
+      default:
+        baseUrl: http://localhost:8585
+        realm: test-realm
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
   import:
     entityFilename: catalog-info.yaml
   rules:
@@ -85,6 +95,11 @@ auth:
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
+    oidc:
+      development:
+        metadataUrl: http://localhost:8585/realms/test-realm/.well-known/openid-configuration
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
 
 integrations:
   github:

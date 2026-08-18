@@ -4,17 +4,62 @@ import scaffolderPlugin from '@backstage/plugin-scaffolder/alpha';
 import userSettingsPlugin from '@backstage/plugin-user-settings/alpha';
 import { navModule } from './modules/nav';
 
-import { githubAuthApiRef } from '@backstage/core-plugin-api';
+import {
+  githubAuthApiRef,
+  OpenIdConnectApi,
+  ProfileInfoApi,
+  BackstageIdentityApi,
+  SessionApi,
+} from '@backstage/core-plugin-api';
+import { OAuth2 } from '@backstage/core-app-api';
 import { SignInPageBlueprint } from '@backstage/plugin-app-react';
-import { SignInPage, Button } from '@backstage/core-components';
-import { createFrontendModule } from '@backstage/frontend-plugin-api';
+import { SignInPage } from '@backstage/core-components';
+import {
+  createApiRef,
+  createFrontendModule,
+  configApiRef,
+  discoveryApiRef,
+  oauthRequestApiRef,
+  ApiBlueprint,
+} from '@backstage/frontend-plugin-api';
 import { EntityContentBlueprint, EntityCardBlueprint } from '@backstage/plugin-catalog-react/alpha';
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { useNavigate } from 'react-router-dom';
 
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
+
+const keycloakAuthApiRef = createApiRef<
+  OpenIdConnectApi & ProfileInfoApi & BackstageIdentityApi & SessionApi
+>().with({
+  id: 'auth.keycloak',
+});
+
+const keycloakAuthApi = ApiBlueprint.make({
+  name: 'keycloak',
+  params: defineParams =>
+    defineParams({
+      api: keycloakAuthApiRef,
+      deps: {
+        discoveryApi: discoveryApiRef,
+        oauthRequestApi: oauthRequestApiRef,
+        configApi: configApiRef,
+      },
+      factory: ({ discoveryApi, oauthRequestApi, configApi }) =>
+        OAuth2.create({
+          configApi,
+          discoveryApi,
+          oauthRequestApi,
+          environment: configApi.getOptionalString('auth.environment'),
+          provider: {
+            id: 'oidc',
+            title: 'Keycloak',
+            icon: () => null,
+          },
+          defaultScopes: ['openid', 'profile', 'email'],
+        }),
+    }),
+});
 
 const signInPageModule = SignInPageBlueprint.make({
   params: {
@@ -23,6 +68,12 @@ const signInPageModule = SignInPageBlueprint.make({
         {...props}
         title="Backstage Pilot Login"
         providers={[
+          {
+            id: 'oidc',
+            title: 'Keycloak',
+            message: 'Sign in using your Keycloak account',
+            apiRef: keycloakAuthApiRef,
+          },
           {
             id: 'github-auth-provider',
             title: 'GitHub',
@@ -122,7 +173,7 @@ export default createApp({
 
     createFrontendModule({
       pluginId: 'app',
-      extensions: [signInPageModule],
+      extensions: [keycloakAuthApi, signInPageModule],
     }),
   ],
 });

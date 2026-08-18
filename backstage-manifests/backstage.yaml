@@ -117,6 +117,16 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: GITHUB_TOKEN
+        - name: AUTH_OIDC_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: AUTH_OIDC_CLIENT_ID
+        - name: AUTH_OIDC_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: AUTH_OIDC_CLIENT_SECRET
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
