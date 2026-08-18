@@ -86,7 +86,7 @@ catalog:
 auth:
   environment: development
   session:
-    secret: "a-secure-32-character-long-session-key-string"
+    secret: ${AUTH_OIDC_CLIENT_KEY}
   providers:
     guest:
       dangerouslyAllowUnauthenticatedGuests: true
@@ -103,8 +103,8 @@ auth:
         clientId: ${AUTH_OIDC_CLIENT_ID}
         clientSecret: ${AUTH_OIDC_CLIENT_SECRET}
 
-        tokenEndpoint: http://172.17.0.1:8585
-        userinfoEndpoint: http://172.17.0.1:8585
+        authorizationUrl: http://localhost:8585/realms/test-realm/protocol/openid-connect/auth
+        tokenUrl: http://172.17.0.1:8585
 
         cookie:
           secure: false
