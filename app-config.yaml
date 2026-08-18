@@ -104,7 +104,7 @@ auth:
         clientSecret: ${AUTH_OIDC_CLIENT_SECRET}
 
         authorizationUrl: http://localhost:8585/realms/test-realm/protocol/openid-connect/auth
-        tokenUrl: http://172.17.0.1:8585
+        tokenUrl: http://172.17.0.1:8585/realms/test-realm/protocol/openid-connect/token
 
         cookie:
           secure: false
