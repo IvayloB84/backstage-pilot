@@ -106,6 +106,10 @@ auth:
         tokenEndpoint: http://172.17.0.1:8585
         userinfoEndpoint: http://172.17.0.1:8585
 
+        cookie:
+          secure: false
+          sameSite: lax
+
 integrations:
   github:
     - host: github.com
