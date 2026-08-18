@@ -66,8 +66,8 @@ catalog:
       default:
         baseUrl: http://172.17.0.1:8585
         realm: test-realm
-        clientId: ${KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        clientId: ${AUTH_OIDC_CLIENT_ID}
+        clientSecret: ${AUTH_OIDC_CLIENT_SECRET}
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 3 }
@@ -98,11 +98,11 @@ auth:
     oidc:
       development:
         metadataUrl: http://localhost:8585/realms/test-realm/.well-known/openid-configuration
-        clientId: ${KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        clientId: ${AUTH_OIDC_CLIENT_ID}
+        clientSecret: ${AUTH_OIDC_CLIENT_SECRET}
 
-        tokenEndpoint: http://172.17.0.1:7007
-        userinfoEndpoint: http://172.17.0.1:7007
+        tokenEndpoint: http://172.17.0.1:8585
+        userinfoEndpoint: http://172.17.0.1:8585
 
 integrations:
   github:
