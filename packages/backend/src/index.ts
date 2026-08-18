@@ -24,15 +24,8 @@ const customOidcAuthModule = createBackendModule({
           factory: createOAuthProviderFactory({
             authenticator: oidcAuthenticator,
             async signInResolver(info, ctx) { 
-              // Cast or access via type-safe fallback strings
-              const profile = info.result.fullProfile as any;
-              
-              // Keycloak populates preferred_username inside userinfo or _json
-              const username = profile.userinfo?.preferred_username 
-                || profile._json?.preferred_username 
-                || profile.username 
-                || profile.id 
-                || '';
+              const userinfo = info.result.fullProfile.userinfo;
+              const username = userinfo.preferred_username || userinfo.sub || '';
 
               if (!username) {
                 throw new Error('User identity could not be parsed from OIDC token payload');
@@ -41,7 +34,7 @@ const customOidcAuthModule = createBackendModule({
               return ctx.signInWithCatalogUser({
                 entityRef: {
                   kind: 'User',
-                  name: username.toLowerCase(),
+                  name: username,
                 },
               });
             },
