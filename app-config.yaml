@@ -85,6 +85,8 @@ catalog:
 
 auth:
   environment: development
+  session:
+    secret: "a-secure-32-character-long-session-key-string"
   providers:
     guest:
       dangerouslyAllowUnauthenticatedGuests: true
