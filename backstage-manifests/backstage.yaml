@@ -117,40 +117,34 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: GITHUB_TOKEN
-        
-        # --- FIXED & UNIFIED KEYCLOAK ENVIRONMENT BLOCK ---
+              
+        # --- KEYCLOAK MAPPINGS (MATCHING YOUR 6 CLEAN .ENV KEYS) ---
         - name: KEYCLOAK_CLIENT_ID
           valueFrom:
             secretKeyRef:
               name: backstage-app-config
               key: KEYCLOAK_CLIENT_ID
-        - name: KEYCLOAK_METADATA_URL
-          value: "http://keycloak-service.default.svc.cluster.local:8082/realms/master/.well-known/openid-configuration"
         - name: KEYCLOAK_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
               name: backstage-app-config
               key: KEYCLOAK_CLIENT_SECRET
-
-        # --- BRIDGED AUTH MODULE MAPPINGS (FROM YOUR LOCAL .ENV MAPPINGS) ---
+        - name: KEYCLOAK_METADATA_URL
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: KEYCLOAK_METADATA_URL
         - name: AUTH_KEYCLOAK_CLIENT_ID
           valueFrom:
             secretKeyRef:
               name: backstage-app-config
-              key: KEYCLOAK_CLIENT_ID
+              key: AUTH_KEYCLOAK_CLIENT_ID
         - name: AUTH_KEYCLOAK_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
               name: backstage-app-config
-              key: KEYCLOAK_CLIENT_SECRET
+              key: AUTH_KEYCLOAK_CLIENT_SECRET
         - name: AUTH_KEYCLOAK_REALM
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: AUTH_KEYCLOAK_REALM
-
-        # --- BRIDGED CATALOG PROVIDER REALM ALIAS ---
-        - name: KEYCLOAK_REALM
           valueFrom:
             secretKeyRef:
               name: backstage-app-config

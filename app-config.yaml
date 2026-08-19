@@ -77,14 +77,15 @@ catalog:
   providers:
     keycloakOrg:
       default:
+        # Internal cluster endpoint line
         baseUrl: http://keycloak-service.default.svc.cluster.local:8082
-        loginRealm: ${KEYCLOAK_REALM}
-        realm: ${KEYCLOAK_REALM}
+        loginRealm: ${AUTH_KEYCLOAK_REALM}
+        realm: ${AUTH_KEYCLOAK_REALM}
         clientId: ${AUTH_KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        clientSecret: ${AUTH_KEYCLOAK_CLIENT_SECRET}
         schedule:
-        frequency: { minutes: 30 }
-        timeout: { minutes: 3 }
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
 
 auth:
   environment: development
@@ -98,13 +99,17 @@ auth:
             - resolver: usernameMatchingUserEntityName
     keycloak:
       development:
-        clientId: ${AUTH_KEYCLOAK_CLIENT_ID}
-        clientSecret: ${AUTH_KEYCLOAK_CLIENT_SECRET}
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         baseUrl: http://keycloak-service.default.svc.cluster.local:8082
         realm: ${AUTH_KEYCLOAK_REALM}
+        
+        # --- VERIFIED REDIRECT PATHS USING YOUR EXACT VARIABLES ---
+        loginUrl: http://localhost:8082/realms/${AUTH_KEYCLOAK_REALM}/protocol/openid-connect/auth
+        tokenUrl: http://cluster.local{AUTH_KEYCLOAK_REALM}/protocol/openid-connect/token
+        
         signIn:
           resolvers:
-            # See the module documentation for more resolvers
             - resolver: preferredUsernameMatchingUserEntityName
 
 integrations:
