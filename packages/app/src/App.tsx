@@ -6,7 +6,6 @@ import { navModule } from './modules/nav';
 
 import {
   githubAuthApiRef,
-  OpenIdConnectApi,
   ProfileInfoApi,
   BackstageIdentityApi,
   SessionApi,
@@ -29,9 +28,9 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
-// --- KEYCLOAK OIDC CUSTOM API REFERENCE DEFINITION ---
+// --- FIXED: KEYCLOAK NATIVE OAUTH2 API REFERENCE DEFINITION ---
 const keycloakAuthApiRef = createApiRef().with({
-  id: 'auth.keycloak',
+  id: 'auth.oauth2', // FIXED: Aligns perfectly with the stateless backend provider key
 });
 
 const keycloakAuthApi = ApiBlueprint.make({
@@ -51,7 +50,7 @@ const keycloakAuthApi = ApiBlueprint.make({
           oauthRequestApi,
           environment: configApi.getOptionalString('auth.environment'),
           provider: {
-            id: 'oidc',
+            id: 'oauth2', // FIXED: Instructs framework to map to auth.providers.oauth2 blocks
             title: 'Keycloak',
             icon: () => null,
           },
@@ -72,14 +71,13 @@ const signInPageModule = SignInPageBlueprint.make({
             id: 'guest',
             title: 'Guest Login',
             message: 'Sign in using a developer guest session',
-            // Explicitly cast to satisfy UI collection type requirements
             apiRef: createApiRef<SessionApi>({ id: 'auth.guest' }) as any,
           },
           {
-            id: 'oidc',
+            id: 'oauth2', // FIXED: Forces the frontend interface to trigger the /api/auth/oauth2/ endpoints
             title: 'Keycloak',
             message: 'Sign in using your Keycloak account',
-            apiRef: keycloakAuthApiRef,
+            apiRef: keycloakAuthApiRef, // FIXED: Binds the custom configured API factory to your UI card component
           },
           {
             id: 'github-auth-provider',
@@ -118,7 +116,6 @@ const dangerZoneCardExtension = EntityCardBlueprint.make({
           
           if (!entity?.metadata?.name) return;
 
-          // Native 1.52 / Roadie safe pattern: Serialize query string parameter manually
           const queryParams = new URLSearchParams({
             formData: JSON.stringify({
               repoName: entity.metadata.name,
