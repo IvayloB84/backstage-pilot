@@ -64,12 +64,12 @@ const signInPageModule = SignInPageBlueprint.make({
         {...props}
         title="Backstage Pilot Login"
         providers={[
-          {
-            id: 'guest',
-            title: 'Guest Login',
-            message: 'Sign in using a developer guest session',
-            apiRef: createApiRef({ id: 'auth.guest' }) as any,
-          },
+          // {
+          //   id: 'guest',
+          //   title: 'Guest Login',
+          //   message: 'Sign in using a developer guest session',
+          //   apiRef: createApiRef({ id: 'auth.guest' }) as any,
+          // },
           {
             id: 'oauth2', 
             title: 'Keycloak',

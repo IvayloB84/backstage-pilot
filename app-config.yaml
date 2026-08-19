@@ -95,8 +95,8 @@ catalog:
 auth:
   environment: development
   providers:
-    guest:
-      dangerouslyAllowUnauthenticatedGuests: true
+    # guest:
+    #   dangerouslyAllowUnauthenticatedGuests: true
     github:
       development:
         clientId: ${GITHUB_CLIENT_ID}
