@@ -81,8 +81,8 @@ catalog:
         baseUrl: http://keycloak-service.default.svc.cluster.local:8082
         loginRealm: ${AUTH_KEYCLOAK_REALM}
         realm: ${AUTH_KEYCLOAK_REALM}
-        clientId: ${AUTH_KEYCLOAK_CLIENT_ID}
-        clientSecret: ${AUTH_KEYCLOAK_CLIENT_SECRET}
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 3 }
@@ -101,12 +101,13 @@ auth:
       development:
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        # Root cluster endpoint tracking target
         baseUrl: http://keycloak-service.default.svc.cluster.local:8082
         realm: ${AUTH_KEYCLOAK_REALM}
         
-        # --- VERIFIED REDIRECT PATHS USING YOUR EXACT VARIABLES ---
+        # --- FIXED: FULL EXPLICIT REDIRECT SUFFIX URLS ---
         loginUrl: http://localhost:8082/realms/${AUTH_KEYCLOAK_REALM}/protocol/openid-connect/auth
-        tokenUrl: http://cluster.local{AUTH_KEYCLOAK_REALM}/protocol/openid-connect/token
+        tokenUrl: http://keycloak-service.default.svc.cluster.local:8082/realms/${AUTH_KEYCLOAK_REALM}/protocol/openid-connect/token
         
         signIn:
           resolvers:
