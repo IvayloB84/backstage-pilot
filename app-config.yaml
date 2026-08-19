@@ -45,6 +45,7 @@ proxy:
       secure: false
       allowedMethods: [GET, POST, PUT, DELETE, OPTIONS]
       allowedHeaders: [Authorization, Cookie]
+      dangerouslyAllowUnauthenticated: true
 
 kubernetes:
   serviceLocatorMethod:
