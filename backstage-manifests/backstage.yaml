@@ -120,7 +120,10 @@ spec:
         
         # --- FIXED & UNIFIED KEYCLOAK ENVIRONMENT BLOCK ---
         - name: KEYCLOAK_CLIENT_ID
-          value: "backstage"
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: KEYCLOAK_CLIENT_ID
         - name: KEYCLOAK_METADATA_URL
           value: "http://keycloak-service.default.svc.cluster.local:8082/realms/master/.well-known/openid-configuration"
         - name: KEYCLOAK_CLIENT_SECRET
@@ -128,6 +131,30 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: KEYCLOAK_CLIENT_SECRET
+
+        # --- BRIDGED AUTH MODULE MAPPINGS (FROM YOUR LOCAL .ENV MAPPINGS) ---
+        - name: AUTH_KEYCLOAK_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: KEYCLOAK_CLIENT_ID
+        - name: AUTH_KEYCLOAK_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: KEYCLOAK_CLIENT_SECRET
+        - name: AUTH_KEYCLOAK_REALM
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: AUTH_KEYCLOAK_REALM
+
+        # --- BRIDGED CATALOG PROVIDER REALM ALIAS ---
+        - name: KEYCLOAK_REALM
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: AUTH_KEYCLOAK_REALM
               
         volumeMounts:
         - name: catalog-files-volume
