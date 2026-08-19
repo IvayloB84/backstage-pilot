@@ -25,9 +25,9 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
-// --- KEYCLOAK NATIVE OAUTH2 API REFERENCE DEFINITION ---
+// --- KEYCLOAK GENUINE COMMUNITY AUTH CONFIGURATION BLOCK ---
 const keycloakAuthApiRef = createApiRef<any>({
-  id: 'auth.oauth2', 
+  id: 'auth.keycloak', // Matches 'auth.providers.keycloak' backend configuration
 });
 
 const keycloakAuthApi = ApiBlueprint.make({
@@ -47,7 +47,7 @@ const keycloakAuthApi = ApiBlueprint.make({
           oauthRequestApi,
           environment: configApi.getOptionalString('auth.environment'),
           provider: {
-            id: 'oauth2', 
+            id: 'keycloak', // Directs frontend to match backend's native keycloak node
             title: 'Keycloak',
             icon: () => null,
           },
@@ -64,14 +64,8 @@ const signInPageModule = SignInPageBlueprint.make({
         {...props}
         title="Backstage Pilot Login"
         providers={[
-          // {
-          //   id: 'guest',
-          //   title: 'Guest Login',
-          //   message: 'Sign in using a developer guest session',
-          //   apiRef: createApiRef({ id: 'auth.guest' }) as any,
-          // },
           {
-            id: 'oauth2', 
+            id: 'keycloak', // Targets '/api/auth/keycloak/start' pipeline endpoint directly
             title: 'Keycloak',
             message: 'Sign in using your Keycloak account',
             apiRef: keycloakAuthApiRef as any, 
