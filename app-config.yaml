@@ -87,9 +87,7 @@ catalog:
     keycloakOrg:
       default:
         baseUrl: http://keycloak-service.default.svc.cluster.local:8082
-        loginRealm: master
-        realm: master
-        clientId: backstage
+        clientId: ${AUTH_KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
 
 auth:
@@ -102,13 +100,23 @@ auth:
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
-    oauth2:
+    keycloak:
       development:
-        clientId: ${KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        # Point this straight to your master authorization realm endpoint
-        authorizationUrl: http://localhost:7007/api/proxy/keycloak/realms/master/protocol/openid-connect/auth
-        tokenUrl: http://keycloak-service.default.svc.cluster.local:8082/realms/master/protocol/openid-connect/token
+        clientId: ${AUTH_KEYCLOAK_CLIENT_ID}
+        clientSecret: ${AUTH_KEYCLOAK_CLIENT_SECRET}
+        baseUrl: http://keycloak-service.default.svc.cluster.local:8082
+        realm: ${AUTH_KEYCLOAK_REALM}
+        signIn:
+          resolvers:
+            # See the module documentation for more resolvers
+            - resolver: preferredUsernameMatchingUserEntityName
+    # oauth2:
+    #   development:
+    #     clientId: ${KEYCLOAK_CLIENT_ID}
+    #     clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+    #     # Point this straight to your master authorization realm endpoint
+    #     authorizationUrl: http://localhost:7007/api/proxy/keycloak/realms/master/protocol/openid-connect/auth
+    #     tokenUrl: http://keycloak-service.default.svc.cluster.local:8082/realms/master/protocol/openid-connect/token
 
 integrations:
   github:

@@ -73,7 +73,9 @@ backend.add(import('@backstage/plugin-techdocs-backend'));
 
 // --- CORE SECURITY IDENTITY PROVIDERS ---
 backend.add(import('@backstage/plugin-auth-backend'));
+backend.add(import('@backstage-community/plugin-auth-backend-module-keycloak-provider'));
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
+
 
 // --- CATALOG MECHANICS & ADVANCED SCHEMAS ---
 backend.add(import('@backstage/plugin-catalog-backend'));

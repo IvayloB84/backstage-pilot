@@ -1237,35 +1237,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:0.4.0"
+"@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:0.5.0"
   dependencies:
-    "@backstage/backend-plugin-api": "npm:^1.9.2"
-    "@backstage/plugin-auth-node": "npm:^0.7.2"
+    "@backstage/backend-plugin-api": "npm:^1.9.3"
+    "@backstage/plugin-auth-node": "npm:^0.7.3"
     jose: "npm:^5.0.0"
     openid-client: "npm:^5.6.5"
     zod: "npm:^3.25.76 || ^4.0.0"
-  checksum: 10c0/dd69d7ad2f7a23ebdd4b441d788c5ba4825437288aef1a2ed0f1008e2d8855a352649dcc441d0d62abe62171c41f2a05e01c07786fcc261c90e316794b720980
+  checksum: 10c0/6666c5799eb79f991c18578986f392dfba9e07f5d1718f0d1e32f4d5504ebfbc5b20bae5a6e8e424fe5b1937b735e6fb8a1b90d0d4c2ffab7a384d0be35420b9
   languageName: node
   linkType: hard
 
-"@backstage-community/plugin-catalog-backend-module-keycloak@npm:^3.21.0":
-  version: 3.21.0
-  resolution: "@backstage-community/plugin-catalog-backend-module-keycloak@npm:3.21.0"
+"@backstage-community/plugin-catalog-backend-module-keycloak@npm:^3.22.0":
+  version: 3.22.0
+  resolution: "@backstage-community/plugin-catalog-backend-module-keycloak@npm:3.22.0"
   dependencies:
-    "@backstage/backend-plugin-api": "npm:^1.9.2"
+    "@backstage/backend-plugin-api": "npm:^1.9.3"
     "@backstage/catalog-model": "npm:^1.9.0"
     "@backstage/errors": "npm:^1.3.1"
-    "@backstage/plugin-catalog-backend-module-logs": "npm:^0.1.23"
-    "@backstage/plugin-catalog-node": "npm:^2.2.2"
-    "@keycloak/keycloak-admin-client": "npm:26.6.3"
+    "@backstage/plugin-catalog-backend-module-logs": "npm:^0.1.24"
+    "@backstage/plugin-catalog-node": "npm:^2.2.3"
+    "@keycloak/keycloak-admin-client": "npm:26.7.0"
     "@opentelemetry/api": "npm:^1.9.0"
     jsonwebtoken: "npm:^9.0.0"
     lodash: "npm:^4.17.21"
     p-limit: "npm:^6.1.0"
     uuid: "npm:^13.0.0"
-  checksum: 10c0/89a70e50b29ace564acfd3dee623972552bc910147f625cdc13f2ee89a40981ec74170ef7a90eab2366a0c5bb76d38dde7d476b85985d0ba8ea7c7bb0653d6b5
+  checksum: 10c0/ad9a8385341a0ed6d09ae1c3ad88ca9f094e61ac0470768c058ada0981f8ec82f254853cf2e1261fdba75e097a1a4cef25819a0f81e109010d9a80fb88f941cb
   languageName: node
   linkType: hard
 
@@ -1455,7 +1455,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/backend-plugin-api@npm:^1.4.4, @backstage/backend-plugin-api@npm:^1.7.0, @backstage/backend-plugin-api@npm:^1.9.2, @backstage/backend-plugin-api@npm:^1.9.3":
+"@backstage/backend-plugin-api@npm:^1.4.4, @backstage/backend-plugin-api@npm:^1.7.0, @backstage/backend-plugin-api@npm:^1.9.3":
   version: 1.9.3
   resolution: "@backstage/backend-plugin-api@npm:1.9.3"
   dependencies:
@@ -2824,7 +2824,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-auth-node@npm:^0.7.2, @backstage/plugin-auth-node@npm:^0.7.3":
+"@backstage/plugin-auth-node@npm:^0.7.3":
   version: 0.7.3
   resolution: "@backstage/plugin-auth-node@npm:0.7.3"
   dependencies:
@@ -2913,7 +2913,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-catalog-backend-module-logs@npm:^0.1.23, @backstage/plugin-catalog-backend-module-logs@npm:^0.1.24":
+"@backstage/plugin-catalog-backend-module-logs@npm:^0.1.24":
   version: 0.1.24
   resolution: "@backstage/plugin-catalog-backend-module-logs@npm:0.1.24"
   dependencies:
@@ -3062,7 +3062,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-catalog-node@npm:^2.2.2, @backstage/plugin-catalog-node@npm:^2.2.3":
+"@backstage/plugin-catalog-node@npm:^2.2.3":
   version: 2.2.3
   resolution: "@backstage/plugin-catalog-node@npm:2.2.3"
   dependencies:
@@ -6530,19 +6530,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@keycloak/keycloak-admin-client@npm:26.6.3":
-  version: 26.6.3
-  resolution: "@keycloak/keycloak-admin-client@npm:26.6.3"
+"@keycloak/keycloak-admin-client@npm:26.7.0":
+  version: 26.7.0
+  resolution: "@keycloak/keycloak-admin-client@npm:26.7.0"
   dependencies:
-    "@microsoft/kiota-abstractions": "npm:^1.0.0-preview.86"
-    "@microsoft/kiota-http-fetchlibrary": "npm:^1.0.0-preview.80"
-    "@microsoft/kiota-serialization-form": "npm:^1.0.0-preview.74"
-    "@microsoft/kiota-serialization-json": "npm:^1.0.0-preview.86"
-    "@microsoft/kiota-serialization-multipart": "npm:^1.0.0-preview.67"
-    "@microsoft/kiota-serialization-text": "npm:^1.0.0-preview.79"
+    "@microsoft/kiota-abstractions": "npm:1.0.0-preview.103"
+    "@microsoft/kiota-http-fetchlibrary": "npm:1.0.0-preview.103"
+    "@microsoft/kiota-serialization-form": "npm:1.0.0-preview.103"
+    "@microsoft/kiota-serialization-json": "npm:1.0.0-preview.103"
+    "@microsoft/kiota-serialization-multipart": "npm:1.0.0-preview.103"
+    "@microsoft/kiota-serialization-text": "npm:1.0.0-preview.103"
     camelize-ts: "npm:^3.0.0"
     url-template: "npm:^3.1.1"
-  checksum: 10c0/889422e6bb6aff2a8c40a0fb68243e45ec222fae4e6df6d292ce98be199441e1fe8be973d25d2944294ba0a5902b012084d96d6e8e8a1aba0757a6dd7159193f
+  checksum: 10c0/a685b5c10e645297d4e4032606dccec3c8471e5068cc453d34788cff36b9fa82aede224b7ad41f099606ded4f692ca110a5a9403e6656f46a496678c5840f226
   languageName: node
   linkType: hard
 
@@ -6910,7 +6910,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/kiota-abstractions@npm:^1.0.0-preview.103, @microsoft/kiota-abstractions@npm:^1.0.0-preview.86":
+"@microsoft/kiota-abstractions@npm:1.0.0-preview.103, @microsoft/kiota-abstractions@npm:^1.0.0-preview.103":
   version: 1.0.0-preview.103
   resolution: "@microsoft/kiota-abstractions@npm:1.0.0-preview.103"
   dependencies:
@@ -6922,7 +6922,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/kiota-http-fetchlibrary@npm:^1.0.0-preview.80":
+"@microsoft/kiota-http-fetchlibrary@npm:1.0.0-preview.103":
   version: 1.0.0-preview.103
   resolution: "@microsoft/kiota-http-fetchlibrary@npm:1.0.0-preview.103"
   dependencies:
@@ -6933,7 +6933,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/kiota-serialization-form@npm:^1.0.0-preview.74":
+"@microsoft/kiota-serialization-form@npm:1.0.0-preview.103":
   version: 1.0.0-preview.103
   resolution: "@microsoft/kiota-serialization-form@npm:1.0.0-preview.103"
   dependencies:
@@ -6943,7 +6943,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/kiota-serialization-json@npm:^1.0.0-preview.86":
+"@microsoft/kiota-serialization-json@npm:1.0.0-preview.103":
   version: 1.0.0-preview.103
   resolution: "@microsoft/kiota-serialization-json@npm:1.0.0-preview.103"
   dependencies:
@@ -6953,7 +6953,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/kiota-serialization-multipart@npm:^1.0.0-preview.67":
+"@microsoft/kiota-serialization-multipart@npm:1.0.0-preview.103":
   version: 1.0.0-preview.103
   resolution: "@microsoft/kiota-serialization-multipart@npm:1.0.0-preview.103"
   dependencies:
@@ -6963,7 +6963,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/kiota-serialization-text@npm:^1.0.0-preview.79":
+"@microsoft/kiota-serialization-text@npm:1.0.0-preview.103":
   version: 1.0.0-preview.103
   resolution: "@microsoft/kiota-serialization-text@npm:1.0.0-preview.103"
   dependencies:
@@ -13687,8 +13687,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "backend@workspace:packages/backend"
   dependencies:
-    "@backstage-community/plugin-auth-backend-module-keycloak-provider": "npm:^0.4.0"
-    "@backstage-community/plugin-catalog-backend-module-keycloak": "npm:^3.21.0"
+    "@backstage-community/plugin-auth-backend-module-keycloak-provider": "npm:^0.5.0"
+    "@backstage-community/plugin-catalog-backend-module-keycloak": "npm:^3.22.0"
     "@backstage/backend-defaults": "npm:^0.17.5"
     "@backstage/backend-plugin-api": "npm:^1.9.3"
     "@backstage/cli": "npm:^0.36.4"
