@@ -17,9 +17,10 @@ spec:
         app: keycloak
     spec:
       containers:
+# Inside backstage-pilot/backstage-manifests/keycloak-infrastructure.yaml
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.7.2
-          args: ["start-dev"] 
+          args: ["start-dev"]
           env:
             - name: KEYCLOAK_ADMIN
               value: "admin"
@@ -31,6 +32,9 @@ spec:
               value: "true"
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
+            # --- ADD THIS TO FIX THE 503 HANDSHAKE HANG ---
+            - name: JAVA_OPTS_APPEND
+              value: "-Djava.security.egd=file:/dev/./urandom"
 ---
 apiVersion: v1
 kind: Service
