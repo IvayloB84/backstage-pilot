@@ -104,14 +104,13 @@ auth:
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
-    oidc:
+    oauth2:
       development:
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        metadataUrl: ${KEYCLOAK_METADATA_URL}
-        prompt: auto
-        additionalParameters:
-          scope: 'openid profile email'
+        # Point this straight to your master authorization realm endpoint
+        authorizationUrl: http://localhost:7007/api/proxy/keycloak/realms/master/protocol/openid-connect/auth
+        tokenUrl: http://keycloak-service.default.svc.cluster.local:8082/realms/master/protocol/openid-connect/token
 
 integrations:
   github:
