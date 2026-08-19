@@ -113,11 +113,6 @@ auth:
         additionalParameters:
           scope: 'openid profile email'
 
-        signIn:
-          resolvers:
-            - resolver: emailMatchingUserEntityProfileEmail
-            - resolver: usernameMatchingUserEntityAnnotation
-
 integrations:
   github:
     - host: github.com
