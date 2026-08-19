@@ -1,40 +1,24 @@
-# File: backstage-pilot/backstage-manifests/keycloak-infrastructure.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keycloak-server
   namespace: default
-  labels:
-    app: keycloak
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: keycloak
   template:
-    metadata:
-      labels:
-        app: keycloak
     spec:
       containers:
-# Inside backstage-pilot/backstage-manifests/keycloak-infrastructure.yaml
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.7.2
-          args: ["start-dev"]
+          args: ["start-dev", "--http-port=8082"] 
           env:
             - name: KEYCLOAK_ADMIN
               value: "admin"
             - name: KEYCLOAK_ADMIN_PASSWORD
               value: "admin"
-            - name: KC_HTTP_PORT
-              value: "8082"
             - name: KC_HTTP_ENABLED
               value: "true"
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
-            # --- ADD THIS TO FIX THE 503 HANDSHAKE HANG ---
-            - name: JAVA_OPTS_APPEND
-              value: "-Djava.security.egd=file:/dev/./urandom"
 ---
 apiVersion: v1
 kind: Service
