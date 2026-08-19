@@ -61,16 +61,7 @@ argocd:
           secure: false
 
 catalog:
-  providers:
-    keycloakOrg:
-      default:
-        baseUrl: http://172.17.0.1:8585
-        realm: test-realm
-        clientId: ${AUTH_OIDC_CLIENT_ID}
-        clientSecret: ${AUTH_OIDC_CLIENT_SECRET}
-        schedule:
-          frequency: { minutes: 30 }
-          timeout: { minutes: 3 }
+
   import:
     entityFilename: catalog-info.yaml
   rules:
@@ -85,8 +76,6 @@ catalog:
 
 auth:
   environment: development
-  session:
-    secret: ${AUTH_OIDC_CLIENT_KEY}
   providers:
     guest:
       dangerouslyAllowUnauthenticatedGuests: true
@@ -99,16 +88,17 @@ auth:
             - resolver: usernameMatchingUserEntityName
     oidc:
       development:
-        metadataUrl: http://localhost:8585/realms/test-realm/.well-known/openid-configuration
-        clientId: ${AUTH_OIDC_CLIENT_ID}
-        clientSecret: ${AUTH_OIDC_CLIENT_SECRET}
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        metadataUrl: ${KEYCLOAK_METADATA_URL}
+        prompt: auto
+        additionalParameters:
+          scope: 'openid profile email'
 
-        authorizationUrl: http://localhost:8585/realms/test-realm/protocol/openid-connect/auth
-        tokenUrl: http://172.17.0.1:8585/realms/test-realm/protocol/openid-connect/token
-
-        cookie:
-          secure: false
-          sameSite: lax
+        signIn:
+          resolvers:
+            - resolver: emailMatchingUserEntityProfileEmail
+            - resolver: usernameMatchingUserEntityAnnotation
 
 integrations:
   github:

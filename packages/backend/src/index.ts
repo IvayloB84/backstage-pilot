@@ -12,6 +12,7 @@ import { oidcAuthenticator } from '@backstage/plugin-auth-backend-module-oidc-pr
 
 const backend = createBackend();
 
+// --- CUSTOM TYPE-SAFE KEYCLOAK OIDC SERVICE MODULE ---
 const customOidcAuthModule = createBackendModule({
   pluginId: 'auth',
   moduleId: 'custom-oidc-provider',
@@ -24,17 +25,26 @@ const customOidcAuthModule = createBackendModule({
           factory: createOAuthProviderFactory({
             authenticator: oidcAuthenticator,
             async signInResolver(info, ctx) { 
-              const userinfo = info.result.fullProfile.userinfo;
-              const username = userinfo.preferred_username || userinfo.sub || '';
+              // info.result is type OidcAuthResult. Extract its fullProfile safely.
+              const fullProfile = info.result.fullProfile;
+              const userinfo = (fullProfile as any).userinfo || {};
+              
+              // Keycloak v26 sends the account login name in preferred_username or sub
+              const username: string = 
+                userinfo.preferred_username || 
+                userinfo.sub || 
+                (fullProfile as any).username || 
+                '';
 
               if (!username) {
-                throw new Error('User identity could not be parsed from OIDC token payload');
+                throw new Error('User identity could not be parsed from Keycloak OIDC token payload');
               }
 
+              // Resolves and maps the identity seamlessly inside your platform Catalog
               return ctx.signInWithCatalogUser({
                 entityRef: {
                   kind: 'User',
-                  name: username,
+                  name: username.toLowerCase(), // Catalog entity names must always be lowercase
                 },
               });
             },
@@ -48,57 +58,49 @@ const customOidcAuthModule = createBackendModule({
 // Register the custom OIDC module
 backend.add(customOidcAuthModule);
 
+// --- PLATFORM CORE INFRASTRUCTURE SERVICES ---
 backend.add(import('@backstage/plugin-app-backend'));
 backend.add(import('@backstage/plugin-proxy-backend'));
 
-// Scaffolder plugin
+// --- SCAFFOLDER CORE & EXTENSION PIPELINES ---
 backend.add(import('@backstage/plugin-scaffolder-backend'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-notifications'));
+backend.add(import('@roadiehq/scaffolder-backend-module-utils'));
 
-// Techdocs plugin
+// --- PLATFORM TECHNICAL DOCUMENTATION ENGINE ---
 backend.add(import('@backstage/plugin-techdocs-backend'));
 
-// Auth plugin & Core GitHub Module configuration
+// --- CORE SECURITY IDENTITY PROVIDERS ---
 backend.add(import('@backstage/plugin-auth-backend'));
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 
-// Duplicate default oidc-provider import REMOVED to avoid extension conflicts
-
-backend.add(import('@backstage-community/plugin-catalog-backend-module-keycloak'));
-
-// Catalog plugin
+// --- CATALOG MECHANICS & ADVANCED SCHEMAS ---
 backend.add(import('@backstage/plugin-catalog-backend'));
 backend.add(import('@backstage/plugin-catalog-backend-module-scaffolder-entity-model'));
 backend.add(import('@backstage/plugin-catalog-backend-module-logs'));
+backend.add(import('@backstage-community/plugin-catalog-backend-module-keycloak'));
 
-// Permission plugin
+// --- SECURITY RBAC & ACCESS POLICIES ---
 backend.add(import('@backstage/plugin-permission-backend'));
 backend.add(import('@backstage/plugin-permission-backend-module-allow-all-policy'));
 
-// Search plugin
+// --- MULTI-INDEX CORE SEARCH MODULES ---
 backend.add(import('@backstage/plugin-search-backend'));
 backend.add(import('@backstage/plugin-search-backend-module-pg'));
 backend.add(import('@backstage/plugin-search-backend-module-catalog'));
 backend.add(import('@backstage/plugin-search-backend-module-techdocs'));
 
-// Kubernetes plugin
+// --- EXTERNAL CLUSTER CLOUD MONITORING PLUGINS ---
 backend.add(import('@backstage/plugin-kubernetes-backend'));
+backend.add(import('@roadiehq/backstage-plugin-argo-cd-backend'));
 
-// User settings plugin
+// --- REPLICATED SIGNALING & NOTIFICATION FRAMEWORKS ---
 backend.add(import('@backstage/plugin-user-settings-backend'));
-
-// Notifications and signals plugins
 backend.add(import('@backstage/plugin-notifications-backend'));
 backend.add(import('@backstage/plugin-signals-backend'));
 
-// MCP actions plugin
+// --- AI CORE ASSISTANT CONNECTOR ENGINE ---
 backend.add(import('@backstage/plugin-mcp-actions-backend'));
-
-// RESTORES BACKEND ROUTING FOR ARGOCD CLIENT COMMUNICATORS
-backend.add(import('@roadiehq/backstage-plugin-argo-cd-backend'));
-
-// Unlocks advanced template utilities natively inside your custom container
-backend.add(import('@roadiehq/scaffolder-backend-module-utils'));
 
 backend.start();

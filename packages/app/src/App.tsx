@@ -29,9 +29,8 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
-const keycloakAuthApiRef = createApiRef<
-  OpenIdConnectApi & ProfileInfoApi & BackstageIdentityApi & SessionApi
->().with({
+// --- KEYCLOAK OIDC CUSTOM API REFERENCE DEFINITION ---
+const keycloakAuthApiRef = createApiRef().with({
   id: 'auth.keycloak',
 });
 
@@ -61,6 +60,7 @@ const keycloakAuthApi = ApiBlueprint.make({
     }),
 });
 
+// --- NEW FRONTEND SYSTEM INTEGRATED SIGN IN ROUTER ---
 const signInPageModule = SignInPageBlueprint.make({
   params: {
     loader: async () => props => (
@@ -68,6 +68,13 @@ const signInPageModule = SignInPageBlueprint.make({
         {...props}
         title="Backstage Pilot Login"
         providers={[
+          {
+            id: 'guest',
+            title: 'Guest Login',
+            message: 'Sign in using a developer guest session',
+            // Explicitly cast to satisfy UI collection type requirements
+            apiRef: createApiRef<SessionApi>({ id: 'auth.guest' }) as any,
+          },
           {
             id: 'oidc',
             title: 'Keycloak',
