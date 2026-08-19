@@ -83,6 +83,15 @@ catalog:
     - type: url
       target: https://github.com/IvayloB84/backstage-templates/blob/main/manifests/github-repo-template.yaml
 
+  providers:
+    keycloakOrg:
+      default:
+        baseUrl: http://keycloak-service.default.svc.cluster.local:8082
+        loginRealm: master
+        realm: master
+        clientId: backstage
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+
 auth:
   environment: development
   providers:
