@@ -38,6 +38,13 @@ proxy:
       headers:
         Authorization: ${ARGOCD_TOKEN}
 
+    # --- KEYCLOAK PASSTHROUGH VIA INTERNAL CLUSTER DNS ---
+    '/keycloak':
+      target: http://keycloak-service.default.svc.cluster.local:8082
+      changeOrigin: true
+      secure: false
+      allowedMethods: [GET, POST, PUT, DELETE, OPTIONS]
+
 kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
