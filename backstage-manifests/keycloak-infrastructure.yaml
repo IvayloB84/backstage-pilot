@@ -3,13 +3,22 @@ kind: Deployment
 metadata:
   name: keycloak-server
   namespace: default
+  labels:
+    app: keycloak
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
   template:
+    metadata:
+      labels:
+        app: keycloak
     spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.7.2
-          args: ["start-dev", "--http-port=8082"] 
+          args: ["start-dev"]
           env:
             - name: KEYCLOAK_ADMIN
               value: "admin"
@@ -19,6 +28,9 @@ spec:
               value: "true"
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
+          ports:
+            - containerPort: 8080
+              name: http
 ---
 apiVersion: v1
 kind: Service
@@ -28,29 +40,8 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 8082        # Internal cluster service port
-      targetPort: 8082  # Target container port
+      port: 8082
+      targetPort: 8080
       protocol: TCP
   selector:
     app: keycloak
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: keycloak-ingress
-  namespace: default
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: keycloak.local.dev # Maps directly through your existing host port 8080
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: keycloak-service
-                port:
-                  name: http
