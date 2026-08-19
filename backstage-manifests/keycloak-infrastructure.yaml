@@ -28,6 +28,7 @@ spec:
               value: "true"
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
+
           ports:
             - containerPort: 8080
               name: http
