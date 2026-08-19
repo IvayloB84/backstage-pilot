@@ -117,16 +117,18 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: GITHUB_TOKEN
-        - name: AUTH_OIDC_CLIENT_ID
+        
+        # --- FIXED & UNIFIED KEYCLOAK ENVIRONMENT BLOCK ---
+        - name: KEYCLOAK_CLIENT_ID
+          value: "backstage"
+        - name: KEYCLOAK_METADATA_URL
+          value: "http://keycloak-service.default.svc.cluster.local:8082/realms/master/.well-known/openid-configuration"
+        - name: KEYCLOAK_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
               name: backstage-app-config
-              key: AUTH_OIDC_CLIENT_ID
-        - name: AUTH_OIDC_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: AUTH_OIDC_CLIENT_SECRET
+              key: KEYCLOAK_CLIENT_SECRET
+              
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
