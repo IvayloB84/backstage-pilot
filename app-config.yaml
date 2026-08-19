@@ -38,15 +38,6 @@ proxy:
       headers:
         Authorization: ${ARGOCD_TOKEN}
 
-    # --- KEYCLOAK PASSTHROUGH VIA INTERNAL CLUSTER DNS ---
-    '/keycloak':
-      target: http://keycloak-service.default.svc.cluster.local:8082
-      changeOrigin: true
-      secure: false
-      allowedMethods: [GET, POST, PUT, DELETE, OPTIONS]
-      allowedHeaders: [Authorization, Cookie]
-      dangerouslyAllowUnauthenticated: true
-
 kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
@@ -87,8 +78,13 @@ catalog:
     keycloakOrg:
       default:
         baseUrl: http://keycloak-service.default.svc.cluster.local:8082
+        loginRealm: ${KEYCLOAK_REALM}
+        realm: ${KEYCLOAK_REALM}
         clientId: ${AUTH_KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        schedule:
+        frequency: { minutes: 30 }
+        timeout: { minutes: 3 }
 
 auth:
   environment: development
@@ -110,13 +106,6 @@ auth:
           resolvers:
             # See the module documentation for more resolvers
             - resolver: preferredUsernameMatchingUserEntityName
-    # oauth2:
-    #   development:
-    #     clientId: ${KEYCLOAK_CLIENT_ID}
-    #     clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-    #     # Point this straight to your master authorization realm endpoint
-    #     authorizationUrl: http://localhost:7007/api/proxy/keycloak/realms/master/protocol/openid-connect/auth
-    #     tokenUrl: http://keycloak-service.default.svc.cluster.local:8082/realms/master/protocol/openid-connect/token
 
 integrations:
   github:
