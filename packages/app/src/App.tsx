@@ -6,15 +6,12 @@ import { navModule } from './modules/nav';
 
 import {
   githubAuthApiRef,
-  ProfileInfoApi,
-  BackstageIdentityApi,
-  SessionApi,
+  createApiRef,
 } from '@backstage/core-plugin-api';
 import { OAuth2 } from '@backstage/core-app-api';
 import { SignInPageBlueprint } from '@backstage/plugin-app-react';
 import { SignInPage } from '@backstage/core-components';
 import {
-  createApiRef,
   createFrontendModule,
   configApiRef,
   discoveryApiRef,
@@ -28,9 +25,9 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
-// --- FIXED: KEYCLOAK NATIVE OAUTH2 API REFERENCE DEFINITION ---
-const keycloakAuthApiRef = createApiRef().with({
-  id: 'auth.oauth2', // FIXED: Aligns perfectly with the stateless backend provider key
+// --- KEYCLOAK NATIVE OAUTH2 API REFERENCE DEFINITION ---
+const keycloakAuthApiRef = createApiRef<any>({
+  id: 'auth.oauth2', 
 });
 
 const keycloakAuthApi = ApiBlueprint.make({
@@ -50,7 +47,7 @@ const keycloakAuthApi = ApiBlueprint.make({
           oauthRequestApi,
           environment: configApi.getOptionalString('auth.environment'),
           provider: {
-            id: 'oauth2', // FIXED: Instructs framework to map to auth.providers.oauth2 blocks
+            id: 'oauth2', 
             title: 'Keycloak',
             icon: () => null,
           },
@@ -71,13 +68,13 @@ const signInPageModule = SignInPageBlueprint.make({
             id: 'guest',
             title: 'Guest Login',
             message: 'Sign in using a developer guest session',
-            apiRef: createApiRef<SessionApi>({ id: 'auth.guest' }) as any,
+            apiRef: createApiRef({ id: 'auth.guest' }) as any,
           },
           {
-            id: 'oauth2', // FIXED: Forces the frontend interface to trigger the /api/auth/oauth2/ endpoints
+            id: 'oauth2', 
             title: 'Keycloak',
             message: 'Sign in using your Keycloak account',
-            apiRef: keycloakAuthApiRef, // FIXED: Binds the custom configured API factory to your UI card component
+            apiRef: keycloakAuthApiRef as any, 
           },
           {
             id: 'github-auth-provider',
@@ -168,13 +165,8 @@ export default createApp({
     scaffolderPlugin,
     userSettingsPlugin,
     navModule,
-    
-    // Registers custom catalog view components via a single NFS module
     kubernetesCatalogTabModule, 
-    
-    // Loads the native Roadie ArgoCD Plugin Extension
     argoCdPlugin,
-
     createFrontendModule({
       pluginId: 'app',
       extensions: [keycloakAuthApi, signInPageModule],
