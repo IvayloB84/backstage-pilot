@@ -24,25 +24,16 @@ spec:
               value: "admin"
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: "admin"
-            - name: KC_HTTP_PORT
-              value: "8085"
             - name: KC_HTTP_ENABLED
               value: "true"
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
             - name: KC_HOSTNAME_STRICT
               value: "false"
-
-            # --- OFFICIAL HOSTNAME V2 SPLIT ENDPOINT CONFIGURATION ---
-            # 1. Frontchannel browser access point (maps to your port-forward)
+            - name: KC_HTTP_PORT
+              value: "8080"
             - name: KC_HOSTNAME
-              value: "localhost:8085"
-            
-            # 2. Allow Backstage pod container to query internally via cluster.local safely
-            - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC
-              value: "true"
-
-            # --- DATABASE PERSISTENCE CONFIGURATIONS ---
+              value: "http://localhost:8085"
             - name: KC_DB
               value: "postgres"
             - name: KC_DB_URL
@@ -57,9 +48,8 @@ spec:
                 secretKeyRef:
                   name: backstage-app-config
                   key: KEYCLOAK_DB_PASSWORD
-
           ports:
-            - containerPort: 8085  
+            - containerPort: 8080
               name: http
 ---
 apiVersion: v1
@@ -70,8 +60,8 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 8085            
-      targetPort: 8085      
+      port: 8085
+      targetPort: 8080
       protocol: TCP
   selector:
     app: keycloak
