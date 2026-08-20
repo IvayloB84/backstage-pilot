@@ -20,19 +20,38 @@ spec:
           image: quay.io/keycloak/keycloak:26.7.2
           args: ["start-dev"]
           env:
-            - name: KEYCLOAK_ADMIN
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: "admin"
-            - name: KEYCLOAK_ADMIN_PASSWORD
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: "admin"
-            - name: KC_HOSTNAME_URL
-              value: "http://localhost:8082"
+            - name: KC_HTTP_PORT
+              value: "8085"
             - name: KC_HTTP_ENABLED
               value: "true"
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
+            - name: KC_HOSTNAME_STRICT
+              value: "false"
+            - name: KC_HOSTNAME_STRICT_BACKCHANNEL
+              value: "false"
 
+            # --- DATABASE PERSISTENCE CONFIGURATIONS ---
+            - name: KC_DB
+              value: "postgres"
+            - name: KC_DB_URL
+              value: "jdbc:postgresql://keycloak-db-service.default.svc.cluster.local:5433/keycloak_persistence"
+            - name: KC_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: backstage-app-config
+                  key: KEYCLOAK_DB_USER
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backstage-app-config
+                  key: KEYCLOAK_DB_PASSWORD
           ports:
-            - containerPort: 8080
+            - containerPort: 8085  
               name: http
 ---
 apiVersion: v1
@@ -43,8 +62,8 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 8082
-      targetPort: 8080
+      port: 8085            
+      targetPort: 8085      
       protocol: TCP
   selector:
     app: keycloak
