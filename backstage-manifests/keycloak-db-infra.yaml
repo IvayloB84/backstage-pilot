@@ -20,10 +20,13 @@ spec:
           image: quay.io/keycloak/keycloak:26.7.2
           args: ["start-dev"]
           env:
+            # Modern Keycloak 26 admin initialization keys
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: "admin"
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: "admin"
+            
+            # Network definitions avoiding port 8080
             - name: KC_HTTP_PORT
               value: "8085"
             - name: KC_HTTP_ENABLED
@@ -33,16 +36,7 @@ spec:
             - name: KC_HOSTNAME_STRICT
               value: "false"
 
-            # --- OFFICIAL HOSTNAME V2 SPLIT ENDPOINT CONFIGURATION ---
-            # 1. Frontchannel browser access point (maps to your port-forward)
-            - name: KC_HOSTNAME
-              value: "localhost:8085"
-            
-            # 2. Allow Backstage pod container to query internally via cluster.local safely
-            - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC
-              value: "true"
-
-            # --- DATABASE PERSISTENCE CONFIGURATIONS ---
+            # --- DYNAMIC PLACEHOLDERS MAPPING FROM YOUR EXISTING SECRET ---
             - name: KC_DB
               value: "postgres"
             - name: KC_DB_URL
@@ -57,7 +51,6 @@ spec:
                 secretKeyRef:
                   name: backstage-app-config
                   key: KEYCLOAK_DB_PASSWORD
-
           ports:
             - containerPort: 8085  
               name: http
