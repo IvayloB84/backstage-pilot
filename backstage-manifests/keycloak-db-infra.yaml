@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: keycloak-server
+  name: keycloak-db-deployment
   namespace: default
   labels:
     app: keycloak
@@ -28,7 +28,9 @@ spec:
             
             # Network definitions avoiding port 8080
             - name: KC_HTTP_PORT
-              value: "8085"
+              value: "8080"
+            - name: KC_HOSTNAME
+              value: "http://localhost:8085"
             - name: KC_HTTP_ENABLED
               value: "true"
             - name: KC_PROXY_HEADERS
@@ -52,7 +54,7 @@ spec:
                   name: backstage-app-config
                   key: KEYCLOAK_DB_PASSWORD
           ports:
-            - containerPort: 8085  
+            - containerPort: 8080
               name: http
 ---
 apiVersion: v1
@@ -64,7 +66,7 @@ spec:
   ports:
     - name: http
       port: 8085            
-      targetPort: 8085      
+      targetPort: 8080      
       protocol: TCP
   selector:
     app: keycloak
