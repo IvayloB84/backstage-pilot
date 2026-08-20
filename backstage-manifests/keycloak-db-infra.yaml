@@ -42,7 +42,7 @@ spec:
             - name: KC_DB
               value: "postgres"
             - name: KC_DB_URL
-              value: "jdbc:postgresql://keycloak-db-service.default.svc.cluster.local:5433/keycloak_persistence"
+              value: "jdbc:postgresql://keycloak-db-deployment.default.svc.cluster.local:5433/keycloak_persistence"
             - name: KC_DB_USERNAME
               valueFrom:
                 secretKeyRef:
