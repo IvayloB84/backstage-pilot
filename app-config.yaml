@@ -103,9 +103,12 @@ auth:
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         realm: ${AUTH_KEYCLOAK_REALM}
         baseUrl: http://localhost:8085
+        callbackUrl: http://localhost:7007/api/auth/keycloak/handler/frame
         
-        metadataUrl: http://localhost:8085/realms/${AUTH_KEYCLOAK_REALM}/.well-known/openid-configuration
-        tokenUrl: http://localhost:8085/realms/${AUTH_KEYCLOAK_REALM}/protocol/openid-connect/token
+        metadataUrl: http://keycloak-service.default.svc.cluster.local:8085/realms/${AUTH_KEYCLOAK_REALM}/.well-known/openid-configuration
+        tokenUrl: http://keycloak-service.default.svc.cluster.local:8085/realms/${AUTH_KEYCLOAK_REALM}/protocol/openid-connect/token
+
+        issuer: http://localhost:8085/realms/master
         
         signIn:
           resolvers:
