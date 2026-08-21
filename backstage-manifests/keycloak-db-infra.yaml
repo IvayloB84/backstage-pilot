@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: keycloak-db-deployment
+  name: keycloak-server
   namespace: default
   labels:
     app: keycloak
@@ -20,29 +20,25 @@ spec:
           image: quay.io/keycloak/keycloak:26.7.2
           args: ["start-dev"]
           env:
-            # Modern Keycloak 26 admin initialization keys
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: "admin"
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: "admin"
-            
-            # Network definitions avoiding port 8080
-            - name: KC_HTTP_PORT
-              value: "8080"
-            - name: KC_HOSTNAME
-              value: "http://localhost:8085"
             - name: KC_HTTP_ENABLED
               value: "true"
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
             - name: KC_HOSTNAME_STRICT
               value: "false"
-
-            # --- DYNAMIC PLACEHOLDERS MAPPING FROM YOUR EXISTING SECRET ---
+            - name: KC_HTTP_PORT
+              value: "8080"
+            - name: KC_HOSTNAME
+              value: "http://localhost:8085"
             - name: KC_DB
               value: "postgres"
+            # Target port is now 5433
             - name: KC_DB_URL
-              value: "jdbc:postgresql://keycloak-db-deployment.default.svc.cluster.local:5433/keycloak_persistence"
+              value: "jdbc:postgresql://postgres-db-service.default.svc.cluster.local:5433/keycloak_persistence"
             - name: KC_DB_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -60,13 +56,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: keycloak-db-deployment
+  name: keycloak-service
   namespace: default
 spec:
   ports:
     - name: http
-      port: 8085            
-      targetPort: 8080      
+      port: 8085
+      targetPort: 8080
       protocol: TCP
   selector:
     app: keycloak
