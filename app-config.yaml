@@ -36,7 +36,7 @@ proxy:
       allowedHeaders:
         - Authorization
       headers:
-        Authorization: ${ARGOCD_TOKEN}
+        Authorization: "Bearer ${ARGOCD_TOKEN}"
 
 kubernetes:
   serviceLocatorMethod:
