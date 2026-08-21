@@ -149,6 +149,11 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: AUTH_KEYCLOAK_REALM
+        - name: ARGOCD_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: ARGOCD_TOKEN
               
         volumeMounts:
         - name: catalog-files-volume
