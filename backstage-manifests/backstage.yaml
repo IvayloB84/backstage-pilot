@@ -156,9 +156,6 @@ spec:
           value: "delete"
         - name: APP_CONFIG_catalog_processingIntervalSeconds
           value: "20"
-        # THE NETWORK ROUTING FIX: Forces the Roadie plugin to bypass localhost and call the container process internally
-        - name: APP_CONFIG_backend_baseUrl
-          value: "http://127.0.0.1:7007"
               
         volumeMounts:
         - name: catalog-files-volume
