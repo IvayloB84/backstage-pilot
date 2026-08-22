@@ -73,7 +73,7 @@ catalog:
     - type: file
       target: ./catalog/components.yaml
     - type: url
-      target: https://github.com/IvayloB84/backstage-templates/blob/main/manifests/github-repo-template.yaml
+      target: https://github.com
 
   providers:
     keycloakOrg:
@@ -85,17 +85,6 @@ catalog:
         clientSecret: 7aeJS7SCuqyDkLYCoRngl0Bx4eGEZr1vdI6BcS0597tNTJaB7uQIDyTO0xF7iIsr4MK5J4uOueTxAK1hU5aSeC
         schedule:
           frequency: { minutes: 30 }
-          timeout: { minutes: 3 }
-
-    github:
-      default:
-        user: 'IvayloB84'
-        catalogPath: '/catalog-info.yaml'
-        filters:
-          branch: 'main'
-          topic: 'backstage-managed'
-        schedule:
-          frequency: { seconds: 20 }
           timeout: { minutes: 3 }
 
 auth:
