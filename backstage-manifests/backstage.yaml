@@ -1,58 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backstage-pilot-db
-  namespace: default
-spec:
-  selector:
-    matchLabels:
-      app: backstage-pilot-db
-  template:
-    metadata:
-      labels:
-        app: backstage-pilot-db
-    spec:
-      containers:
-      - name: postgres
-        image: postgres:16-alpine
-        env:
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: POSTGRES_USER
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: POSTGRES_PASSWORD
-        - name: PGDATA
-          value: /var/lib/postgresql/data/pgdata
-        ports:
-        - containerPort: 5432
-        volumeMounts:
-        - name: db-storage
-          mountPath: /var/lib/postgresql/data
-      volumes:
-      - name: db-storage
-        persistentVolumeClaim:
-          claimName: backstage-postgres-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backstage-pilot-db-service
-  namespace: default
-spec:
-  ports:
-  - port: 5432
-    targetPort: 5432
-  selector:
-    app: backstage-pilot-db
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: backstage-pilot
   namespace: default
   labels:
@@ -117,8 +65,6 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: GITHUB_TOKEN
-              
-        # --- KEYCLOAK MAPPINGS (MATCHING YOUR 6 CLEAN .ENV KEYS) ---
         - name: KEYCLOAK_CLIENT_ID
           valueFrom:
             secretKeyRef:
@@ -155,6 +101,12 @@ spec:
               name: backstage-app-config
               key: ARGOCD_TOKEN
               
+        # 🚀 SAFETIES: Direct runtime landscape overrides 
+        - name: APP_CONFIG_catalog_orphanStrategy
+          value: "delete"
+        - name: APP_CONFIG_catalog_processingIntervalSeconds
+          value: "20"
+              
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
@@ -173,17 +125,3 @@ spec:
       - name: main-config-volume
         configMap:
           name: backstage-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backstage-pilot-service
-  namespace: default
-spec:
-  type: ClusterIP
-  ports:
-  - name: http
-    port: 7007
-    targetPort: 7007
-  selector:
-    app: backstage-pilot
