@@ -62,7 +62,6 @@ argocd:
 
 catalog:
   orphanStrategy: delete 
-  processingIntervalSeconds: 20
   import:
     entityFilename: catalog-info.yaml
   rules:
