@@ -61,10 +61,7 @@ argocd:
           secure: false
 
 catalog:
-  # Instructs the janitor loop to delete orphaned rows completely from the DB
   orphanStrategy: delete 
-
-  # Defines how often (in seconds) the backend refreshes and scans entities
   processingIntervalSeconds: 20
   import:
     entityFilename: catalog-info.yaml
@@ -88,6 +85,17 @@ catalog:
         clientSecret: 7aeJS7SCuqyDkLYCoRngl0Bx4eGEZr1vdI6BcS0597tNTJaB7uQIDyTO0xF7iIsr4MK5J4uOueTxAK1hU5aSeC
         schedule:
           frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
+
+    github:
+      default:
+        project: 'IvayloB84'
+        catalogPath: '/catalog-info.yaml'
+        filters:
+          branch: 'main'
+          topic: 'backstage-managed'
+        schedule:
+          frequency: { seconds: 20 }
           timeout: { minutes: 3 }
 
 auth:
