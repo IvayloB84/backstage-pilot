@@ -76,6 +76,20 @@ catalog:
       target: https://github.com/IvayloB84/backstage-templates/tree/main/manifests/*.yaml
 
   providers:
+
+    github:
+      myPersonalGitHubProvider:
+        # Pass your personal GitHub account username here
+        organization: 'IvayloB84' 
+        catalogPath: '/catalog-info.yaml'
+        # Filter tells Backstage to dynamically scan every repository you own
+        filters:
+          repository: '.*' 
+          include: ['backstage-managed']
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 10 }
+
     keycloakOrg:
       default:
         baseUrl: http://localhost:8085
