@@ -61,7 +61,8 @@ argocd:
           secure: false
 
 catalog:
-  orphanStrategy: delete 
+  orphanStrategy: delete
+  orphanProviderStrategy: delete
   import:
     entityFilename: catalog-info.yaml
   rules:
