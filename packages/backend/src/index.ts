@@ -76,8 +76,8 @@ backend.add(import('@backstage/plugin-auth-backend'));
 backend.add(import('@backstage-community/plugin-auth-backend-module-keycloak-provider'));
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 
-// --- AUTOMATION: Registers the official background crawler module system ---
-backend.add(import('@backstage/plugin-catalog-backend-module-github'));
+// --- Enrolls the HTTP Request action template runner capacity ---
+backend.add(import('@roadiehq/scaffolder-backend-module-http-request'));
 
 // --- CATALOG MECHANICS & ADVANCED SCHEMAS ---
 backend.add(import('@backstage/plugin-catalog-backend'));
