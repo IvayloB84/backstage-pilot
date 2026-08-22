@@ -89,7 +89,7 @@ catalog:
 
     github:
       default:
-        project: 'IvayloB84'
+        user: 'IvayloB84'
         catalogPath: '/catalog-info.yaml'
         filters:
           branch: 'main'
