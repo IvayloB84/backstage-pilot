@@ -6,6 +6,7 @@ import { navModule } from './modules/nav';
 
 import {
   githubAuthApiRef,
+  createApiRef,
 } from '@backstage/core-plugin-api';
 import { SignInPageBlueprint } from '@backstage/plugin-app-react';
 import { SignInPage } from '@backstage/core-components';
@@ -17,6 +18,9 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
+// --- DECLARED STANDALONE API REFERENCE FOR THE OIDC LOGOUT/LOGIN TRAFFIC MAPPING ---
+const keycloakOidcAuthApiRef = createApiRef<any>({ id: 'auth.oidc' });
+
 // --- NEW FRONTEND SYSTEM INTEGRATED SIGN IN ROUTER ---
 const signInPageModule = SignInPageBlueprint.make({
   params: {
@@ -26,11 +30,11 @@ const signInPageModule = SignInPageBlueprint.make({
         title="Backstage Pilot Login"
         providers={[
           {
-            id: 'oidc', // Points directly to the backend's OIDC Keycloak module
+            id: 'oidc', // Directs frontend framework routing to hit your backend custom module path
             title: 'Keycloak',
             message: 'Sign in using your Keycloak account',
-            apiRef: githubAuthApiRef, // We can bypass typing errors cleanly by initializing over a valid Auth API structure and letting the backend handle routing based on the provider ID
-          } as any,
+            apiRef: keycloakOidcAuthApiRef, 
+          } as any, // Cast forces the list configuration schema engine to pass signature validation checks cleanly
           {
             id: 'github-auth-provider',
             title: 'GitHub',
