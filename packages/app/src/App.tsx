@@ -25,10 +25,10 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
-// 1. Generate an explicit runtime API reference pointer mapping
-const customKeycloakOidcAuthApiRef = createApiRef<any>({ id: 'auth.keycloak-oidc' });
+// 1. FIXED ID: Must be exactly 'auth.oidc' to resolve the NotImplementedError from your stack trace
+const customKeycloakOidcAuthApiRef = createApiRef<any>({ id: 'auth.oidc' });
 
-// 2. Properly compile the API Factory Blueprint under its own unique extension shape
+// 2. Properly compile the API Extension via ApiBlueprint for the New Frontend System
 const keycloakAuthApiExtension = ApiBlueprint.make({
   name: 'keycloak-auth-provider',
   params: defineParams =>
@@ -55,7 +55,7 @@ const keycloakAuthApiExtension = ApiBlueprint.make({
     }),
 });
 
-// 3. Mount the API factory extension inside its own custom plugin module boundary to prevent NotImplementedError
+// 3. Mount the API factory extension inside its own custom plugin module boundary
 const keycloakAuthApiModule = createFrontendModule({
   pluginId: 'keycloak-auth',
   extensions: [keycloakAuthApiExtension],
