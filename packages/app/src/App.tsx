@@ -25,15 +25,16 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
-// 1. Standalone unique API reference pointer for Keycloak OIDC pipeline matching your stack trace contract
-const keycloakOidcAuthApiRef = createApiRef<any>({ id: 'auth.oidc' });
+// --- KEYCLOAK GENUINE COMMUNITY AUTH CONFIGURATION BLOCK ---
+const keycloakAuthApiRef = createApiRef<any>({
+  id: 'auth.keycloak', // Matches 'auth.providers.keycloak' backend configuration
+});
 
-// 2. Compile the API Extension via ApiBlueprint for the New Frontend System
-const keycloakAuthApiExtension = ApiBlueprint.make({
-  name: 'keycloak-auth-provider',
+const keycloakAuthApi = ApiBlueprint.make({
+  name: 'keycloak',
   params: defineParams =>
     defineParams({
-      api: keycloakOidcAuthApiRef,
+      api: keycloakAuthApiRef,
       deps: {
         discoveryApi: discoveryApiRef,
         oauthRequestApi: oauthRequestApiRef,
@@ -46,7 +47,7 @@ const keycloakAuthApiExtension = ApiBlueprint.make({
           oauthRequestApi,
           environment: configApi.getOptionalString('auth.environment'),
           provider: {
-            id: 'oidc', // Tells the engine to hit your custom backend oidc pipeline module handler
+            id: 'keycloak', // Directs frontend to match backend's native keycloak node
             title: 'Keycloak',
             icon: () => null,
           },
@@ -64,11 +65,11 @@ const signInPageModule = SignInPageBlueprint.make({
         title="Backstage Pilot Login"
         providers={[
           {
-            id: 'oidc', 
+            id: 'keycloak', // Targets '/api/auth/keycloak/start' pipeline endpoint directly
             title: 'Keycloak',
             message: 'Sign in using your Keycloak account',
-            apiRef: keycloakOidcAuthApiRef, // Triggers independent OIDC route mapping distinct from GitHub
-          } as any,
+            apiRef: keycloakAuthApiRef as any, 
+          },
           {
             id: 'github-auth-provider',
             title: 'GitHub',
@@ -160,10 +161,9 @@ export default createApp({
     navModule,
     kubernetesCatalogTabModule, 
     argoCdPlugin,
-    // 3. FIXED: Bundled extensions together into a unified frontend plugin module context
     createFrontendModule({
       pluginId: 'app',
-      extensions: [keycloakAuthApiExtension, signInPageModule],
+      extensions: [keycloakAuthApi, signInPageModule],
     }),
   ],
 });
