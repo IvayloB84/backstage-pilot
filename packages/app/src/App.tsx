@@ -25,15 +25,15 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
-// 1. FIXED ID: Must be exactly 'auth.oidc' to resolve the NotImplementedError from your stack trace
-const customKeycloakOidcAuthApiRef = createApiRef<any>({ id: 'auth.oidc' });
+// 1. Standalone unique API reference pointer for Keycloak OIDC pipeline matching your stack trace contract
+const keycloakOidcAuthApiRef = createApiRef<any>({ id: 'auth.oidc' });
 
-// 2. Properly compile the API Extension via ApiBlueprint for the New Frontend System
+// 2. Compile the API Extension via ApiBlueprint for the New Frontend System
 const keycloakAuthApiExtension = ApiBlueprint.make({
   name: 'keycloak-auth-provider',
   params: defineParams =>
     defineParams({
-      api: customKeycloakOidcAuthApiRef,
+      api: keycloakOidcAuthApiRef,
       deps: {
         discoveryApi: discoveryApiRef,
         oauthRequestApi: oauthRequestApiRef,
@@ -55,12 +55,6 @@ const keycloakAuthApiExtension = ApiBlueprint.make({
     }),
 });
 
-// 3. Mount the API factory extension inside its own custom plugin module boundary
-const keycloakAuthApiModule = createFrontendModule({
-  pluginId: 'keycloak-auth',
-  extensions: [keycloakAuthApiExtension],
-});
-
 // --- NEW FRONTEND SYSTEM INTEGRATED SIGN IN ROUTER ---
 const signInPageModule = SignInPageBlueprint.make({
   params: {
@@ -73,7 +67,7 @@ const signInPageModule = SignInPageBlueprint.make({
             id: 'oidc', 
             title: 'Keycloak',
             message: 'Sign in using your Keycloak account',
-            apiRef: customKeycloakOidcAuthApiRef, // Triggers independent OIDC route mapping distinct from GitHub
+            apiRef: keycloakOidcAuthApiRef, // Triggers independent OIDC route mapping distinct from GitHub
           } as any,
           {
             id: 'github-auth-provider',
@@ -166,10 +160,10 @@ export default createApp({
     navModule,
     kubernetesCatalogTabModule, 
     argoCdPlugin,
-    keycloakAuthApiModule, // Injects the custom standalone API feature cleanly into the core initialization pipeline
+    // 3. FIXED: Bundled extensions together into a unified frontend plugin module context
     createFrontendModule({
       pluginId: 'app',
-      extensions: [signInPageModule],
+      extensions: [keycloakAuthApiExtension, signInPageModule],
     }),
   ],
 });
