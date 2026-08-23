@@ -78,11 +78,11 @@ catalog:
   providers:
     keycloakOrg:
       default:
-        baseUrl: https://<your-keycloak-domain>
-        realm: <your-realm-name>
-        clientId: ${KEYCLOAK_CATALOG_CLIENT_ID} # Needs 'view-users' and 'query-groups' realm-management roles
+        baseUrl: ${KEYCLOAK_INTERNAL_URL}
+        realm: backstage
+        clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
-        schedule: # How often to sync users and groups
+        schedule:
           frequency: { minutes: 15 }
           timeout: { minutes: 3 }
 
