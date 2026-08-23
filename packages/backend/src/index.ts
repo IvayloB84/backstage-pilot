@@ -10,10 +10,6 @@ import {
 } from '@backstage/plugin-auth-node';
 import { oidcAuthenticator } from '@backstage/plugin-auth-backend-module-oidc-provider';
 
-import { scaffolderActionsExtensionPoint } from '@backstage/plugin-scaffolder-node';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node';
-import { createCatalogPurgeAction } from './actions/catalogPurge';
-
 const backend = createBackend();
 
 // --- CUSTOM TYPE-SAFE KEYCLOAK OIDC SERVICE MODULE ---
@@ -25,10 +21,10 @@ const customOidcAuthModule = createBackendModule({
       deps: { providers: authProvidersExtensionPoint },
       async init({ providers }) {
         providers.registerProvider({
-          providerId: 'oidc',
+          providerId: 'oidc', // Matches the 'oidc' configuration provider layout in App.tsx
           factory: createOAuthProviderFactory({
             authenticator: oidcAuthenticator,
-            async signInResolver(info, ctx) { 
+            signInResolver: async (info, ctx) => { 
               const fullProfile = info.result.fullProfile;
               const userinfo = (fullProfile as any).userinfo || {};
               
@@ -74,32 +70,6 @@ backend.add(import('@backstage/plugin-proxy-backend'));
 
 // --- SCAFFOLDER CORE & EXTENSION PIPELINES ---
 backend.add(import('@backstage/plugin-scaffolder-backend'));
-// Backend module allocation extension structure
-const catalogPurgeModule = createBackendModule({
-  pluginId: 'scaffolder',
-  moduleId: 'catalog-purge-action',
-  register(reg) {
-    reg.registerInit({
-      deps: {
-        scaffolder: scaffolderActionsExtensionPoint,
-        catalog: catalogServiceRef,
-      },
-      async init({ scaffolder, catalog }) {
-        // Register the custom action inside the scaffolder engine
-        scaffolder.addActions(createCatalogPurgeAction({ catalogClient: catalog }));
-      },
-    });
-  },
-});
-
-// Load the custom module definition into the runtime
-backend.add(catalogPurgeModule);
-
-// Load the custom module definition into the runtime
-backend.add(catalogPurgeModule)
-
-// Load the custom module definition into the runtime
-backend.add(catalogPurgeModule);
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-notifications'));
 backend.add(import('@roadiehq/scaffolder-backend-module-utils'));
@@ -109,7 +79,7 @@ backend.add(import('@backstage/plugin-techdocs-backend'));
 
 // --- CORE SECURITY IDENTITY PROVIDERS ---
 backend.add(import('@backstage/plugin-auth-backend'));
-backend.add(import('@backstage-community/plugin-auth-backend-module-keycloak-provider'));
+// REMOVED DUPLICATE: @backstage-community/plugin-auth-backend-module-keycloak-provider (avoids handler collision with our custom OIDC)
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 
 // --- Enrolls the HTTP Request action template runner capacity ---

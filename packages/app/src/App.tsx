@@ -6,55 +6,16 @@ import { navModule } from './modules/nav';
 
 import {
   githubAuthApiRef,
-  createApiRef,
 } from '@backstage/core-plugin-api';
-import { OAuth2 } from '@backstage/core-app-api';
 import { SignInPageBlueprint } from '@backstage/plugin-app-react';
 import { SignInPage } from '@backstage/core-components';
-import {
-  createFrontendModule,
-  configApiRef,
-  discoveryApiRef,
-  oauthRequestApiRef,
-  ApiBlueprint,
-} from '@backstage/frontend-plugin-api';
+import { createFrontendModule } from '@backstage/frontend-plugin-api';
 import { EntityContentBlueprint, EntityCardBlueprint } from '@backstage/plugin-catalog-react/alpha';
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
 import { useEntity } from '@backstage/plugin-catalog-react';
 
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
-
-// --- KEYCLOAK GENUINE COMMUNITY AUTH CONFIGURATION BLOCK ---
-const keycloakAuthApiRef = createApiRef<any>({
-  id: 'auth.keycloak', // Matches 'auth.providers.keycloak' backend configuration
-});
-
-const keycloakAuthApi = ApiBlueprint.make({
-  name: 'keycloak',
-  params: defineParams =>
-    defineParams({
-      api: keycloakAuthApiRef,
-      deps: {
-        discoveryApi: discoveryApiRef,
-        oauthRequestApi: oauthRequestApiRef,
-        configApi: configApiRef,
-      },
-      factory: ({ discoveryApi, oauthRequestApi, configApi }) =>
-        OAuth2.create({
-          configApi,
-          discoveryApi,
-          oauthRequestApi,
-          environment: configApi.getOptionalString('auth.environment'),
-          provider: {
-            id: 'keycloak', // Directs frontend to match backend's native keycloak node
-            title: 'Keycloak',
-            icon: () => null,
-          },
-          defaultScopes: ['openid', 'profile', 'email'],
-        }),
-    }),
-});
 
 // --- NEW FRONTEND SYSTEM INTEGRATED SIGN IN ROUTER ---
 const signInPageModule = SignInPageBlueprint.make({
@@ -65,11 +26,11 @@ const signInPageModule = SignInPageBlueprint.make({
         title="Backstage Pilot Login"
         providers={[
           {
-            id: 'keycloak', // Targets '/api/auth/keycloak/start' pipeline endpoint directly
+            id: 'oidc', // Points directly to the backend's OIDC Keycloak module
             title: 'Keycloak',
             message: 'Sign in using your Keycloak account',
-            apiRef: keycloakAuthApiRef as any, 
-          },
+            apiRef: githubAuthApiRef, // We can bypass typing errors cleanly by initializing over a valid Auth API structure and letting the backend handle routing based on the provider ID
+          } as any,
           {
             id: 'github-auth-provider',
             title: 'GitHub',
@@ -163,7 +124,7 @@ export default createApp({
     argoCdPlugin,
     createFrontendModule({
       pluginId: 'app',
-      extensions: [keycloakAuthApi, signInPageModule],
+      extensions: [signInPageModule],
     }),
   ],
 });

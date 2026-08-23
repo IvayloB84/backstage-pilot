@@ -76,29 +76,14 @@ catalog:
       target: https://github.com/IvayloB84/backstage-templates/tree/main/manifests/*.yaml
 
   providers:
-
-    github:
-      myPersonalGitHubProvider:
-        # Pass your personal GitHub account username here
-        organization: 'IvayloB84' 
-        catalogPath: '/catalog-info.yaml'
-        # Filter tells Backstage to dynamically scan every repository you own
-        filters:
-          repository: '.*' 
-          include: 'backstage-managed'
-        schedule:
-          frequency: { minutes: 30 }
-          timeout: { minutes: 10 }
-
     keycloakOrg:
       default:
-        baseUrl: http://localhost:8085
-        loginRealm: master
-        realm: master
-        clientId: backstage
-        clientSecret: 7aeJS7SCuqyDkLYCoRngl0Bx4eGEZr1vdI6BcS0597tNTJaB7uQIDyTO0xF7iIsr4MK5J4uOueTxAK1hU5aSeC
-        schedule:
-          frequency: { minutes: 30 }
+        baseUrl: https://<your-keycloak-domain>
+        realm: <your-realm-name>
+        clientId: ${KEYCLOAK_CATALOG_CLIENT_ID} # Needs 'view-users' and 'query-groups' realm-management roles
+        clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
+        schedule: # How often to sync users and groups
+          frequency: { minutes: 15 }
           timeout: { minutes: 3 }
 
 auth:
@@ -111,15 +96,16 @@ auth:
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
-    keycloak:
+    oidc:
       development:
-        clientId: backstage
-        clientSecret: 7aeJS7SCuqyDkLYCoRngl0Bx4eGEZr1vdI6BcS0597tNTJaB7uQIDyTO0xF7iIsr4MK5J4uOueTxAK1hU5aSeC
-        baseUrl: http://localhost:8085
-        realm: master
-        signIn:
-          resolvers:
-            - resolver: preferredUsernameMatchingUserEntityName
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        metadataUrl: ${KEYCLOAK_METADATA_URL}
+        prompt: auto
+        
+        # signIn:
+        #   resolvers:
+        #     - resolver: preferredUsernameMatchingUserEntityName
 
 
 integrations:
