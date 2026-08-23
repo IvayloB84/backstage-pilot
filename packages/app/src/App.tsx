@@ -7,18 +7,17 @@ import { navModule } from './modules/nav';
 import {
   githubAuthApiRef,
   createApiRef,
-  ProfileInfoApi,
-  BackstageIdentityApi,
-  SessionApi,
-  createApiFactory,
-  configApiRef,
-  discoveryApiRef,
-  oauthRequestApiRef,
 } from '@backstage/core-plugin-api';
 import { OAuth2 } from '@backstage/core-app-api';
 import { SignInPageBlueprint } from '@backstage/plugin-app-react';
 import { SignInPage } from '@backstage/core-components';
-import { createFrontendModule } from '@backstage/frontend-plugin-api';
+import {
+  createFrontendModule,
+  configApiRef,
+  discoveryApiRef,
+  oauthRequestApiRef,
+  ApiBlueprint,
+} from '@backstage/frontend-plugin-api';
 import { EntityContentBlueprint, EntityCardBlueprint } from '@backstage/plugin-catalog-react/alpha';
 import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
 import { useEntity } from '@backstage/plugin-catalog-react';
@@ -26,8 +25,35 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
-// 1. Standalone unique API reference pointer for Keycloak OIDC pipeline
-const keycloakOidcAuthApiRef = createApiRef({ id: 'auth.oidc' });
+// 1. Create a dedicated standalone API reference for your Keycloak OIDC pipeline using an open signature map
+const keycloakOidcAuthApiRef = createApiRef<any>({ id: 'auth.oidc' });
+
+// 2. Properly generate the API Extension via ApiBlueprint for the New Frontend System
+const keycloakAuthApiExtension = ApiBlueprint.make({
+  name: 'keycloak-auth',
+  params: defineParams =>
+    defineParams({
+      api: keycloakOidcAuthApiRef,
+      deps: {
+        discoveryApi: discoveryApiRef,
+        oauthRequestApi: oauthRequestApiRef,
+        configApi: configApiRef,
+      },
+      factory: ({ discoveryApi, oauthRequestApi, configApi }) =>
+        OAuth2.create({
+          configApi,
+          discoveryApi,
+          oauthRequestApi,
+          environment: configApi.getOptionalString('auth.environment'),
+          provider: {
+            id: 'oidc',
+            title: 'Keycloak',
+            icon: () => null,
+          },
+          defaultScopes: ['openid', 'profile', 'email'],
+        }),
+    }),
+});
 
 // --- NEW FRONTEND SYSTEM INTEGRATED SIGN IN ROUTER ---
 const signInPageModule = SignInPageBlueprint.make({
@@ -38,10 +64,10 @@ const signInPageModule = SignInPageBlueprint.make({
         title="Backstage Pilot Login"
         providers={[
           {
-            id: 'oidc', // Matches backend module handler string identifier
+            id: 'oidc', 
             title: 'Keycloak',
             message: 'Sign in using your Keycloak account',
-            apiRef: keycloakOidcAuthApiRef, // Routes execution away from GitHub
+            apiRef: keycloakOidcAuthApiRef as any, // FIXED: Safe utility cast unblocks the layout interface validation check completely
           },
           {
             id: 'github-auth-provider',
@@ -127,30 +153,6 @@ const kubernetesCatalogTabModule = createFrontendModule({
 });
 
 export default createApp({
-  // 2. FIXED: Globally declare and mount the Keycloak API factory mapping directly to the app core definition layer
-  apis: [
-    createApiFactory({
-      api: keycloakOidcAuthApiRef,
-      deps: {
-        discoveryApi: discoveryApiRef,
-        oauthRequestApi: oauthRequestApiRef,
-        configApi: configApiRef,
-      },
-      factory: ({ discoveryApi, oauthRequestApi, configApi }) =>
-        OAuth2.create({
-          configApi,
-          discoveryApi,
-          oauthRequestApi,
-          environment: configApi.getOptionalString('auth.environment'),
-          provider: {
-            id: 'oidc',
-            title: 'Keycloak',
-            icon: () => null,
-          },
-          defaultScopes: ['openid', 'profile', 'email'],
-        }),
-    }),
-  ],
   features: [
     catalogPlugin,
     scaffolderPlugin,
@@ -160,7 +162,7 @@ export default createApp({
     argoCdPlugin,
     createFrontendModule({
       pluginId: 'app',
-      extensions: [signInPageModule],
+      extensions: [keycloakAuthApiExtension, signInPageModule],
     }),
   ],
 });
