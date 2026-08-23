@@ -25,15 +25,15 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
-// 1. Create a dedicated standalone API reference for your Keycloak OIDC pipeline using an open signature map
-const keycloakOidcAuthApiRef = createApiRef<any>({ id: 'auth.oidc' });
+// 1. Generate an explicit runtime API reference pointer mapping
+const customKeycloakOidcAuthApiRef = createApiRef<any>({ id: 'auth.keycloak-oidc' });
 
-// 2. Properly generate the API Extension via ApiBlueprint for the New Frontend System
+// 2. Properly compile the API Factory Blueprint under its own unique extension shape
 const keycloakAuthApiExtension = ApiBlueprint.make({
-  name: 'keycloak-auth',
+  name: 'keycloak-auth-provider',
   params: defineParams =>
     defineParams({
-      api: keycloakOidcAuthApiRef,
+      api: customKeycloakOidcAuthApiRef,
       deps: {
         discoveryApi: discoveryApiRef,
         oauthRequestApi: oauthRequestApiRef,
@@ -46,13 +46,19 @@ const keycloakAuthApiExtension = ApiBlueprint.make({
           oauthRequestApi,
           environment: configApi.getOptionalString('auth.environment'),
           provider: {
-            id: 'oidc',
+            id: 'oidc', // Tells the engine to hit your custom backend oidc pipeline module handler
             title: 'Keycloak',
             icon: () => null,
           },
           defaultScopes: ['openid', 'profile', 'email'],
         }),
     }),
+});
+
+// 3. Mount the API factory extension inside its own custom plugin module boundary to prevent NotImplementedError
+const keycloakAuthApiModule = createFrontendModule({
+  pluginId: 'keycloak-auth',
+  extensions: [keycloakAuthApiExtension],
 });
 
 // --- NEW FRONTEND SYSTEM INTEGRATED SIGN IN ROUTER ---
@@ -67,8 +73,8 @@ const signInPageModule = SignInPageBlueprint.make({
             id: 'oidc', 
             title: 'Keycloak',
             message: 'Sign in using your Keycloak account',
-            apiRef: keycloakOidcAuthApiRef as any, // FIXED: Safe utility cast unblocks the layout interface validation check completely
-          },
+            apiRef: customKeycloakOidcAuthApiRef, // Triggers independent OIDC route mapping distinct from GitHub
+          } as any,
           {
             id: 'github-auth-provider',
             title: 'GitHub',
@@ -160,9 +166,10 @@ export default createApp({
     navModule,
     kubernetesCatalogTabModule, 
     argoCdPlugin,
+    keycloakAuthApiModule, // Injects the custom standalone API feature cleanly into the core initialization pipeline
     createFrontendModule({
       pluginId: 'app',
-      extensions: [keycloakAuthApiExtension, signInPageModule],
+      extensions: [signInPageModule],
     }),
   ],
 });
