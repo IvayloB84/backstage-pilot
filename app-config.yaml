@@ -85,7 +85,7 @@ catalog:
         # Filter tells Backstage to dynamically scan every repository you own
         filters:
           repository: '.*' 
-          include: ['backstage-managed']
+          include: 'backstage-managed'
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 10 }

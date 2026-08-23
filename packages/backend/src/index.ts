@@ -10,6 +10,10 @@ import {
 } from '@backstage/plugin-auth-node';
 import { oidcAuthenticator } from '@backstage/plugin-auth-backend-module-oidc-provider';
 
+import { scaffolderActionsExtensionPoint } from '@backstage/plugin-scaffolder-node';
+import { catalogServiceRef } from '@backstage/plugin-catalog-node';
+import { createCatalogPurgeAction } from './actions/catalogPurge';
+
 const backend = createBackend();
 
 // --- CUSTOM TYPE-SAFE KEYCLOAK OIDC SERVICE MODULE ---
@@ -25,26 +29,32 @@ const customOidcAuthModule = createBackendModule({
           factory: createOAuthProviderFactory({
             authenticator: oidcAuthenticator,
             async signInResolver(info, ctx) { 
-              // info.result is type OidcAuthResult. Extract its fullProfile safely.
               const fullProfile = info.result.fullProfile;
               const userinfo = (fullProfile as any).userinfo || {};
               
-              // Keycloak v26 sends the account login name in preferred_username or sub
-              const username: string = 
+              // 1. Safe extraction with strict type routing fallbacks
+              const parsedUsername = 
                 userinfo.preferred_username || 
                 userinfo.sub || 
-                (fullProfile as any).username || 
-                '';
+                (fullProfile as any).username;
 
-              if (!username) {
+              // 2. Validate that the value exists and is an explicit string primitive
+              if (!parsedUsername || typeof parsedUsername !== 'string') {
                 throw new Error('User identity could not be parsed from Keycloak OIDC token payload');
               }
 
-              // Resolves and maps the identity seamlessly inside your platform Catalog
+              // 3. Clean string white-spaces to secure downstream DB queries
+              const normalizedUsername = parsedUsername.trim().toLowerCase();
+
+              if (!normalizedUsername) {
+                throw new Error('Parsed Keycloak username metadata is blank');
+              }
+
+              // 4. Safely enroll the user entity mapping into the platform catalog
               return ctx.signInWithCatalogUser({
                 entityRef: {
                   kind: 'User',
-                  name: username.toLowerCase(), // Catalog entity names must always be lowercase
+                  name: normalizedUsername, 
                 },
               });
             },
@@ -64,6 +74,32 @@ backend.add(import('@backstage/plugin-proxy-backend'));
 
 // --- SCAFFOLDER CORE & EXTENSION PIPELINES ---
 backend.add(import('@backstage/plugin-scaffolder-backend'));
+// Backend module allocation extension structure
+const catalogPurgeModule = createBackendModule({
+  pluginId: 'scaffolder',
+  moduleId: 'catalog-purge-action',
+  register(reg) {
+    reg.registerInit({
+      deps: {
+        scaffolder: scaffolderActionsExtensionPoint,
+        catalog: catalogServiceRef,
+      },
+      async init({ scaffolder, catalog }) {
+        // Register the custom action inside the scaffolder engine
+        scaffolder.addActions(createCatalogPurgeAction({ catalogClient: catalog }));
+      },
+    });
+  },
+});
+
+// Load the custom module definition into the runtime
+backend.add(catalogPurgeModule);
+
+// Load the custom module definition into the runtime
+backend.add(catalogPurgeModule)
+
+// Load the custom module definition into the runtime
+backend.add(catalogPurgeModule);
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-notifications'));
 backend.add(import('@roadiehq/scaffolder-backend-module-utils'));
