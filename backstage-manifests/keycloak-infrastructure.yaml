@@ -1,48 +1,64 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-db-deployment
+  name: keycloak-server
   namespace: default
+  labels:
+    app: keycloak
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres-db
+      app: keycloak
   template:
     metadata:
       labels:
-        app: postgres-db
+        app: keycloak
     spec:
       containers:
-        - name: postgres
-          image: postgres:18
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.7.2
+          # --- KEYCLOAK 26 DEV ARGS TO FORCE BINDING TO ALL INTERFACES ---
+          args: ["start-dev", "--http-enabled=true", "--hostname-strict=false"]
           env:
-            - name: POSTGRES_USER
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              value: "admin"
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              value: "admin"
+            - name: KC_HTTP_PORT
+              value: "8080"
+            - name: KC_DB
+              value: "postgres"
+            - name: KC_DB_URL
+              value: "jdbc:postgresql://keycloak-postgres-service.default.svc.cluster.local:5433/keycloak_persistence"
+            - name: KC_DB_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: backstage-app-config
                   key: KEYCLOAK_DB_USER
-            - name: POSTGRES_PASSWORD
+            - name: KC_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: backstage-app-config
                   key: KEYCLOAK_DB_PASSWORD
-            - name: POSTGRES_DB
-              value: "keycloak_persistence"
+            
+            # --- FIXED KEYCLOAK 26 COMPATIBLE PROXY FIELDS ---
+            - name: KC_PROXY_HEADERS
+              value: "xforwarded"
           ports:
-            - containerPort: 5432 # Postgres still runs on 5432 inside its own container
-              name: dbport
+            - containerPort: 8080
+              name: http
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-db-service
+  name: keycloak-service
   namespace: default
 spec:
   ports:
-    - name: tcp
-      port: 5433
-      targetPort: 5432      # Routes it to the container's 5432 port
+    - name: http
+      port: 8085          
+      targetPort: 8080    
       protocol: TCP
   selector:
-    app: postgres-db
+    app: keycloak
