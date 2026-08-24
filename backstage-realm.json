@@ -1,0 +1,32 @@
+{
+  "id": "backstage",
+  "realm": "backstage",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "backstage-auth",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "bearerOnly": false,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "http://localhost:7007/api/auth/oidc/handler/frame",
+        "http://localhost:7007/api/auth/keycloak/handler/frame"
+      ],
+      "webOrigins": [
+        "http://localhost:7007"
+      ]
+    },
+    {
+      "clientId": "backstage-catalog",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "bearerOnly": false,
+      "standardFlowEnabled": true,
+      "serviceAccountsEnabled": true
+    }
+  ]
+}

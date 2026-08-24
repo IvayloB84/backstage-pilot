@@ -18,8 +18,8 @@ spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.7.2
-          # --- KEYCLOAK 26 DEV ARGS TO FORCE BINDING TO ALL INTERFACES ---
-          args: ["start-dev", "--http-enabled=true", "--hostname-strict=false"]
+          # --- FIXED ARGUMENTS FOR AUTOMATED REALM IMPORTS ---
+          args: ["start-dev", "--http-enabled=true", "--hostname-strict=false", "--import-realm"]
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: "admin"
@@ -41,13 +41,20 @@ spec:
                 secretKeyRef:
                   name: backstage-app-config
                   key: KEYCLOAK_DB_PASSWORD
-            
-            # --- FIXED KEYCLOAK 26 COMPATIBLE PROXY FIELDS ---
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
           ports:
             - containerPort: 8080
               name: http
+          # --- MOUNT SCHEMAS ---
+          volumeMounts:
+            - name: import-volume
+              mountPath: /opt/keycloak/data/import/backstage-realm.json
+              subPath: backstage-realm.json
+      volumes:
+        - name: import-volume
+          configMap:
+            name: keycloak-drop-in-realm
 ---
 apiVersion: v1
 kind: Service
