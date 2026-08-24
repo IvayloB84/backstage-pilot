@@ -19,7 +19,7 @@ spec:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.7.2
           # --- FIXED ARGUMENTS FOR AUTOMATED REALM IMPORTS ---
-          args: ["start-dev", "--http-enabled=true", "--hostname-strict=false", "--import-realm", "--hostname=localhost"]
+          args: ["start-dev", "--http-enabled=true", "--import-realm"]
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: "admin"
@@ -43,6 +43,15 @@ spec:
                   key: KEYCLOAK_DB_PASSWORD
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
+            
+            # --- KEYCLOAK 26 TRAFFIC-SPLIT CONFIGURATION ---
+            - name: KC_HOSTNAME                       # External root domain requested by browser
+              value: "localhost"
+            - name: KC_HOSTNAME_URL                   # Complete browser-facing front-channel base
+              value: "http://localhost:8085"
+            - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC  # Natively resolves private cluster lookups
+              value: "true"
+
           ports:
             - containerPort: 8080
               name: http
