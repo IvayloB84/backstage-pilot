@@ -69,6 +69,8 @@ catalog:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
   locations:
     - type: file
+      target: /app/org-data.yaml
+    - type: file
       target: ./catalog/org-users.yaml
     - type: file
       target: ./catalog/components.yaml
@@ -105,6 +107,11 @@ auth:
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         metadataUrl: ${KEYCLOAK_METADATA_URL}
         prompt: auto
+        metadata:
+          issuer: http://localhost:8085/realms/backstage
+          authorization_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
+          token_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/token
+          jwks_uri: http://localhost:8085/realms/backstage/protocol/openid-connect/certs
         signIn:
           resolvers:
             - resolver: emailMatchingUserEntityProfileEmail
