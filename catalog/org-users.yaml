@@ -1,3 +1,30 @@
+# ==========================================
+# 1. CORE ORGANIZATIONAL GROUPS (TEAMS)
+# ==========================================
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: development
+  namespace: default
+  description: Application Engineering and Product Development Division
+spec:
+  type: team
+  children: []
+---
+apiVersion: v1alpha1
+kind: Group
+metadata:
+  name: platform-engineer
+  namespace: default
+  description: Infrastructure Engineering and Core Operations Division
+spec:
+  type: team
+  children: []
+
+# ==========================================
+# 2. INDIVIDUAL PLATFORM USERS
+# ==========================================
+---
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
@@ -5,6 +32,22 @@ metadata:
   namespace: default
 spec:
   profile:
-    displayName: IvayloB84
+    displayName: Ivaylo Bumbovski
     email: ivaylo.bumbovski@gmail.com
-  memberOf: [guests]
+  # --- MOVED INTO DEVELOPMENT AND PLATFORM TEAMS ---
+  memberOf: 
+    - development
+    - platform-engineer
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: demouser2
+  namespace: default
+spec:
+  profile:
+    displayName: Staging Demo User 2
+    email: demouser2@example.com
+  # --- ALIGNED DEMO USER TO THE GENERAL DEVELOPMENT POOL ---
+  memberOf: 
+    - development
