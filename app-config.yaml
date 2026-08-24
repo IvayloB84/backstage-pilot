@@ -110,8 +110,10 @@ auth:
         metadata:
           issuer: http://localhost:8085/realms/backstage
           authorization_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
-          token_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/token
-          jwks_uri: http://localhost:8085/realms/backstage/protocol/openid-connect/certs
+          
+          # --- FIXED INTERNAL CLUSTER ROUTING FOR THE BACK-CHANNEL ---
+          token_endpoint: http://keycloak-service.default.svc.cluster.local:8085/realms/backstage/protocol/openid-connect/token
+          jwks_uri: http://keycloak-service.default.svc.cluster.local:8085/realms/backstage/protocol/openid-connect/certs
         signIn:
           resolvers:
             - resolver: emailMatchingUserEntityProfileEmail
