@@ -68,8 +68,6 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
   locations:
-    - type: url
-      target: https://github.com/IvayloB84/backstage-pilot/blob/main/catalog/org-users.yaml
     - type: file
       target: ./catalog/components.yaml
     - type: url
