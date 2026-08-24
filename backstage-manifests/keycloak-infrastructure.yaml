@@ -29,7 +29,7 @@ spec:
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: "admin"
             - name: KC_HTTP_PORT
-              value: "8080"
+              value: "8085"
             - name: KC_DB
               value: "postgres"
             - name: KC_DB_URL
@@ -49,7 +49,7 @@ spec:
             - name: KC_HOSTNAME
               value: "localhost"
           ports:
-            - containerPort: 8080
+            - containerPort: 8085
               name: http
           volumeMounts:
             - name: import-volume
@@ -69,7 +69,7 @@ spec:
   ports:
     - name: http
       port: 8085          
-      targetPort: 8080    
+      targetPort: 8085   
       protocol: TCP
   selector:
     app: keycloak
