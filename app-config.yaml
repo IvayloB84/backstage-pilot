@@ -77,13 +77,14 @@ catalog:
     - type: url
       target: https://github.com/IvayloB84/backstage-templates/tree/main/manifests/*.yaml
 
+  providers:
     keycloakOrg:
       default:
-        baseUrl: http://keycloak-service.default.svc.cluster.local:8085
+        baseUrl: http://cluster.local
         loginRealm: master
         realm: backstage
-        username: admin
-        password: admin
+        username: ${KEYCLOAK_ADMIN_USER}        # Publicly safe placeholder
+        password: ${KEYCLOAK_ADMIN_PASSWORD}    # Publicly safe placeholder
         schedule:
           frequency: { minutes: 15 }
           timeout: { minutes: 3 }
