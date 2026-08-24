@@ -5,9 +5,9 @@ metadata:
   namespace: default
   labels:
     app: keycloak
+  # --- STOPS ARGOCD INTERFERENCE ---
   annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-policy: Manual
 spec:
   replicas: 1
   selector:
@@ -21,7 +21,15 @@ spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.7.2
-          args: ["start-dev", "--optimized"] 
+          # --- MANDATORY NATIVE SPLIT ENDPOINTS PASSED VIA EXECUTION ARGS ---
+          args: [
+            "start-dev", 
+            "--http-enabled=true", 
+            "--import-realm",
+            "--hostname-strict=false",
+            "--hostname-backchannel-dynamic=true",
+            "--hostname=http://localhost:8085"
+          ]
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: "admin"
@@ -45,19 +53,9 @@ spec:
                   key: KEYCLOAK_DB_PASSWORD
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
-            
-            # --- KEYCLOAK 26 TRAFFIC-SPLIT CONFIGURATION ---
-            - name: KC_HOSTNAME_STRICT
-              value: "false"
-            - name: KC_HOSTNAME                       # External root domain requested by browser
-              value: "localhost"
-            - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC  # Natively resolves private cluster lookups
-              value: "true"
-
           ports:
             - containerPort: 8080
               name: http
-          # --- MOUNT SCHEMAS ---
           volumeMounts:
             - name: import-volume
               mountPath: /opt/keycloak/data/import/backstage-realm.json
