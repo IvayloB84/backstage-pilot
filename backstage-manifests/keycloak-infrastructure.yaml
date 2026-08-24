@@ -22,14 +22,7 @@ spec:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.7.2
           # --- MANDATORY NATIVE SPLIT ENDPOINTS PASSED VIA EXECUTION ARGS ---
-          args: [
-            "start-dev", 
-            "--http-enabled=true", 
-            "--import-realm",
-            "--hostname-strict=false",
-            "--hostname-backchannel-dynamic=true",
-            "--hostname=http://localhost:8085"
-          ]
+          args: ["start-dev", "--http-enabled=true", "--import-realm"]
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: "admin"
@@ -53,6 +46,8 @@ spec:
                   key: KEYCLOAK_DB_PASSWORD
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
+            - name: KC_HOSTNAME
+              value: "localhost"
           ports:
             - containerPort: 8080
               name: http
