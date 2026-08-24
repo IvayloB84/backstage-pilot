@@ -77,7 +77,7 @@ catalog:
     - type: url
       target: https://github.com/IvayloB84/backstage-templates/tree/main/manifests/*.yaml
 
-  providers:
+  # providers:
     # keycloakOrg:
     #   default:
     #     baseUrl: ${KEYCLOAK_INTERNAL_URL}
