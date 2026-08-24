@@ -104,9 +104,9 @@ auth:
 
     oidc:
       development:
-        clientId: ${KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        metadataUrl: ${KEYCLOAK_METADATA_URL}
+        clientId: backstage-auth
+        clientSecret: wCraHWKJH1rpbJy2I96IopgnkxxYpMYWj9bBxrGxpZS9eWtJVO7YRcrWp5qCk0M9ekYzj5z2uG3SVkvPOWZvVq
+        metadataUrl: http://localhost:8085/realms/backstage/.well-known/openid-configuration
         prompt: auto
         metadata:
           issuer: http://localhost:8085/realms/backstage
