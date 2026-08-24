@@ -68,12 +68,18 @@ spec:
         app: backstage-pilot
     spec:
       serviceAccountName: backstage-cluster-reader
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
       containers:
       - name: backstage
         image: backstage-pilot:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 7007
+        securityContext:
+          allowPrivilegeEscalation: false
+        # --- FIXED: INDENTED PROPERLY UNDER CONTAINER SCOPE (8 SPACES) ---
         env:
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: "0"
@@ -137,6 +143,16 @@ spec:
             secretKeyRef:
               name: backstage-app-config
               key: KEYCLOAK_METADATA_URL
+        - name: KEYCLOAK_CATALOG_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: KEYCLOAK_CATALOG_CLIENT_ID
+        - name: KEYCLOAK_CATALOG_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: KEYCLOAK_CATALOG_CLIENT_SECRET
         - name: AUTH_KEYCLOAK_CLIENT_ID
           valueFrom:
             secretKeyRef:
@@ -161,18 +177,13 @@ spec:
           value: "delete"
         - name: APP_CONFIG_catalog_processingIntervalSeconds
           value: "20"
-              
+        # --- FIXED: ALIGNED CLEANLY UNDER CONTAINER KEYS (8 SPACES) ---
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
         - name: main-config-volume
           mountPath: /app/app-config.yaml
           subPath: app-config.yaml
-        securityContext:
-          allowPrivilegeEscalation: false
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
       volumes:
       - name: catalog-files-volume
         configMap:
