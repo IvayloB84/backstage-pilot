@@ -47,8 +47,6 @@ spec:
             # --- KEYCLOAK 26 TRAFFIC-SPLIT CONFIGURATION ---
             - name: KC_HOSTNAME                       # External root domain requested by browser
               value: "localhost"
-            - name: KC_HOSTNAME_URL                   # Complete browser-facing front-channel base
-              value: "http://localhost:8085"
             - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC  # Natively resolves private cluster lookups
               value: "true"
 
