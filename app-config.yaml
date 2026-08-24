@@ -75,16 +75,16 @@ catalog:
     - type: url
       target: https://github.com/IvayloB84/backstage-templates/tree/main/manifests/*.yaml
 
-  providers:
-    keycloakOrg:
-      default:
-        baseUrl: ${KEYCLOAK_INTERNAL_URL}
-        realm: backstage
-        clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
-        schedule:
-          frequency: { minutes: 15 }
-          timeout: { minutes: 3 }
+  # providers:
+  #   keycloakOrg:
+  #     default:
+  #       baseUrl: ${KEYCLOAK_INTERNAL_URL}
+  #       realm: backstage
+  #       clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
+  #       clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
+  #       schedule:
+  #         frequency: { minutes: 15 }
+  #         timeout: { minutes: 3 }
 
 auth:
   environment: development
@@ -96,16 +96,17 @@ auth:
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
+
     oidc:
       development:
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         metadataUrl: ${KEYCLOAK_METADATA_URL}
         prompt: auto
+          
         signIn:
           resolvers:
-            - resolver: usernameMatchingUserEntityName
-
+            - resolver: emailMatchingUserEntityProfileEmail
 
 integrations:
   github:
