@@ -77,17 +77,17 @@ catalog:
     - type: url
       target: https://github.com/IvayloB84/backstage-templates/tree/main/manifests/*.yaml
 
-  # providers:
-    # keycloakOrg:
-    #   default:
-    #     baseUrl: ${KEYCLOAK_INTERNAL_URL}
-    #     realm: ${AUTH_KEYCLOAK_REALM}           # Maps to: backstage
-    #     clientId: ${AUTH_KEYCLOAK_CLIENT_ID}       # Maps to: backstage-catalog
-    #     clientSecret: ${AUTH_KEYCLOAK_CLIENT_SECRET} # Maps to your long catalog secret token
-    #     schedule:
-    #       frequency: { minutes: 15 }
-    #       timeout: { minutes: 3 }
-    #       initialDelay: { seconds: 10 }
+  providers:
+    keycloakOrg:
+      default:
+        baseUrl: ${KEYCLOAK_INTERNAL_URL}
+        realm: ${AUTH_KEYCLOAK_REALM}
+        clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
+        schedule:
+          frequency: { minutes: 15 }
+          timeout: { minutes: 3 }
+          initialDelay: { seconds: 10 }
 
 auth:
   environment: development
