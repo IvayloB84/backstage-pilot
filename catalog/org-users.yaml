@@ -11,7 +11,7 @@ spec:
   type: team
   children: []
 ---
-apiVersion: v1alpha1
+apiVersion: backstage.io/v1alpha1          # FIXED: Appended missing backstage.io/ namespace prefix
 kind: Group
 metadata:
   name: platform-engineer
@@ -34,7 +34,6 @@ spec:
   profile:
     displayName: Ivaylo Bumbovski
     email: ivaylo.bumbovski@gmail.com
-  # --- MOVED INTO DEVELOPMENT AND PLATFORM TEAMS ---
   memberOf: 
     - development
     - platform-engineer
@@ -48,6 +47,5 @@ spec:
   profile:
     displayName: Staging Demo User 2
     email: demouser2@example.com
-  # --- ALIGNED DEMO USER TO THE GENERAL DEVELOPMENT POOL ---
   memberOf: 
     - development
