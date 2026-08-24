@@ -1,76 +1,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: keycloak-server
+  name: keycloak-postgres-db
   namespace: default
   labels:
-    app: keycloak
+    app: keycloak-postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: keycloak
+      app: keycloak-postgres
   template:
     metadata:
       labels:
-        app: keycloak
+        app: keycloak-postgres
     spec:
       containers:
-        - name: keycloak
-          image: quay.io/keycloak/keycloak:26.7.2
-          args: ["start-dev"]
+        - name: postgres
+          image: postgres:18
           env:
-            - name: KC_BOOTSTRAP_ADMIN_USERNAME
-              value: "admin"
-            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
-              value: "admin"
-            - name: KC_HTTP_ENABLED
-              value: "true"
-            - name: KC_HTTP_PORT
-              value: "8080"
-            - name: KC_DB
-              value: "postgres"
-            - name: KC_DB_URL
-              value: "jdbc:postgresql://postgres-db-service.default.svc.cluster.local:5433/keycloak_persistence"
-            - name: KC_DB_USERNAME
+            - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: backstage-app-config
                   key: KEYCLOAK_DB_USER
-            - name: KC_DB_PASSWORD
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: backstage-app-config
                   key: KEYCLOAK_DB_PASSWORD
-
-            # --- CORRECT NATIVE KEYCLOAK SPLIT ENDPOINT CONFIGURATION ---
-            - name: KC_HTTP_ENABLED
-              value: "true"
-            - name: KC_PROXY_HEADERS
-              value: "xforwarded"
-            - name: KC_HOSTNAME_STRICT
-              value: "true"
-            - name: KC_HOSTNAME_STRICT_BACKCHANNEL
-              value: "true"
-            - name: KC_HOSTNAME_URL
-              value: "http://localhost:8085"
-            - name: KC_HOSTNAME_BACKCHANNEL_URL
-              value: "http://keycloak-service.default.svc.cluster.local:8085"
-
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: backstage-app-config
+                  key: KEYCLOAK_DB_NAME
           ports:
-            - containerPort: 8080
-              name: http
+            - containerPort: 5432
+              name: dbport
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: keycloak-service
+  name: keycloak-postgres-service
   namespace: default
 spec:
   ports:
-    - name: http
-      port: 8085
-      targetPort: 8080
+    - name: tcp
+      port: 5433
+      targetPort: 5432
       protocol: TCP
   selector:
-    app: keycloak
+    app: keycloak-postgres
