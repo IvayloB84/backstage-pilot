@@ -101,10 +101,10 @@ auth:
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         metadataUrl: ${KEYCLOAK_METADATA_URL}
-        
+        prompt: auto
         signIn:
           resolvers:
-            - resolver: preferredUsernameMatchingUserEntityName
+            - resolver: usernameMatchingUserEntityName
 
 
 integrations:

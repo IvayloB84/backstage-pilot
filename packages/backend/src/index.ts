@@ -3,66 +3,8 @@ import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 import { createBackend } from '@backstage/backend-defaults';
-import { createBackendModule } from '@backstage/backend-plugin-api';
-import { 
-  authProvidersExtensionPoint, 
-  createOAuthProviderFactory 
-} from '@backstage/plugin-auth-node';
-import { oidcAuthenticator } from '@backstage/plugin-auth-backend-module-oidc-provider';
 
 const backend = createBackend();
-
-// --- CUSTOM TYPE-SAFE KEYCLOAK OIDC SERVICE MODULE ---
-const customOidcAuthModule = createBackendModule({
-  pluginId: 'auth',
-  moduleId: 'custom-oidc-provider',
-  register(reg) {
-    reg.registerInit({
-      deps: { providers: authProvidersExtensionPoint },
-      async init({ providers }) {
-        providers.registerProvider({
-          providerId: 'oidc',
-          factory: createOAuthProviderFactory({
-            authenticator: oidcAuthenticator,
-            async signInResolver(info, ctx) { 
-              const fullProfile = info.result.fullProfile;
-              const userinfo = (fullProfile as any).userinfo || {};
-              
-              // 1. Safe extraction with strict type routing fallbacks
-              const parsedUsername = 
-                userinfo.preferred_username || 
-                userinfo.sub || 
-                (fullProfile as any).username;
-
-              // 2. Validate that the value exists and is an explicit string primitive
-              if (!parsedUsername || typeof parsedUsername !== 'string') {
-                throw new Error('User identity could not be parsed from Keycloak OIDC token payload');
-              }
-
-              // 3. Clean string white-spaces to secure downstream DB queries
-              const normalizedUsername = parsedUsername.trim().toLowerCase();
-
-              if (!normalizedUsername) {
-                throw new Error('Parsed Keycloak username metadata is blank');
-              }
-
-              // 4. Safely enroll the user entity mapping into the platform catalog
-              return ctx.signInWithCatalogUser({
-                entityRef: {
-                  kind: 'User',
-                  name: normalizedUsername, 
-                },
-              });
-            },
-          }),
-        });
-      },
-    });
-  },
-});
-
-// Register the custom OIDC module
-backend.add(customOidcAuthModule);
 
 // --- PLATFORM CORE INFRASTRUCTURE SERVICES ---
 backend.add(import('@backstage/plugin-app-backend'));
@@ -79,7 +21,7 @@ backend.add(import('@backstage/plugin-techdocs-backend'));
 
 // --- CORE SECURITY IDENTITY PROVIDERS ---
 backend.add(import('@backstage/plugin-auth-backend'));
-backend.add(import('@backstage-community/plugin-auth-backend-module-keycloak-provider'));
+backend.add(import('@backstage/plugin-auth-backend-module-oidc-provider'));
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 
 // --- Enrolls the HTTP Request action template runner capacity ---
