@@ -6,12 +6,16 @@ import { navModule } from './modules/nav';
 
 import {
   githubAuthApiRef,
-  createApiRef,
+  OpenIdConnectApi,
+  ProfileInfoApi,
+  BackstageIdentityApi,
+  SessionApi,
 } from '@backstage/core-plugin-api';
 import { OAuth2 } from '@backstage/core-app-api';
 import { SignInPageBlueprint } from '@backstage/plugin-app-react';
 import { SignInPage } from '@backstage/core-components';
 import {
+  createApiRef,
   createFrontendModule,
   configApiRef,
   discoveryApiRef,
@@ -25,9 +29,10 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 // THE ROADIE NEW FRONTEND SYSTEM IMPORT
 import argoCdPlugin from '@roadiehq/backstage-plugin-argo-cd/alpha';
 
-// --- KEYCLOAK GENUINE COMMUNITY AUTH CONFIGURATION BLOCK ---
-const keycloakAuthApiRef = createApiRef<any>({
-  id: 'auth.keycloak', // Matches 'auth.providers.keycloak' backend configuration
+const keycloakAuthApiRef = createApiRef<
+  OpenIdConnectApi & ProfileInfoApi & BackstageIdentityApi & SessionApi
+>().with({
+  id: 'auth.keycloak',
 });
 
 const keycloakAuthApi = ApiBlueprint.make({
@@ -47,7 +52,7 @@ const keycloakAuthApi = ApiBlueprint.make({
           oauthRequestApi,
           environment: configApi.getOptionalString('auth.environment'),
           provider: {
-            id: 'keycloak', // Directs frontend to match backend's native keycloak node
+            id: 'oidc',
             title: 'Keycloak',
             icon: () => null,
           },
@@ -65,10 +70,10 @@ const signInPageModule = SignInPageBlueprint.make({
         title="Backstage Pilot Login"
         providers={[
           {
-            id: 'keycloak', // Targets '/api/auth/keycloak/start' pipeline endpoint directly
+            id: 'keycloak-auth-provider',
             title: 'Keycloak',
-            message: 'Sign in using your Keycloak account',
-            apiRef: keycloakAuthApiRef as any, 
+            message: 'Sign In using Keycloak',
+            apiRef: keycloakAuthApiRef,
           },
           {
             id: 'github-auth-provider',
