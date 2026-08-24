@@ -88,6 +88,8 @@ catalog:
 
 auth:
   environment: development
+  session:
+    secret: ${BACKEND_SECRET}
   providers:
     github:
       development:
@@ -103,7 +105,11 @@ auth:
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         metadataUrl: ${KEYCLOAK_METADATA_URL}
         prompt: auto
-          
+        metadata:
+          issuer: http://localhost:8085/realms/backstage
+          authorization_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
+          token_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/token
+          jwks_uri: http://localhost:8085/realms/backstage/protocol/openid-connect/certs
         signIn:
           resolvers:
             - resolver: emailMatchingUserEntityProfileEmail
