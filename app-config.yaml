@@ -80,11 +80,10 @@ catalog:
   providers:
     keycloakOrg:
       default:
-        baseUrl: http://cluster.local
-        loginRealm: master
-        realm: backstage
-        username: ${KEYCLOAK_ADMIN_USER}        # Publicly safe placeholder
-        password: ${KEYCLOAK_ADMIN_PASSWORD}    # Publicly safe placeholder
+        baseUrl: ${KEYCLOAK_INTERNAL_URL}
+        realm: ${AUTH_KEYCLOAK_REALM}           # Maps to: backstage
+        clientId: ${AUTH_KEYCLOAK_CLIENT_ID}       # Maps to: backstage-catalog
+        clientSecret: ${AUTH_KEYCLOAK_CLIENT_SECRET} # Maps to your long catalog secret token
         schedule:
           frequency: { minutes: 15 }
           timeout: { minutes: 3 }
