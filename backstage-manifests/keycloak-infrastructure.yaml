@@ -19,7 +19,7 @@ spec:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.7.2
           # --- FIXED ARGUMENTS FOR AUTOMATED REALM IMPORTS ---
-          args: ["start-dev", "--http-enabled=true", "--hostname-strict=false", "--import-realm"]
+          args: ["start-dev", "--http-enabled=true", "--hostname-strict=false", "--import-realm", "--hostname=localhost"]
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: "admin"
