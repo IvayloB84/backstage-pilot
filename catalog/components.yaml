@@ -46,3 +46,14 @@ metadata:
 spec:
   type: kubernetes-cluster
   owner: user:default/ivaylob84
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: IvayloB84
+  namespace: default
+spec:
+  profile:
+    displayName: IvayloB84
+  memberOf: []

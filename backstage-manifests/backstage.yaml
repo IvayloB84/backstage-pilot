@@ -176,7 +176,7 @@ spec:
         - name: APP_CONFIG_catalog_orphanStrategy
           value: "delete"
         - name: APP_CONFIG_catalog_processingIntervalSeconds
-          value: "20"
+          value: "300"
         # --- FIXED: ALIGNED CLEANLY UNDER CONTAINER KEYS (8 SPACES) ---
         volumeMounts:
         - name: catalog-files-volume
