@@ -81,11 +81,9 @@ catalog:
         realm: ${AUTH_KEYCLOAK_REALM}
         clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
-        
         schedule:
           frequency: { minutes: 15 }
           timeout: { minutes: 3 }
-          initialDelay: { seconds: 10 }
 
 auth:
   environment: development
@@ -94,8 +92,10 @@ auth:
   providers:
     github:
       development:
-        clientId: ${GITHUB_CLIENT_ID}
-        clientSecret: ${GITHUB_CLIENT_SECRET}
+        clientId: backstage-catalog
+        clientSecret: 5i3qDZo12o47sBBph3XKm3WPYTMiweyzH2XI6MUoty9V2gymYacohAAA0fBCAaebeYIR9qQS5HtKdMqPCc7BBY
+        prompt: auto
+
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
