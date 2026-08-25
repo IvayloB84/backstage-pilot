@@ -69,9 +69,9 @@ catalog:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
   locations:
     - type: file
-      target: ./catalog/components.yaml
+      target: ./app/catalog/components.yaml
     - type: file
-      target: ./catalog/org-users.yaml
+      target: ./app/catalog/org-users.yaml
 
   providers:
     keycloakOrg:
