@@ -36,7 +36,7 @@ spec:
   output:
     links:
       - title: View Dashboard
-        url: http://localhost:7007/catalog/default/component/argo-live-service-final
+        url: 'http://localhost:7007/catalog/default/component/argo-live-service-final'
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
