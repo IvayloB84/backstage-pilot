@@ -77,7 +77,7 @@ catalog:
     keycloakOrg:
       default:
         baseUrl: ${KEYCLOAK_INTERNAL_URL}
-        loginRealm: master
+        loginRealm: ${AUTH_KEYCLOAK_REALM}
         realm: ${AUTH_KEYCLOAK_REALM}
         clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}

@@ -6,7 +6,8 @@ metadata:
   labels:
     app: keycloak
   # --- STOPS ARGOCD INTERFERENCE ---
-  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Validate=false
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
     argocd.argoproj.io/sync-policy: Manual
 spec:
   replicas: 1
@@ -65,6 +66,8 @@ kind: Service
 metadata:
   name: keycloak-service
   namespace: default
+  annotations:
+    argocd.argoproj.io/sync-policy: Manual
 spec:
   ports:
     - name: http
