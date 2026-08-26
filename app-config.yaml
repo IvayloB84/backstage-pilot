@@ -75,7 +75,7 @@ catalog:
     keycloakOrg:
       default:
         baseUrl: ${KEYCLOAK_INTERNAL_URL}
-        loginRealm: master
+        loginRealm: backstage
         realm: backstage
         clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
