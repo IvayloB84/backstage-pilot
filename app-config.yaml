@@ -105,8 +105,9 @@ auth:
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         metadataUrl: ${KEYCLOAK_METADATA_URL}
         callbackUrl: http://localhost:7007/api/auth/oidc/handler/frame
-        # ADD THIS BLOCK TO OVERRIDE THE INTERNAL KEYCLOAK ENDPOINTS FOR THE BROWSER
-        configuration:
+        # FIX: Change 'configuration' to 'metadata' and add the absolute token 'issuer'
+        metadata:
+          issuer: http://localhost:8085/realms/backstage
           authorization_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
           token_endpoint: ${KEYCLOAK_INTERNAL_URL}/realms/backstage/protocol/openid-connect/token
           userinfo_endpoint: ${KEYCLOAK_INTERNAL_URL}/realms/backstage/protocol/openid-connect/userinfo
