@@ -103,7 +103,8 @@ auth:
       development:
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        metadataUrl: http://localhost:8085/realms/backstage/.well-known/openid-configuration
+        metadataUrl: ${KEYCLOAK_METADATA_URL}
+        callbackUrl: ${KEYCLOAK_PUBLIC_URL}/realms/backstage/protocol/openid-connect/auth 
         prompt: auto
         signIn:
           resolvers:
