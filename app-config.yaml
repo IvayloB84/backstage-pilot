@@ -68,13 +68,11 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
 
-  providers:
-    file:
-      /app/catalog/components.yaml:
-        schedule:
-          frequency: { minutes: 10 }
-          timeout: { minutes: 1 }
+  locations:
+    - type: file
+      target: /app/catalog/components.yaml
 
+  providers:
     keycloakOrg:
       default:
         baseUrl: ${KEYCLOAK_INTERNAL_URL}
