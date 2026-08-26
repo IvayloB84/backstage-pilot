@@ -75,10 +75,12 @@ catalog:
     keycloakOrg:
       default:
         baseUrl: ${KEYCLOAK_INTERNAL_URL}
-        loginRealm: backstage
         realm: backstage
+        # Native schema structure to force direct client authentication:
         clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
+        # Explicitly declare client credentials to skip the password authentication loop
+        grantType: client_credentials
         schedule:
           frequency: { minutes: 15 }
           timeout: { minutes: 1 }
