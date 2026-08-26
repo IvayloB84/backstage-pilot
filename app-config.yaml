@@ -104,7 +104,7 @@ auth:
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         metadataUrl: ${KEYCLOAK_METADATA_URL}
-        callbackUrl: ${KEYCLOAK_PUBLIC_URL}/realms/backstage/protocol/openid-connect/auth 
+        callbackUrl: http://localhost:7007/api/auth/oidc/handler/frame
         prompt: auto
         signIn:
           resolvers:
