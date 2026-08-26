@@ -73,17 +73,17 @@ catalog:
     - type: file
       target: /app/catalog/org-users.yaml
 
-  providers:
-    keycloakOrg:
-      default:
-        baseUrl: ${KEYCLOAK_INTERNAL_URL}
-        loginRealm: backstage
-        realm: backstage
-        clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
-        schedule:
-          frequency: { minutes: 15 }
-          timeout: { minutes: 1 }
+  # providers:
+  #   keycloakOrg:
+  #     default:
+  #       baseUrl: ${KEYCLOAK_INTERNAL_URL}
+  #       loginRealm: backstage
+  #       realm: backstage
+  #       clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
+  #       clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
+  #       schedule:
+  #         frequency: { minutes: 15 }
+  #         timeout: { minutes: 1 }
 
 auth:
   environment: development
