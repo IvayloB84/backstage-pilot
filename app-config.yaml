@@ -92,9 +92,8 @@ auth:
   providers:
     github:
       development:
-        clientId: backstage-catalog
-        clientSecret: 5i3qDZo12o47sBBph3XKm3WPYTMiweyzH2XI6MUoty9V2gymYacohAAA0fBCAaebeYIR9qQS5HtKdMqPCc7BBY
-        prompt: auto
+        clientId: ${GITHUB_CLIENT_ID}
+        clientSecret: ${GITHUB_CLIENT_SECRET}
 
         signIn:
           resolvers:
@@ -103,8 +102,8 @@ auth:
     oidc:
       development:
         clientId: backstage-auth
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        metadataUrl: ${KEYCLOAK_METADATA_URL}
+        clientSecret: hPyYGpT0YOp93iLAbK8dghEa6OGNDY4LXQ3QCnPYRJSbmVDmvu1zqJCHxcQcjHcMZCTTotTE9s1UeMJRrcxa9P
+        metadataUrl: http://localhost:8085/realms/backstage/.well-known/openid-configuration
         prompt: auto
         signIn:
           resolvers:
