@@ -82,7 +82,7 @@ catalog:
         clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
         schedule:
-          frequency: { seconds: 10 }
+          frequency: { minutes: 15 }
           timeout: { minutes: 1 }
 
 auth:
@@ -101,8 +101,8 @@ auth:
 
     oidc:
       development:
-        clientId: backstage-auth
-        clientSecret: hPyYGpT0YOp93iLAbK8dghEa6OGNDY4LXQ3QCnPYRJSbmVDmvu1zqJCHxcQcjHcMZCTTotTE9s1UeMJRrcxa9P
+        clientId: ${AUTH_KEYCLOAK_CLIENT_ID}
+        clientSecret: ${AUTH_KEYCLOAK_CLIENT_SECRET}
         metadataUrl: http://localhost:8085/realms/backstage/.well-known/openid-configuration
         prompt: auto
         signIn:
