@@ -112,7 +112,7 @@ auth:
         prompt: auto
         signIn:
           resolvers:
-            - resolver: usernameMatchingUserEntityName
+            - resolver: emailMatchingUserEntityName
 
 integrations:
   github:
