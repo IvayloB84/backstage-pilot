@@ -5,7 +5,8 @@ metadata:
   namespace: default
   labels:
     app: keycloak
-  # --- STOPS ARGOCD INTERFERENCE ---
+  # Move the ArgoCD options under annotations:
+  annotations: 
     argocd.argoproj.io/sync-options: Prune=false,Validate=false
     argocd.argoproj.io/compare-options: IgnoreExtraneous
     argocd.argoproj.io/sync-policy: Manual
