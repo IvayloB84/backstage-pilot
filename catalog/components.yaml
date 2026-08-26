@@ -11,33 +11,6 @@ spec:
   lifecycle: experimental
   owner: user:default/ivaylob84
 ---
-apiVersion: scaffolder.backstage.io/v1beta3
-kind: Template
-metadata:
-  name: basic-demo-template
-  namespace: default
-  title: Basic Demo Development Template
-  description: Simple verified starter template for the container platform.
-spec:
-  type: service
-  owner: user:default/IvayloB84
-  parameters:
-    - title: Provide details
-      properties:
-        name:
-          title: Service Name
-          type: string
-  steps:
-    - id: log
-      name: Log Trace
-      action: debug:log
-      input:
-        message: "Template initiated successfully"
-  output:
-    links:
-      - title: View Dashboard
-        url: 'http://localhost:7007/catalog/default/component/argo-live-service-final'
----
 apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
