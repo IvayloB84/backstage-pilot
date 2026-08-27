@@ -97,6 +97,7 @@ auth:
           authorization_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
           token_endpoint: ${KEYCLOAK_INTERNAL_URL}/realms/backstage/protocol/openid-connect/token
           userinfo_endpoint: ${KEYCLOAK_INTERNAL_URL}/realms/backstage/protocol/openid-connect/userinfo
+          disableIssuerValidation: true
         prompt: auto
         signIn:
           resolvers:
