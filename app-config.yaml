@@ -21,7 +21,7 @@ backend:
   database:
     client: pg
     connection:
-      host: 127.0.0.1
+      host: ${POSTGRES_HOST}
       port: ${POSTGRES_PORT}
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
@@ -86,17 +86,20 @@ auth:
           resolvers:
             - resolver: usernameMatchingUserEntityName
 
-    keycloak:
+    oidc:
       development:
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        
-        # 1. BROWSER NETWORK TARGET: Opens the login screen on your desktop screen smoothly
-        loginUrl: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
-        
-        # 2. POD NETWORK TARGET: Enables your container pod to complete the token trade over CoreDNS paths
-        baseUrl: ttp://localhost:8085
-        realm: backstage
+        callbackUrl: http://localhost:7007/api/auth/oidc/handler/frame
+        metadata:
+          # 1. Browser targets (Firefox handles these)
+          issuer: http://localhost:8085/realms/backstage
+          authorization_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
+          
+          # 2. Back-channel pod targets (Backstage server handles these internally via CoreDNS)
+          token_endpoint: http://keycloak-service.default.svc.cluster.local:8085/realms/backstage/protocol/openid-connect/token
+          userinfo_endpoint: http://keycloak-service.default.svc.cluster.local:8085/realms/backstage/protocol/openid-connect/userinfo
+        prompt: auto
         signIn:
           resolvers:
             - resolver: emailLocalPartMatchingUserEntityName
