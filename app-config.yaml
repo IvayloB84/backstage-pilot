@@ -72,19 +72,6 @@ catalog:
     - type: file
       target: /app/catalog/components.yaml
 
-  providers:
-    keycloakOrg:
-      default:
-        baseUrl: ${KEYCLOAK_INTERNAL_URL}
-        realm: backstage
-        loginRealm: master
-        clientId: ${KEYCLOAK_CATALOG_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CATALOG_CLIENT_SECRET}
-        grantType: client_credentials
-        schedule:
-          frequency: { minutes: 15 }
-          timeout: { minutes: 1 }
-
 auth:
   environment: development
   session:
@@ -103,9 +90,8 @@ auth:
       development:
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        metadataUrl: ${KEYCLOAK_METADATA_URL}
         callbackUrl: http://localhost:7007/api/auth/oidc/handler/frame
-        # FIX: Change 'configuration' to 'metadata' and add the absolute token 'issuer'
+
         metadata:
           issuer: http://localhost:8085/realms/backstage
           authorization_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
