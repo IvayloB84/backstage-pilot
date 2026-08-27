@@ -88,16 +88,11 @@ auth:
 
     oidc:
       development:
+        # THE MINIMAL OIDC TRACK: Single direct link to your cluster service discovery block
+        metadataUrl: http://cluster.local
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         callbackUrl: http://localhost:7007/api/auth/oidc/handler/frame
-
-        metadata:
-          issuer: http://localhost:8085/realms/backstage
-          authorization_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
-          token_endpoint: ${KEYCLOAK_INTERNAL_URL}/realms/backstage/protocol/openid-connect/token
-          userinfo_endpoint: ${KEYCLOAK_INTERNAL_URL}/realms/backstage/protocol/openid-connect/userinfo
-          disableIssuerValidation: true
         prompt: auto
         signIn:
           resolvers:
