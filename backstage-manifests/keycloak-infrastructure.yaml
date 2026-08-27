@@ -49,7 +49,7 @@ spec:
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
             - name: KC_HOSTNAME
-              value: "localhost"
+              value: "http://localhost:8085"
           ports:
             - containerPort: 8085
               name: http

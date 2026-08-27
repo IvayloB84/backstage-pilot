@@ -86,14 +86,17 @@ auth:
           resolvers:
             - resolver: usernameMatchingUserEntityName
 
-    oidc:
+    keycloak:
       development:
-        # THE MINIMAL OIDC TRACK: Single direct link to your cluster service discovery block
-        metadataUrl: http://cluster.local
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        callbackUrl: http://localhost:7007/api/auth/oidc/handler/frame
-        prompt: auto
+        
+        # 1. BROWSER NETWORK TARGET: Opens the login screen on your desktop screen smoothly
+        loginUrl: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
+        
+        # 2. POD NETWORK TARGET: Enables your container pod to complete the token trade over CoreDNS paths
+        baseUrl: ttp://localhost:8085
+        realm: backstage
         signIn:
           resolvers:
             - resolver: emailLocalPartMatchingUserEntityName
