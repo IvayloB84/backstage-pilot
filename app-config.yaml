@@ -68,10 +68,6 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
 
-  locations:
-    - type: file
-      target: /app/catalog/components.yaml
-
   providers:
     keycloakOrg:
       default:
