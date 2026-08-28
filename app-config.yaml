@@ -77,9 +77,8 @@ catalog:
         clientId: backstage-auth
         clientSecret: OMdJB9Phni1MvsqybE0jIaA38UzbOQxHS5i3vtYUvv20hrjLKNgqJ0EFlZBG25SgO5r1uC7L5WtbOfySMekk9z
         schedule:
-          frequency: { minutes: 30 }
-          timeout: { minutes: 3 }
-          initialDelay: { seconds: 15 }
+          frequency: { minutes: 5 }
+          timeout: { minutes: 1 }
 
 auth:
   environment: development
