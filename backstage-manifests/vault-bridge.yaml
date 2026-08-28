@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-autobridge
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault-autobridge
+  template:
+    metadata:
+      labels:
+        app: vault-autobridge
+    spec:
+      hostNetwork: true  # CRUCIAL: Binds the port directly to your Debian host machine loop
+      containers:
+      - name: socat-tunnel
+        image: alpine/socat
+        # Automatically routes your host's port 8200 straight to Vault's internal service IP
+        args: ["tcp-listen:8200,fork,reuseaddr", "tcp-connect:vault-service.default.svc.cluster.local:8200"]
+        securityContext:
+          privileged: true
