@@ -74,23 +74,17 @@ catalog:
 
   providers:
     keycloakOrg:
-      providers:
-        - baseUrl: http://keycloak-service:8085
-          loginRealm: backstage
-          realm: backstage
-          clientId: backstage-auth
-          clientSecret: OMdJB9Phni1MvsqybE0jIaA38UzbOQxHS5i3vtYUvv20hrjLKNgqJ0EFlZBG25SgO5r1uC7L5WtbOfySMekk9z
+      default:
+        baseUrl: http://keycloak-service:8085
+        loginRealm: backstage
+        realm: backstage
+        clientId: backstage-auth
+        clientSecret: OMdJB9Phni1MvsqybE0jIaA38UzbOQxHS5i3vtYUvv20hrjLKNgqJ0EFlZBG25SgO5r1uC7L5WtbOfySMekk9z
 
-          userQuery:
-            max: 500
-          groupQuery:
-            max: 100
-
-          schedule:
-            frequency: { minutes: 1 }
-            timeout: { minutes: 1 }
-            initialDelay: { seconds: 15 }
-
+        schedule:
+          frequency: { minutes: 1 }
+          timeout: { minutes: 1 }
+          initialDelay: { seconds: 15 }
 
 auth:
   environment: development
