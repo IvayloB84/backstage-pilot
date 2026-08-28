@@ -77,7 +77,6 @@ catalog:
 
 providers:
     keycloakOrg:
-      default:
         baseUrl: http://keycloak-service:8085
         loginRealm: backstage
         realm: backstage
