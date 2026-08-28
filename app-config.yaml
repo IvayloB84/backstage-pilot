@@ -86,10 +86,6 @@ catalog:
           groupQuery:
             max: 100
 
-          userTransformer:
-            usernameField: preferred_username
-            emailField: email
-            displayNameField: name
           schedule:
             frequency: { minutes: 1 }
             timeout: { minutes: 1 }
