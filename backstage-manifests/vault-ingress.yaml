@@ -5,11 +5,12 @@ metadata:
   namespace: default
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
+    traefik.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: /vault
         pathType: Prefix
         backend:
           service:
