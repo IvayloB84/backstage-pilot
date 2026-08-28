@@ -80,6 +80,16 @@ catalog:
           realm: backstage
           clientId: backstage-auth
           clientSecret: OMdJB9Phni1MvsqybE0jIaA38UzbOQxHS5i3vtYUvv20hrjLKNgqJ0EFlZBG25SgO5r1uC7L5WtbOfySMekk9z
+
+          userQuery:
+            max: 500
+          groupQuery:
+            max: 100
+
+          userTransformer:
+            usernameField: preferred_username
+            emailField: email
+            displayNameField: name
           schedule:
             frequency: { minutes: 1 }
             timeout: { minutes: 1 }
