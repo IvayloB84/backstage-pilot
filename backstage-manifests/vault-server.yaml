@@ -29,11 +29,9 @@ metadata:
   name: vault-service
   namespace: default
 spec:
-  type: NodePort
   ports:
   - name: http
     port: 8200
     targetPort: 8200
-    nodePort: 30200
   selector:
     app: vault
