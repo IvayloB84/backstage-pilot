@@ -72,7 +72,7 @@ catalog:
     - type: file
       target: /app/catalog/components.yaml
 
-providers:
+  providers:
     keycloakOrg:
       default:
         baseUrl: http://keycloak-service:8085
