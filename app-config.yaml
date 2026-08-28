@@ -72,11 +72,9 @@ catalog:
     - type: file
       target: /app/catalog/components.yaml
 
-    - type: url
-      target: https://github.com/IvayloB84/backstage-pilot/blob/main/catalog/components.yaml
-
 providers:
     keycloakOrg:
+      providers:
         baseUrl: http://keycloak-service:8085
         loginRealm: backstage
         realm: backstage
