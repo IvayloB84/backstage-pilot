@@ -72,6 +72,9 @@ catalog:
     - type: file
       target: /app/catalog/components.yaml
 
+    - type: url
+      target: https://github.com/IvayloB84/backstage-pilot/blob/main/catalog/components.yaml
+
 providers:
     keycloakOrg:
       default:
