@@ -79,7 +79,7 @@ catalog:
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 3 }
-          # initialDelay: { seconds: 15 }
+          initialDelay: { seconds: 15 }
 
 auth:
   environment: development
