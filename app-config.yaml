@@ -72,6 +72,18 @@ catalog:
     - type: file
       target: /app/catalog/components.yaml
 
+  providers:
+    keycloakOrg:
+      default:
+        baseUrl: http://localhost:8085
+        loginRealm: master
+        realm: backstage
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
+
 auth:
   environment: development
   session:
@@ -88,21 +100,14 @@ auth:
 
     oidc:
       development:
+        metadataUrl: http://localhost:8085/realms/backstage/.well-known/openid-configuration
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         callbackUrl: http://localhost:7007/api/auth/oidc/handler/frame
-        metadata:
-          # 1. Browser targets (Firefox handles these)
-          issuer: http://localhost:8085/realms/backstage
-          authorization_endpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
-          
-          # 2. Back-channel pod targets (Backstage server handles these internally via CoreDNS)
-          token_endpoint: http://keycloak-service.default.svc.cluster.local:8085/realms/backstage/protocol/openid-connect/token
-          userinfo_endpoint: http://keycloak-service.default.svc.cluster.local:8085/realms/backstage/protocol/openid-connect/userinfo
         prompt: auto
         signIn:
           resolvers:
-            - resolver: emailLocalPartMatchingUserEntityName
+            - resolver: preferredUsernameMatchingUserEntityName
 
 integrations:
   github:
