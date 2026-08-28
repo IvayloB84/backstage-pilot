@@ -79,7 +79,6 @@ spec:
         - containerPort: 7007
         securityContext:
           allowPrivilegeEscalation: false
-        # --- FIXED: INDENTED PROPERLY UNDER CONTAINER SCOPE (8 SPACES) ---
         env:
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: "0"
@@ -177,7 +176,6 @@ spec:
           value: "delete"
         - name: APP_CONFIG_catalog_processingIntervalSeconds
           value: "300"
-        # --- FIXED: ALIGNED CLEANLY UNDER CONTAINER KEYS (8 SPACES) ---
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
