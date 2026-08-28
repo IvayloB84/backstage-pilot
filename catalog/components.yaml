@@ -1,20 +1,19 @@
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
-  name: ivaylo.bumbovski  
-  namespace: default
+  name: ivaylo.bumbovski
 spec:
   profile:
-    displayName: IvayloB84
+    displayName: Ivaylo Bumbovski
     email: ivaylo.bumbovski@gmail.com
-  memberOf: [backstage-users]
-
+  memberOf: []
 ---
 apiVersion: backstage.io/v1alpha1
-kind: Group
+kind: User
 metadata:
-  name: backstage-users
-  namespace: default
+  name: ivaylob84
 spec:
-  type: team
-  children: []
+  profile:
+    displayName: Ivaylo Bumbovski
+    email: ivaylo.bumbovski@gmail.com
+  memberOf: []

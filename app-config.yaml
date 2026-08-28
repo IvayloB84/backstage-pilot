@@ -72,17 +72,18 @@ catalog:
     - type: file
       target: /app/catalog/components.yaml
 
-  providers:
+providers:
     keycloakOrg:
       default:
-        baseUrl: http://localhost:8085
-        loginRealm: master
+        baseUrl: http://keycloak-service:8085
+        loginRealm: backstage
         realm: backstage
-        clientId: ${KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        clientId: backstage-auth
+        clientSecret: OMdJB9Phni1MvsqybE0jIaA38UzbOQxHS5i3vtYUvv20hrjLKNgqJ0EFlZBG25SgO5r1uC7L5WtbOfySMekk9z
         schedule:
-          frequency: { minutes: 30 }
-          timeout: { minutes: 3 }
+          frequency: { minutes: 1 }
+          timeout: { minutes: 1 }
+          initialDelay: { seconds: 15 }
 
 auth:
   environment: development
@@ -93,21 +94,20 @@ auth:
       development:
         clientId: ${GITHUB_CLIENT_ID}
         clientSecret: ${GITHUB_CLIENT_SECRET}
-
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
 
     oidc:
       development:
-        metadataUrl: http://localhost:8085/realms/backstage/.well-known/openid-configuration
-        clientId: ${KEYCLOAK_CLIENT_ID}
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        callbackUrl: http://localhost:7007/api/auth/oidc/handler/frame
+        clientId: backstage-auth
+        clientSecret: OMdJB9Phni1MvsqybE0jIaA38UzbOQxHS5i3vtYUvv20hrjLKNgqJ0EFlZBG25SgO5r1uC7L5WtbOfySMekk9z
+        metadataUrl: http://keycloak-service:8085/realms/backstage/.well-known/openid-configuration
+        baseUrl: http://localhost:8085
         prompt: auto
         signIn:
           resolvers:
-            - resolver: preferredUsernameMatchingUserEntityName
+            - resolver: emailLocalPartMatchingUserEntityName
 
 integrations:
   github:
