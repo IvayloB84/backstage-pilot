@@ -75,7 +75,7 @@ catalog:
   providers:
     keycloakOrg:
       default:
-        baseUrl: http://keycloak-service:8085
+        baseUrl: http://localhost:8085
         loginRealm: backstage
         realm: backstage
         clientId: backstage-auth
