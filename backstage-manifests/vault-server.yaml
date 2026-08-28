@@ -22,6 +22,7 @@ spec:
         ports:
         - containerPort: 8200
           name: http
+          hostPort: 8200  # THE PERMANENT BRIDGE: Binds port 8200 directly to your Debian host desktop card!
 ---
 apiVersion: v1
 kind: Service
