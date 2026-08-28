@@ -19,10 +19,14 @@ spec:
       - name: vault
         image: hashicorp/vault:latest
         args: ["server", "-dev", "-dev-root-token-id=root-master-token-2026", "-dev-listen-address=0.0.0.0:8200"]
+        # 🚨 FIXED: Unlocks the API gate so your browser can reach inside the container natively
+        env:
+        - name: VAULT_API_ADDR
+          value: "http://127.0.0.1:8200"
         ports:
         - containerPort: 8200
           name: http
-          hostPort: 8200  # THE PERMANENT BRIDGE: Binds port 8200 directly to your Debian host desktop card!
+          hostPort: 8200
 ---
 apiVersion: v1
 kind: Service
