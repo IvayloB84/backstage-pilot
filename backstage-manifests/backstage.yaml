@@ -14,20 +14,6 @@ spec:
     metadata:
       labels:
         app: backstage-pilot
-      annotations:
-        # 1. Enable Vault Dynamic Sidecar Injection Engine
-        vault.hashicorp.com/agent-inject: "true"
-        vault.hashicorp.com/role: "backstage-role"
-        vault.hashicorp.com/auth-path: "auth/kubernetes"
-        
-        # 2. Tell Vault to read your path data and extract it into a file layout
-        vault.hashicorp.com/agent-inject-secret-env: "secret/data/backstage"
-        vault.hashicorp.com/agent-inject-template-env: |
-          {{- with secret "secret/data/backstage" -}}
-          {{- range $k, $v := .Data.data }}
-          export {{ $k }}="{{ $v }}"
-          {{- end }}
-          {{- end -}}
     spec:
       serviceAccountName: backstage-cluster-reader
       securityContext:
@@ -45,13 +31,15 @@ spec:
         - containerPort: 7007
         securityContext:
           allowPrivilegeEscalation: false
-        # 3. Use an entrypoint wrapper argument sequence to load the injected variables right before node starts
-        command: ["/bin/sh", "-c"]
-        args:
-          - |
-            if [ -f /vault/secrets/env ]; then . /vault/secrets/env; fi
-            node packages/backend --config app-config.yaml
+        command: ["vault", "kv", "run", "-mount=secret", "backstage"]
+        args: ["node", "packages/backend", "--config", "app-config.yaml"]
         env:
+        - name: VAULT_ADDR
+          value: "http://vault-service:8200"
+        - name: VAULT_AUTH_METHOD
+          value: "kubernetes"
+        - name: VAULT_AUTH_ROLE
+          value: "backstage-role"
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: "0"
         - name: APP_CONFIG_catalog_orphanStrategy
