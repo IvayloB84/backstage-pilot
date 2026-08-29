@@ -48,3 +48,55 @@ spec:
       - name: main-config-volume
         configMap:
           name: backstage-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backstage-pilot-db
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: backstage-pilot-db
+  template:
+    metadata:
+      labels:
+        app: backstage-pilot-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16-alpine
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backstage-app-config
+              key: POSTGRES_PASSWORD
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: db-storage
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: db-storage
+        persistentVolumeClaim:
+          claimName: backstage-postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backstage-pilot-db-service
+  namespace: default
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    app: backstage-pilot-db
