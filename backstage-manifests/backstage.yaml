@@ -1,58 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backstage-pilot-db
-  namespace: default
-spec:
-  selector:
-    matchLabels:
-      app: backstage-pilot-db
-  template:
-    metadata:
-      labels:
-        app: backstage-pilot-db
-    spec:
-      containers:
-      - name: postgres
-        image: postgres:16-alpine
-        env:
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: POSTGRES_USER
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: POSTGRES_PASSWORD
-        - name: PGDATA
-          value: /var/lib/postgresql/data/pgdata
-        ports:
-        - containerPort: 5432
-        volumeMounts:
-        - name: db-storage
-          mountPath: /var/lib/postgresql/data
-      volumes:
-      - name: db-storage
-        persistentVolumeClaim:
-          claimName: backstage-postgres-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backstage-pilot-db-service
-  namespace: default
-spec:
-  ports:
-  - port: 5432
-    targetPort: 5432
-  selector:
-    app: backstage-pilot-db
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: backstage-pilot
   namespace: default
   labels:
@@ -66,6 +14,20 @@ spec:
     metadata:
       labels:
         app: backstage-pilot
+      annotations:
+        # 1. Enable Vault Dynamic Sidecar Injection Engine
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "backstage-role"
+        vault.hashicorp.com/auth-path: "auth/kubernetes"
+        
+        # 2. Tell Vault to read your path data and extract it into a file layout
+        vault.hashicorp.com/agent-inject-secret-env: "secret/data/backstage"
+        vault.hashicorp.com/agent-inject-template-env: |
+          {{- with secret "secret/data/backstage" -}}
+          {{- range $k, $v := .Data.data }}
+          export {{ $k }}="{{ $v }}"
+          {{- end }}
+          {{- end -}}
     spec:
       serviceAccountName: backstage-cluster-reader
       securityContext:
@@ -83,99 +45,15 @@ spec:
         - containerPort: 7007
         securityContext:
           allowPrivilegeEscalation: false
+        # 3. Use an entrypoint wrapper argument sequence to load the injected variables right before node starts
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            if [ -f /vault/secrets/env ]; then . /vault/secrets/env; fi
+            node packages/backend --config app-config.yaml
         env:
         - name: NODE_TLS_REJECT_UNAUTHORIZED
           value: "0"
-        - name: POSTGRES_HOST
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: POSTGRES_HOST
-        - name: POSTGRES_PORT
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: POSTGRES_PORT
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: POSTGRES_USER
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: POSTGRES_PASSWORD
-        - name: BACKEND_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: BACKEND_SECRET
-        - name: GITHUB_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: GITHUB_CLIENT_ID
-        - name: GITHUB_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: GITHUB_CLIENT_SECRET
-        - name: GITHUB_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: GITHUB_TOKEN
-        - name: KEYCLOAK_INTERNAL_URL
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: KEYCLOAK_INTERNAL_URL
-        - name: KEYCLOAK_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: KEYCLOAK_CLIENT_ID
-        - name: KEYCLOAK_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: KEYCLOAK_CLIENT_SECRET
-        - name: KEYCLOAK_METADATA_URL
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: KEYCLOAK_METADATA_URL
-        - name: KEYCLOAK_CATALOG_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: KEYCLOAK_CATALOG_CLIENT_ID
-        - name: KEYCLOAK_CATALOG_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: KEYCLOAK_CATALOG_CLIENT_SECRET
-        - name: AUTH_KEYCLOAK_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: AUTH_KEYCLOAK_CLIENT_ID
-        - name: AUTH_KEYCLOAK_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: AUTH_KEYCLOAK_CLIENT_SECRET
-        - name: AUTH_KEYCLOAK_REALM
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: AUTH_KEYCLOAK_REALM
-        - name: ARGOCD_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: backstage-app-config
-              key: ARGOCD_TOKEN
         - name: APP_CONFIG_catalog_orphanStrategy
           value: "delete"
         - name: APP_CONFIG_catalog_processingIntervalSeconds
