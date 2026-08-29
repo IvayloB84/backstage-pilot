@@ -3,24 +3,23 @@ kind: ConfigMap
 metadata:
   name: vault-server-config
   namespace: default
-spec:
-  data:
-    vault.json: |
-      {
-        "storage": {
-          "file": {
-            "path": "/vault/data"
-          }
-        },
-        "listener": {
-          "tcp": {
-            "address": "0.0.0.0:8200",
-            "tls_disable": 1
-          }
-        },
-        "ui": true,
-        "disable_mlock": true
-      }
+data:
+  vault.json: |
+    {
+      "storage": {
+        "file": {
+          "path": "/vault/data"
+        }
+      },
+      "listener": {
+        "tcp": {
+          "address": "0.0.0.0:8200",
+          "tls_disable": 1
+        }
+      },
+      "ui": true,
+      "disable_mlock": true
+    }
 ---
 apiVersion: apps/v1
 kind: Deployment
