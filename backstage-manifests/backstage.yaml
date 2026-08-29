@@ -31,21 +31,10 @@ spec:
         - containerPort: 7007
         securityContext:
           allowPrivilegeEscalation: false
-        command: ["vault", "kv", "run", "-mount=secret", "backstage"]
         args: ["node", "packages/backend", "--config", "app-config.yaml"]
-        env:
-        - name: VAULT_ADDR
-          value: "http://vault-service:8200"
-        - name: VAULT_AUTH_METHOD
-          value: "kubernetes"
-        - name: VAULT_AUTH_ROLE
-          value: "backstage-role"
-        - name: NODE_TLS_REJECT_UNAUTHORIZED
-          value: "0"
-        - name: APP_CONFIG_catalog_orphanStrategy
-          value: "delete"
-        - name: APP_CONFIG_catalog_processingIntervalSeconds
-          value: "300"
+        envFrom:
+        - configMapRef:
+            name: backstage-vault-env
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
