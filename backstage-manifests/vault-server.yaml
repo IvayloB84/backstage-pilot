@@ -69,8 +69,12 @@ spec:
         configMap:
           name: vault-server-config
       - name: storage-volume
-        persistentVolumeClaim:
-          claimName: vault-storage-pvc
+        projected:
+          sources:
+          - persistentVolumeClaim:
+              claimName: vault-storage-pvc
+          - secret:
+              name: backstage-vault-env-pvc
 ---
 apiVersion: v1
 kind: Service
