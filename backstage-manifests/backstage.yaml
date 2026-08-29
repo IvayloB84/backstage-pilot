@@ -33,8 +33,8 @@ spec:
           allowPrivilegeEscalation: false
         args: ["node", "packages/backend", "--config", "app-config.yaml"]
         envFrom:
-        - configMapRef:
-            name: backstage-vault-env
+        - secretRef:
+            name: backstage-app-config
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
