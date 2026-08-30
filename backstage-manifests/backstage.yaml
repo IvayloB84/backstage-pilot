@@ -100,4 +100,4 @@ spec:
   - port: 5432
     targetPort: 5432
   selector:
-    app: backstage-pilot-db# workflow-test-2026
+    app: backstage-pilot-db
