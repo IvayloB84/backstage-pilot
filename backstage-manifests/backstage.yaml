@@ -43,8 +43,8 @@ spec:
         configMap:
           name: backstage-local-users-cm
       - name: main-config-volume
-        configMap:
-          name: backstage-config
+        secret:
+          secretName: backstage-app-config
 ---
 apiVersion: apps/v1
 kind: Deployment
