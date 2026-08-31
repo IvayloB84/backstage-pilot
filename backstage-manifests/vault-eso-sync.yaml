@@ -21,15 +21,12 @@ metadata:
   namespace: default
 spec:
   refreshInterval: "15s" 
-  
   secretStoreRef:
     name: vault-backend
     kind: SecretStore
-    
   target:
     name: backstage-app-config 
     creationPolicy: Owner
-    
   data:
     - secretKey: KEYCLOAK_CLIENT_ID
       remoteRef:
@@ -55,8 +52,4 @@ spec:
       remoteRef:
         key: "backstage"
         property: POSTGRES_PORT
-    - secretKey: POSTGRES_DB
-      remoteRef:
-        key: "backstage"
-        property: POSTGRES_DB
 
