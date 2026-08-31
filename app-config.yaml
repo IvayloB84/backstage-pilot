@@ -74,8 +74,8 @@ catalog:
         baseUrl: http://keycloak-service:8085
         loginRealm: backstage
         realm: backstage
-        clientId: backstage-auth
-        clientSecret: IuoLwdsqY6K7OwcVTRqpAqAw4eSyMcyOFVbA0yLToapMF5WWw1UM2ZTzYpfc3HNm3sk3g1Fz9kyjNYK4mBg3Xm
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 15 }
@@ -96,14 +96,10 @@ auth:
 
     oidc:
       development:
-        clientId: backstage-auth
-        clientSecret: IuoLwdsqY6K7OwcVTRqpAqAw4eSyMcyOFVbA0yLToapMF5WWw1UM2ZTzYpfc3HNm3sk3g1Fz9kyjNYK4mBg3Xm
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         metadataUrl: http://keycloak-service:8085/realms/backstage/.well-known/openid-configuration
-        
-        # ➔ THE CRITICAL NETWORK BRIDGES: Replaces what hostAliases used to handle
-        tokenEndpoint: http://keycloak-service:8085/realms/backstage/protocol/openid-connect/token
-        userinfoEndpoint: http://keycloak-service:8085/realms/backstage/protocol/openid-connect/userinfo
-        
+        baseUrl: http://keycloak-service:8085
         prompt: auto
         signIn:
           resolvers:
