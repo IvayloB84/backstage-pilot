@@ -26,6 +26,8 @@ spec:
           image: quay.io/keycloak/keycloak:26.7.2
           args: ["start-dev", "--http-enabled=true", "--import-realm"]
           env:
+            - name: JAVA_OPTS_APPEND
+              value: "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: "admin"
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
