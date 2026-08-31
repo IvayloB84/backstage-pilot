@@ -28,6 +28,15 @@ spec:
     name: backstage-app-config 
     creationPolicy: Owner
   data:
+    - secretKey: GITHUB_CLIENT_ID
+      remoteRef:
+        key: "backstage"
+        property: GITHUB_CLIENT_ID
+    - secretKey: GITHUB_CLIENT_SECRET
+      remoteRef:
+        key: "backstage"
+        property: GITHUB_CLIENT_SECRET
+
     - secretKey: KEYCLOAK_CLIENT_ID
       remoteRef:
         key: "backstage"
@@ -36,6 +45,12 @@ spec:
       remoteRef:
         key: "backstage"
         property: KEYCLOAK_CLIENT_SECRET
+
+    - secretKey: BACKEND_SECRET
+      remoteRef:
+        key: "backstage"
+        property: BACKSTAGE_SECRET
+
     - secretKey: POSTGRES_USER
       remoteRef:
         key: "backstage"
@@ -48,8 +63,8 @@ spec:
       remoteRef:
         key: "backstage"
         property: POSTGRES_HOST
-    - secretKey: BACKEND_SECRET
+    - secretKey: POSTGRES_PORT
       remoteRef:
         key: "backstage"
-        property: BACKSTAGE_SECRET
+        property: POSTGRES_PORT
 
