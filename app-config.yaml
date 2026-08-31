@@ -61,6 +61,7 @@ argocd:
           secure: false
 
 catalog:
+  processingInterval: { seconds: 10 }
   orphanStrategy: delete
   orphanProviderStrategy: delete
   import:
