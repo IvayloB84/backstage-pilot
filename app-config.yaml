@@ -74,8 +74,8 @@ catalog:
         baseUrl: http://keycloak-service:8085
         loginRealm: backstage
         realm: backstage
-        clientId: backstage-auth
-        clientSecret: OMdJB9Phni1MvsqybE0jIaA38UzbOQxHS5i3vtYUvv20hrjLKNgqJ0EFlZBG25SgO5r1uC7L5WtbOfySMekk9z
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 15 }
