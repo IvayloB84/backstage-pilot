@@ -37,10 +37,21 @@ spec:
         key: "backstage"
         property: GITHUB_CLIENT_SECRET
 
+    - secretKey: GITHUB_TOKEN
+      remoteRef:
+        key: "backstage"
+        property: GITHUB_TOKEN
+
+    - secretKey: ARGOCD_TOKEN
+      remoteRef:
+        key: "backstage"
+        property: ARGOCD_TOKEN
+
     - secretKey: KEYCLOAK_CLIENT_ID
       remoteRef:
         key: "backstage"
         property: KEYCLOAK_CLIENT_ID
+
     - secretKey: KEYCLOAK_CLIENT_SECRET
       remoteRef:
         key: "backstage"
@@ -55,14 +66,17 @@ spec:
       remoteRef:
         key: "backstage"
         property: POSTGRES_USER
+
     - secretKey: POSTGRES_PASSWORD
       remoteRef:
         key: "backstage"
         property: POSTGRES_PASSWORD
+
     - secretKey: POSTGRES_HOST
       remoteRef:
         key: "backstage"
         property: POSTGRES_HOST
+
     - secretKey: POSTGRES_PORT
       remoteRef:
         key: "backstage"
