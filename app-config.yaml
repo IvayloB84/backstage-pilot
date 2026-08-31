@@ -74,7 +74,7 @@ catalog:
         baseUrl: http://keycloak-service:8085
         loginRealm: backstage
         realm: backstage
-        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientId: backstage-auth
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         schedule:
           frequency: { minutes: 30 }
@@ -96,25 +96,14 @@ auth:
 
     oidc:
       development:
-        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientId: backstage-auth
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
-        # 1. Backchannel: Backstage reads metadata inside the cluster network
-        metadataUrl: http://keycloak-service.default.svc.cluster.local:8085/realms/backstage/.well-known/openid-configuration
-        
-        # 2. FRONTCHANNEL OVERRIDE: Tells your web browser to open the login page at localhost
-        authorizationEndpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/auth
-        
-        # 3. BACKCHANNEL OVERRIDE: Backstage Backend swaps codes internally over the cluster service mesh
-        tokenEndpoint: http://keycloak-service.default.svc.cluster.local:8085/realms/backstage/protocol/openid-connect/token
-        
-        # 4. Backchannel: Backstage fetches user info internally over the K8s network
-        userinfoEndpoint: http://keycloak-service.default.svc.cluster.local:8085/realms/backstage/protocol/openid-connect/userinfo
-        
+        metadataUrl: http://keycloak-service:8085/realms/backstage/.well-known/openid-configuration
+        baseUrl: http://keycloak-service:8085
         prompt: auto
         signIn:
           resolvers:
             - resolver: emailMatchingUserEntityProfileEmail
-
 
 integrations:
   github:
