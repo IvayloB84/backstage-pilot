@@ -99,7 +99,11 @@ auth:
         clientId: backstage-auth
         clientSecret: IuoLwdsqY6K7OwcVTRqpAqAw4eSyMcyOFVbA0yLToapMF5WWw1UM2ZTzYpfc3HNm3sk3g1Fz9kyjNYK4mBg3Xm
         metadataUrl: http://keycloak-service:8085/realms/backstage/.well-known/openid-configuration
-        baseUrl: http://keycloak-service:8085
+        
+        # ➔ THE CRITICAL NETWORK BRIDGES: Replaces what hostAliases used to handle
+        tokenEndpoint: http://keycloak-service:8085/realms/backstage/protocol/openid-connect/token
+        userinfoEndpoint: http://keycloak-service:8085/realms/backstage/protocol/openid-connect/userinfo
+        
         prompt: auto
         signIn:
           resolvers:
