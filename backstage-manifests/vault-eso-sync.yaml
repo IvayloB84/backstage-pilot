@@ -32,18 +32,18 @@ spec:
   data:
     - secretKey: KEYCLOAK_CLIENT_ID
       remoteRef:
-        key: "backstage"
+        key: "kv/backstage"
         property: KEYCLOAK_CLIENT_ID
     - secretKey: KEYCLOAK_CLIENT_SECRET
       remoteRef:
-        key: "backstage"
+        key: "kv/backstage"
         property: KEYCLOAK_CLIENT_SECRET
     - secretKey: POSTGRES_USER
       remoteRef:
-        key: "backstage"
+        key: "kv/backstage"
         property: POSTGRES_USER
     - secretKey: POSTGRES_PASSWORD
       remoteRef:
-        key: "backstage"
+        key: "kv/backstage"
         property: POSTGRES_PASSWORD
 
