@@ -7,7 +7,6 @@ spec:
   provider:
     vault:
       server: "http://vault-service.default.svc.cluster.local:8200"
-      path: "secret"
       version: "v2"
       auth:
         kubernetes:
@@ -35,11 +34,10 @@ spec:
   data:
     - secretKey: KEYCLOAK_CLIENT_ID
       remoteRef:
-        key: backstage
+        key: "secret/backstage"
         property: KEYCLOAK_CLIENT_ID
-        
     - secretKey: KEYCLOAK_CLIENT_SECRET
       remoteRef:
-        key: backstage
+        key: "secret/backstage"
         property: KEYCLOAK_CLIENT_SECRET
 
