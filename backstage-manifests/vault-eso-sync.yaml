@@ -1,0 +1,44 @@
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: vault-backend
+  namespace: default
+spec:
+  provider:
+    vault:
+      server: "http://localhost:8200"
+      path: "secret"
+      version: "v2"
+      auth:
+        # Reuses your existing pod token or native k8s auth path configured days ago
+        kubernetes:
+          mountPath: "kubernetes"
+          role: "backstage-pilot-role"
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: backstage-app-config
+  namespace: default
+spec:
+  refreshInterval: "15s" 
+  
+  secretStoreRef:
+    name: vault-backend
+    kind: SecretStore
+    
+  target:
+    name: backstage-app-config 
+    creationPolicy: Owner
+    
+  data:
+    - secretKey: KEYCLOAK_CLIENT_ID
+      remoteRef:
+        key: backstage
+        property: KEYCLOAK_CLIENT_ID
+        
+    - secretKey: KEYCLOAK_CLIENT_SECRET
+      remoteRef:
+        key: backstage
+        property: KEYCLOAK_CLIENT_SECRET
+
