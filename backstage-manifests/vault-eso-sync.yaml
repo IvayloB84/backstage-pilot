@@ -8,6 +8,7 @@ spec:
     vault:
       server: "http://vault-service.default.svc.cluster.local:8200"
       version: "v2"
+      path: "secret"
       auth:
         tokenSecretRef:
           name: "vault-dev-token"
@@ -32,18 +33,18 @@ spec:
   data:
     - secretKey: KEYCLOAK_CLIENT_ID
       remoteRef:
-        key: "kv/backstage"
+        key: "backstage"
         property: KEYCLOAK_CLIENT_ID
     - secretKey: KEYCLOAK_CLIENT_SECRET
       remoteRef:
-        key: "kv/backstage"
+        key: "backstage"
         property: KEYCLOAK_CLIENT_SECRET
     - secretKey: POSTGRES_USER
       remoteRef:
-        key: "kv/backstage"
+        key: "backstage"
         property: POSTGRES_USER
     - secretKey: POSTGRES_PASSWORD
       remoteRef:
-        key: "kv/backstage"
+        key: "backstage"
         property: POSTGRES_PASSWORD
 
