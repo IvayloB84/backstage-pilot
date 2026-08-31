@@ -35,15 +35,19 @@ spec:
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
-        - name: secrets-volume
-          mountPath: /app/secrets
+        - name: main-config-volume
+          mountPath: /app/app-config.yaml
+          subPath: app-config.yaml
       volumes:
       - name: catalog-files-volume
         configMap:
           name: backstage-local-users-cm
-      - name: secrets-volume
+      - name: main-config-volume
         secret:
           secretName: backstage-app-config
+          items:
+            - key: app-config.yaml
+              path: app-config.yaml
 ---
 apiVersion: apps/v1
 kind: Deployment
