@@ -20,10 +20,6 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
-      hostAliases:
-      - ip: "10.43.103.217"
-        hostnames:
-        - "localhost"
       containers:
       - name: backstage
         image: backstage-pilot:latest
