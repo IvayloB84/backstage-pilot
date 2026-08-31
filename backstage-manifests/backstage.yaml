@@ -23,7 +23,7 @@ spec:
       containers:
       - name: backstage
         image: backstage-pilot:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 7007
         securityContext:
