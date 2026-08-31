@@ -6,7 +6,7 @@ metadata:
 spec:
   provider:
     vault:
-      server: "http://keycloak-service.default.svc.cluster.local:8200"
+      server: "http://vault-service.default.svc.cluster.local:8200"
       path: "secret"
       version: "v2"
       auth:
