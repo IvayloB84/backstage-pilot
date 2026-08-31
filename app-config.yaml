@@ -96,10 +96,17 @@ auth:
 
     oidc:
       development:
-        clientId: backstage-auth
-        clientSecret: OMdJB9Phni1MvsqybE0jIaA38UzbOQxHS5i3vtYUvv20hrjLKNgqJ0EFlZBG25SgO5r1uC7L5WtbOfySMekk9z
+        clientId: ${KEYCLOAK_CLIENT_ID}
+        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        # 1. Backchannel: Backstage reads metadata inside the cluster network
         metadataUrl: http://keycloak-service:8085/realms/backstage/.well-known/openid-configuration
-        baseUrl: http://keycloak-service:8085
+        
+        # 2. Frontchannel: Forces your web browser to redirect to your local accessible endpoint
+        tokenEndpoint: http://localhost:8085/realms/backstage/protocol/openid-connect/token
+        
+        # 3. Backchannel: Backstage fetches user info internally over the K8s network
+        userinfoEndpoint: http://keycloak-service:8085/realms/backstage/protocol/openid-connect/userinfo
+        
         prompt: auto
         signIn:
           resolvers:
