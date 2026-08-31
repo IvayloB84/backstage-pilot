@@ -9,11 +9,9 @@ spec:
       server: "http://vault-service.default.svc.cluster.local:8200"
       version: "v2"
       auth:
-        kubernetes:
-          mountPath: "kubernetes"
-          role: "backstage-pilot-role"
-          serviceAccountRef:
-            name: "backstage-cluster-reader"
+        tokenSecretRef:
+          name: "vault-dev-token"
+          key: "root-token"
 ---
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
