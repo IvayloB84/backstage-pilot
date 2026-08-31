@@ -48,11 +48,7 @@ spec:
       remoteRef:
         key: "backstage"
         property: POSTGRES_HOST
-    - secretKey: POSTGRES_PORT
-      remoteRef:
-        key: "backstage"
-        property: POSTGRES_PORT
-    - secretKey: BACKSTAGE_SECRET
+    - secretKey: BACKEND_SECRET
       remoteRef:
         key: "backstage"
         property: BACKSTAGE_SECRET
