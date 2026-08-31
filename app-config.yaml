@@ -25,7 +25,7 @@ backend:
       port: ${POSTGRES_PORT}
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
-      database: postgres
+      database: ${POSTGRES_DB}
 
 proxy:
   endpoints:
