@@ -7,7 +7,7 @@ spec:
   provider:
     vault:
       server: "http://keycloak-service.default.svc.cluster.local:8200"
-      path: "secret"
+      path: "backstage"
       version: "v2"
       auth:
         # Reuses your existing pod token or native k8s auth path configured days ago
