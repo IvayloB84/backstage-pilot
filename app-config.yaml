@@ -75,7 +75,7 @@ catalog:
         loginRealm: backstage
         realm: backstage
         clientId: backstage-auth
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        clientSecret: OMdJB9Phni1MvsqybE0jIaA38UzbOQxHS5i3vtYUvv20hrjLKNgqJ0EFlZBG25SgO5r1uC7L5WtbOfySMekk9z
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 15 }
@@ -97,7 +97,7 @@ auth:
     oidc:
       development:
         clientId: backstage-auth
-        clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+        clientSecret: OMdJB9Phni1MvsqybE0jIaA38UzbOQxHS5i3vtYUvv20hrjLKNgqJ0EFlZBG25SgO5r1uC7L5WtbOfySMekk9z
         metadataUrl: http://keycloak-service:8085/realms/backstage/.well-known/openid-configuration
         baseUrl: http://keycloak-service:8085
         prompt: auto
