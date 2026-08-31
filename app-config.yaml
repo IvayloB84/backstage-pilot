@@ -68,6 +68,11 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Template, User, Group]
 
+  locations:
+    # ➔ ADDED: Native pointer to your new template card manifest file
+    - type: url
+      target: https://github.com/IvayloB84/backstage-templates/blob/main/manifests/all-templates.yaml
+
   providers:
     keycloakOrg:
       default:
