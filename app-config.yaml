@@ -10,6 +10,11 @@ backend:
   baseUrl: http://localhost:7007
   listen:
     port: 7007
+
+  reading:
+    allow:
+      - host: start.spring.io
+      
   cors:
     origin: [http://localhost:7007, http://127.0.0.1:7007]
     methods: [GET, POST, PUT, DELETE, OPTIONS]

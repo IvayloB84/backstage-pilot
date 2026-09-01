@@ -27,6 +27,7 @@ spec:
   target:
     name: backstage-app-config 
     creationPolicy: Owner
+    deletionPolicy: Delete
   data:
     - secretKey: GITHUB_CLIENT_ID
       remoteRef:

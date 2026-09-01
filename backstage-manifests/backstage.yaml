@@ -23,7 +23,7 @@ spec:
       containers:
       - name: backstage
         image: backstage-pilot:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 7007
         securityContext:
@@ -35,10 +35,16 @@ spec:
         volumeMounts:
         - name: catalog-files-volume
           mountPath: /app/catalog
+        - name: backstage-config-volume
+          mountPath: /app/app-config.yaml
+          subPath: app-config.yaml
       volumes:
       - name: catalog-files-volume
         configMap:
           name: backstage-local-users-cm
+      - name: backstage-config-volume
+        configMap:
+          name: backstage-app-config-cm 
 ---
 apiVersion: apps/v1
 kind: Deployment
