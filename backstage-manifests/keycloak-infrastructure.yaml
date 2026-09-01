@@ -50,10 +50,13 @@ spec:
           ports:
             - containerPort: 8085
               name: http
+          # volumeMounts:
+          #   - name: import-volume
+          #     mountPath: /opt/keycloak/data/import/backstage-realm.json
+          #     subPath: backstage-realm.json
           volumeMounts:
             - name: import-volume
-              mountPath: /opt/keycloak/data/import/backstage-realm.json
-              subPath: backstage-realm.json
+              mountPath: /opt/keycloak/data/import
       volumes:
         - name: import-volume
           configMap:
