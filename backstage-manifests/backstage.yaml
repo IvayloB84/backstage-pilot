@@ -28,7 +28,7 @@ spec:
         - containerPort: 7007
         securityContext:
           allowPrivilegeEscalation: false
-        args: ["node", "packages/backend", "--config", "app-config.yaml", "config/app-config.yaml"]
+        args: ["node", "packages/backend", "--config", "app-config.yaml", "app-config.yaml"]
         envFrom:
         - secretRef:
             name: backstage-app-config
@@ -36,16 +36,10 @@ spec:
         - name: catalog-files-volume
           mountPath: /app/catalog
 
-        - name: backstage-config-volume
-          mountPath: /app/config
       volumes:
       - name: catalog-files-volume
         configMap:
           name: backstage-local-users-cm
-          
-      - name: backstage-config-volume
-        configMap:
-          name: backstage-app-config-cm 
 ---
 apiVersion: apps/v1
 kind: Deployment
