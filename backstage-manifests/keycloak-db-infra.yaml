@@ -23,16 +23,19 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: backstage-app-config
-                  key: POSTGRES_USER
-                  
+                  key: KEYCLOAK_DB_USER
+
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: backstage-app-config
-                  key: POSTGRES_PASSWORD
-                  
+                  key: KEYCLOAK_DB_PASSWORD
+
             - name: POSTGRES_DB
-              value: "keycloak_persistence"
+              valueFrom:
+                secretKeyRef:
+                  name: backstage-app-config
+                  key: KEYCLOAK_DB_NAME
           ports:
             - containerPort: 5432
               name: dbport
