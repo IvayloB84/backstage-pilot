@@ -86,10 +86,10 @@ catalog:
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         schedule:
-          frequency: { minutes: 30 }
-          timeout: { minutes: 15 }
+          frequency: { minutes: 5 }
+          timeout: { minutes: 1 }
           initialDelay: { seconds: 15 }
-# To see if the changes will be in the memory or not
+#One manual change to see if the new app-connfig.yaml is reloaded by the secret-reloader. If it works, then I will add the rest of the config to this file.
 
 auth:
   environment: development
