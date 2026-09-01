@@ -50,4 +50,4 @@ COPY --chown=node:node packages/backend/dist/bundle.tar.gz ./
 RUN tar xzf bundle.tar.gz -C ./ && rm bundle.tar.gz
 
 # FIXED: Targets the definitively verified production script name output by your compiler tools
-CMD ["node", "packages/backend/dist/index.cjs.js", "--config", "app-config.yaml"]
+CMD ["node", "packages/backend/dist/index.cjs.js", "--config", "/mnt/config-overrides/app-config.yaml"]
