@@ -45,7 +45,7 @@ RUN --mount=type=cache,target=/home/node/.cache/yarn,sharing=locked,uid=1000,gid
 COPY --chown=node:node examples ./examples
 
 # Then copy the rest of the backend bundle, along with any other files we might want.
-COPY --chown=node:node packages/backend/dist/bundle.tar.gz app-config*.yaml ./
+COPY --chown=node:node packages/backend/dist/bundle.tar.gz ./
 # FIXED: Forces the tar extractor to unpack relative to the working root directory to align code-split chunks natively!
 RUN tar xzf bundle.tar.gz -C ./ && rm bundle.tar.gz
 

@@ -1,0 +1,41 @@
+apiVersion: v1
+data:
+  app-config.yaml: "app:\n  title: Scaffolded Backstage Pilot\n  baseUrl: http://localhost:7007\n
+    \ packages: all\n  extensions:\n    - entity-content:catalog/kubernetes:\n        disabled:
+    true\n\nbackend:\n  baseUrl: http://localhost:7007\n  listen:\n    port: 7007\n\n
+    \ reading:\n    allow:\n      - host: start.spring.io\n      \n  cors:\n    origin:
+    [http://localhost:7007, http://127.0.0.1:7007]\n    methods: [GET, POST, PUT,
+    DELETE, OPTIONS]\n    credentials: true\n  auth:\n    keys:\n     - secret: \"${BACKEND_SECRET}\"\n\n
+    \ database:\n    client: pg\n    connection:\n      host: ${POSTGRES_HOST}\n      port:
+    ${POSTGRES_PORT}\n      user: ${POSTGRES_USER}\n      password: ${POSTGRES_PASSWORD}\n
+    \     database: postgres\n\nproxy:\n  endpoints:\n    'argocd/api':\n      target:
+    http://argocd-server.argocd.svc.cluster.local/api/v1/\n      changeOrigin: true\n
+    \     secure: false\n      allowedHeaders:\n        - Authorization\n      headers:\n
+    \       Authorization: \"Bearer ${ARGOCD_TOKEN}\"\n\nkubernetes:\n  serviceLocatorMethod:\n
+    \   type: 'multiTenant'\n  clusterLocatorMethods:\n    - type: 'config'\n      clusters:\n
+    \       - url: https://kubernetes.default.svc\n          name: k3s-cluster\n          authProvider:
+    'serviceAccount'\n          skipTLSVerify: true\n          id: k3s-pilot\n\nargocd:\n
+    \ baseUrl: http://argocd-server.argocd.svc.cluster.local\n  appLocatorMethods:\n
+    \   - type: 'config'\n      instances:\n        - name: main-argo\n          url:
+    http://argocd-server.argocd.svc.cluster.local\n          token: \"${ARGOCD_TOKEN}\"\n
+    \         secure: false\n\ncatalog:\n  orphanStrategy: delete\n  orphanProviderStrategy:
+    delete\n  import:\n    entityFilename: catalog-info.yaml\n  rules:\n    - allow:
+    [Component, System, API, Resource, Location, Template, User, Group]\n\n  locations:\n
+    \   - type: url\n      target: https://github.com/IvayloB84/backstage-templates/blob/main/manifests/all-templates.yaml\n\n
+    \ providers:\n    keycloakOrg:\n      default:\n        baseUrl: http://keycloak-service:8085\n
+    \       loginRealm: backstage\n        realm: backstage\n        clientId: ${KEYCLOAK_CLIENT_ID}\n
+    \       clientSecret: ${KEYCLOAK_CLIENT_SECRET}\n        schedule:\n          frequency:
+    { minutes: 5 }\n          timeout: { minutes: 1 }\n          initialDelay: { seconds:
+    15 }\n\nauth:\n  environment: development\n  session:\n    secret: ${BACKEND_SECRET}\n
+    \ providers:\n    github:\n      development:\n        clientId: ${GITHUB_CLIENT_ID}\n
+    \       clientSecret: ${GITHUB_CLIENT_SECRET}\n        signIn:\n          resolvers:\n
+    \           - resolver: usernameMatchingUserEntityName\n\n    oidc:\n      development:\n
+    \       clientId: ${KEYCLOAK_CLIENT_ID}\n        clientSecret: ${KEYCLOAK_CLIENT_SECRET}\n
+    \       metadataUrl: http://keycloak-service:8085/realms/backstage/.well-known/openid-configuration\n
+    \       baseUrl: http://keycloak-service:8085\n        prompt: auto\n        signIn:\n
+    \         resolvers:\n            - resolver: emailMatchingUserEntityProfileEmail\n\nintegrations:\n
+    \ github:\n    - host: github.com\n      token: ${GITHUB_TOKEN}"
+kind: ConfigMap
+metadata:
+  name: backstage-app-config-cm
+  namespace: default
