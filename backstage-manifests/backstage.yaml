@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: backstage-pilot
   namespace: default
+  annotations:
+    secret.reloader.stakater.com/reload: "backstage-app-config"
   labels:
     app: backstage-pilot
 spec:
@@ -15,8 +17,6 @@ spec:
     metadata:
       labels:
         app: backstage-pilot
-      annotations:
-        checksum/config: ${app-config.yaml | sha256sum}
     spec:
       serviceAccountName: backstage-cluster-reader
       securityContext:

@@ -89,6 +89,7 @@ catalog:
           frequency: { minutes: 30 }
           timeout: { minutes: 15 }
           initialDelay: { seconds: 15 }
+# To see if the changes will be in the memory or not
 
 auth:
   environment: development
