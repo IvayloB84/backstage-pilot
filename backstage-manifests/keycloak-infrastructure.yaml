@@ -5,11 +5,6 @@ metadata:
   namespace: default
   labels:
     app: keycloak
-  # Move the ArgoCD options under annotations:
-  annotations: 
-    argocd.argoproj.io/sync-options: Prune=false,Validate=false
-    argocd.argoproj.io/compare-options: IgnoreExtraneous
-    argocd.argoproj.io/sync-policy: Manual
 spec:
   revisionHistoryLimit: 3
   replicas: 1
