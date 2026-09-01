@@ -89,7 +89,6 @@ catalog:
           frequency: { minutes: 5 }
           timeout: { minutes: 1 }
           initialDelay: { seconds: 15 }
-#One manual change to see if the new app-connfig.yaml is reloaded by the secret-reloader. If it works, then I will add the rest of the config to this file.
 
 auth:
   environment: development
