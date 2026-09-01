@@ -3,8 +3,9 @@ kind: Deployment
 metadata:
   name: backstage-pilot
   namespace: default
-  annotations:
-    secret.reloader.stakater.com/reload: "backstage-app-config"
+annotations:
+  secret.reloader.stakater.com/reload: "backstage-app-config"
+  configmap.reloader.stakater.com/reload: "backstage-app-config-cm"
   labels:
     app: backstage-pilot
 spec:
@@ -30,17 +31,22 @@ spec:
         - containerPort: 7007
         securityContext:
           allowPrivilegeEscalation: false
-        args: ["node", "packages/backend", "--config", "app-config.yaml"]
+          args: ["node", "packages/backend/dist/index.cjs.js", "--config", "/mnt/config-overrides/app-config.yaml"]
         envFrom:
         - secretRef:
             name: backstage-app-config
         volumeMounts:
         - mountPath: /app/catalog
           name: catalog-files-volume
+        - mountPath: /mnt/config-overrides
+          name: app-config-overrides
       volumes:
       - configMap:
           name: backstage-local-users-cm
         name: catalog-files-volume
+      - configMap:
+          name: backstage-app-config-cm
+        name: app-config-overrides
 ---
 apiVersion: apps/v1
 kind: Deployment
