@@ -83,3 +83,18 @@ spec:
         key: "backstage"
         property: POSTGRES_PORT
 
+    - secretKey: KEYCLOAK_DB_USER
+      remoteRef:
+        key: "backstage"
+        property: KEYCLOAK_DB_USER
+
+    - secretKey: KEYCLOAK_DB_PASSWORD
+      remoteRef:
+        key: "backstage"
+        property: KEYCLOAK_DB_PASSWORD
+
+    - secretKey: KEYCLOAK_DB_NAME
+      remoteRef:
+        key: "backstage"
+        property: KEYCLOAK_DB_NAME
+
