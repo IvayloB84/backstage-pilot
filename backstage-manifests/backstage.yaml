@@ -34,11 +34,9 @@ spec:
         envFrom:
         - secretRef:
             name: backstage-app-config
-
         volumeMounts:
-        - name: catalog-files-volume
-          mountPath: /app/catalog
-
+        - mountPath: /app/catalog
+          name: catalog-files-volume
       volumes:
       - name: catalog-files-volume
         configMap:
