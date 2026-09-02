@@ -86,8 +86,8 @@ catalog:
         clientId: ${KEYCLOAK_CLIENT_ID}
         clientSecret: ${KEYCLOAK_CLIENT_SECRET}
         schedule:
-          frequency: { minutes: 5 }
-          timeout: { minutes: 1 }
+          frequency: { minutes: 30 }
+          timeout: { minutes: 15 }
           initialDelay: { seconds: 15 }
 
 auth:
