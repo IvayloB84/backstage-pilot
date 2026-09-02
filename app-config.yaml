@@ -118,7 +118,3 @@ integrations:
   github:
     - host: github.com
       token: ${GITHUB_TOKEN}
-# test comment Wed Sep  2 01:39:23 AM EEST 2026
-# test comment Wed Sep  2 02:12:30 AM EEST 2026
-# Second update of the config map# Final pipeline test Wed Sep  2 09:32:59 PM EEST 2026
-# Final pipeline test Wed Sep  2 09:34:07 PM EEST 2026
