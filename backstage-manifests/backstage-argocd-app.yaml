@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/IvayloB84/backstage-pilot'
     targetRevision: main
-    path: backstage-manifests
+    path: .
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
