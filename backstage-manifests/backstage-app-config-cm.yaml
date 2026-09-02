@@ -34,8 +34,8 @@ data:
     \       metadataUrl: http://keycloak-service:8085/realms/backstage/.well-known/openid-configuration\n
     \       baseUrl: http://keycloak-service:8085\n        prompt: auto\n        signIn:\n
     \         resolvers:\n            - resolver: emailMatchingUserEntityProfileEmail\n\nintegrations:\n
-    \ github:\n    - host: github.com\n      token: ${GITHUB_TOKEN}# test comment
-    Wed Sep  2 01:39:23 AM EEST 2026\n# test comment Wed Sep  2 02:12:30 AM EEST 2026\n"
+    \ github:\n    - host: github.com\n      token: ${GITHUB_TOKEN}\n# test comment
+    Wed Sep  2 02:12:30 AM EEST 2026\n"
 kind: ConfigMap
 metadata:
   name: backstage-app-config-cm
