@@ -14,14 +14,14 @@ backend:
   reading:
     allow:
       - host: start.spring.io
-      
+
   cors:
     origin: [http://localhost:7007, http://127.0.0.1:7007]
     methods: [GET, POST, PUT, DELETE, OPTIONS]
     credentials: true
   auth:
     keys:
-     - secret: "${BACKEND_SECRET}"
+      - secret: "${BACKEND_SECRET}"
 
   database:
     client: pg
@@ -118,5 +118,6 @@ integrations:
   github:
     - host: github.com
       token: ${GITHUB_TOKEN}
+# test comment Wed Sep  2 01:39:23 AM EEST 2026
 # test comment Wed Sep  2 02:12:30 AM EEST 2026
 # Second update of the config map

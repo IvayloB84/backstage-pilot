@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: backstage-pilot
   namespace: default
-annotations:
-  secret.reloader.stakater.com/reload: "backstage-app-config"
-  configmap.reloader.stakater.com/reload: "backstage-app-config-cm"
   labels:
     app: backstage-pilot
+  annotations:
+    secret.reloader.stakater.com/reload: "backstage-app-config"
+    configmap.reloader.stakater.com/reload: "backstage-app-config-cm"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -24,29 +24,28 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       containers:
-      - name: backstage
-        image: backstage-pilot:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 7007
-        securityContext:
-          allowPrivilegeEscalation: false
-          args: ["node", "packages/backend/dist/index.cjs.js", "--config", "/mnt/config-overrides/app-config.yaml"]
-        envFrom:
-        - secretRef:
-            name: backstage-app-config
-        volumeMounts:
-        - mountPath: /app/catalog
-          name: catalog-files-volume
-        - mountPath: /mnt/config-overrides
-          name: app-config-overrides
+        - name: backstage
+          image: backstage-pilot:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 7007
+          securityContext:
+            allowPrivilegeEscalation: false
+          envFrom:
+            - secretRef:
+                name: backstage-app-config
+          volumeMounts:
+            - mountPath: /app/catalog
+              name: catalog-files-volume
+            - mountPath: /mnt/config-overrides
+              name: app-config-overrides
       volumes:
-      - configMap:
-          name: backstage-local-users-cm
-        name: catalog-files-volume
-      - configMap:
-          name: backstage-app-config-cm
-        name: app-config-overrides
+        - name: catalog-files-volume
+          configMap:
+            name: backstage-local-users-cm
+        - name: app-config-overrides
+          configMap:
+            name: backstage-app-config-cm
 ---
 apiVersion: apps/v1
 kind: Deployment
