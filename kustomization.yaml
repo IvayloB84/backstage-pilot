@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - backstage-manifests/backstage.yaml
+configMapGenerator:
+  - name: backstage-app-config-cm
+    files:
+      - app-config.yaml
