@@ -43,6 +43,13 @@ proxy:
       headers:
         Authorization: "Bearer ${ARGOCD_TOKEN}"
 
+    '/github-api':
+      target: 'https://api.github.com'
+      headers:
+        Authorization: 'Bearer ${GITHUB_TOKEN}'
+        Accept: 'application/vnd.github+json'
+        X-GitHub-Api-Version: '2022-11-28'
+
 kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
