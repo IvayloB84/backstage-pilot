@@ -34,7 +34,7 @@ backend:
 
 proxy:
   endpoints:
-    'argocd/api':
+    '/argocd/api':
       target: http://argocd-server/api/v1/
       changeOrigin: true
       secure: false
