@@ -35,7 +35,7 @@ backend:
 proxy:
   endpoints:
     'argocd/api':
-      target: http://argocd-server.argocd.svc.cluster.local/api/v1/
+      target: http://argocd-server/api/v1/
       changeOrigin: true
       secure: false
       allowedHeaders:
@@ -63,7 +63,7 @@ kubernetes:
           id: k3s-pilot
 
 argocd:
-  baseUrl: http://argocd-server.argocd.svc.cluster.local
+  baseUrl: http://argocd-service
   appLocatorMethods:
     - type: 'config'
       instances:
