@@ -47,9 +47,8 @@ jobs:
           fi
 
       - name: Semgrep SAST Scan
-        uses: semgrep/semgrep-action@v1
-        with:
-          config: p/ci
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/src" returntocorp/semgrep semgrep ci --config=p/ci
 
   docker-validation:
     name: Dockerfile Static Analysis & Configuration Scan
