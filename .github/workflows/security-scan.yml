@@ -12,18 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
 
       - name: Gitleaks Secret Scanner
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@3080597b355498877f2fb40176964096054ba9f4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
       - name: Run TruffleHog Secret Scanner
-        uses: trufflesecurity/trufflehog@main
+        uses: trufflesecurity/trufflehog@021a0f8bfdf8eb64fa9c6d486a60e0a30b5030f4
         with:
           path: ./
           extra_args: --results=verified
@@ -55,16 +55,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Hadolint Linter
-        uses: hadolint/hadolint-action@v3.5.0
+        uses: hadolint/hadolint-action@54c83aa256193ee0657b2824961b369ba0106208
         with:
           dockerfile: Dockerfile
           failure-threshold: error
 
       - name: Trivy Static Config Scan
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@6e07ee2366b2e3e57f3cb411db14eeeb899b1a20
         with:
           scan-type: 'config'
           scan-ref: 'Dockerfile'
