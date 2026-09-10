@@ -7,87 +7,72 @@ on:
     branches: [ main ]
 
 jobs:
-  secret-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - name: Gitleaks
-        uses: gitleaks/gitleaks-action@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
-
-  dockerfile-lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Hadolint
-        uses: hadolint/hadolint-action@v3.5.0
-        with:
-          dockerfile: Dockerfile
-          failure-threshold: error 
-
-  sast-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Semgrep
-        uses: semgrep/semgrep-action@v1
-        with:
-          config: p/ci
-
-  iac-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Trivy config scan (Dockerfile + k8s manifests)
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'config'
-          scan-ref: '.'
-          exit-code: '0'
-          severity: 'CRITICAL,HIGH'
-  scan-secrets:
-    name: Check for Hardcoded Secrets and Variables
+  security-scan:
+    name: Code & Secret Security Scanning
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v7
         with:
-          # Changes fetch-depth from 0 to 1 so the runner ONLY downloads the current commit file snapshot, skipping old history entirely!
-          fetch-depth: 1
+          fetch-depth: 0
 
-      # Official TruffleHog Action configured to scan your active codebase flat
+      - name: Gitleaks Secret Scanner
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
       - name: Run TruffleHog Secret Scanner
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
           extra_args: --results=verified
 
-      # Custom Validation step to flag any hardcoded strings in your config schemas
       - name: Validate App Configuration Formatting Schema
         run: |
           echo "🔍 Auditing app-config.yaml for un-templated private assets..."
-          
-          # Target file path check
           TARGET_CONFIG="app-config.yaml"
-          
           if [ -f "$TARGET_CONFIG" ]; then
-            # Look for explicit ghp_ (GitHub Tokens) or eyJ (JWTs) typed out in the config
             if grep -E 'ghp_[A-Za-z0-9]{36}|eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+' "$TARGET_CONFIG"; then
               echo "❌ ERROR: Hardcoded credentials or JWT tokens detected inside $TARGET_CONFIG!"
               exit 1
             fi
-            
-            # Ensure kubernetes url variable matches a standard variable hook context template
             if grep -q "serviceAccountToken:" "$TARGET_CONFIG" && ! grep -q "serviceAccountToken: \${" "$TARGET_CONFIG"; then
               echo "❌ ERROR: Hardcoded serviceAccountToken string value detected! Use \${K3S_TOKEN} instead."
               exit 1
             fi
-            
             echo "✅ app-config.yaml schema parameters verified successfully."
           else
             echo "⚠️  No local app-config.yaml located in root context slot. Skipping formatting checks."
           fi
+
+      - name: Semgrep SAST Scan
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/ci
+
+  docker-validation:
+    name: Dockerfile Lint & Image Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v7
+
+      - name: Hadolint Linter
+        uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: error
+
+      - name: Build Local Container Image
+        run: |
+          docker build -t backstage-pilot:local .
+
+      - name: Trivy Container Image Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'backstage-pilot:local'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
