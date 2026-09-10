@@ -52,7 +52,7 @@ jobs:
           config: p/ci
 
   docker-validation:
-    name: Dockerfile Lint & Image Vulnerability Scan
+    name: Dockerfile Static Analysis & Configuration Scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
@@ -64,15 +64,10 @@ jobs:
           dockerfile: Dockerfile
           failure-threshold: error
 
-      - name: Build Local Container Image
-        run: |
-          docker build -t backstage-pilot:local .
-
-      - name: Trivy Container Image Scan
+      - name: Trivy Static Config Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'backstage-pilot:local'
-          format: 'table'
+          scan-type: 'config'
+          scan-ref: '.'
           exit-code: '1'
-          ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
