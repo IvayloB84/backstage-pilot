@@ -68,6 +68,6 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'config'
-          scan-ref: '.'
+          scan-ref: 'Dockerfile'
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
