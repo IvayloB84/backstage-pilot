@@ -7,6 +7,47 @@ on:
     branches: [ main ]
 
 jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+  dockerfile-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Hadolint
+        uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: Dockerfile
+
+  sast-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Semgrep
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/ci
+
+  iac-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Trivy config scan (Dockerfile + k8s manifests)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'
+          scan-ref: '.'
+          exit-code: '0'
+          severity: 'CRITICAL,HIGH'
   scan-secrets:
     name: Check for Hardcoded Secrets and Variables
     runs-on: ubuntu-latest
@@ -14,18 +55,17 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
         with:
-          # FIXED: Changes fetch-depth from 0 to 1 so the runner ONLY downloads the current commit file snapshot, skipping old history entirely!
+          # Changes fetch-depth from 0 to 1 so the runner ONLY downloads the current commit file snapshot, skipping old history entirely!
           fetch-depth: 1
 
-      # 2. Official TruffleHog Action configured to scan your active codebase flat
+      # Official TruffleHog Action configured to scan your active codebase flat
       - name: Run TruffleHog Secret Scanner
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          # FIXED: Removes base/head history comparisons to prevent historical scanning
           extra_args: --results=verified
 
-      # 2. Custom Validation step to flag any hardcoded strings in your config schemas
+      # Custom Validation step to flag any hardcoded strings in your config schemas
       - name: Validate App Configuration Formatting Schema
         run: |
           echo "🔍 Auditing app-config.yaml for un-templated private assets..."
