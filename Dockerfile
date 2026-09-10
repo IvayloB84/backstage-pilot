@@ -7,7 +7,7 @@ ENV PYTHON=/usr/bin/python3
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
-    apt-get install -y --no-install-recommends python=3.13.* libsqlite3-dev && \
+    apt-get install -y --no-install-recommends python3=3.13.* libsqlite3-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # System Configuration Phase: Run corepack while still root to generate system mappings

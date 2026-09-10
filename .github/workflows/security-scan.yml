@@ -22,7 +22,7 @@ jobs:
   dockerfile-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Hadolint
         uses: hadolint/hadolint-action@v3.5.0
         with:
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # Changes fetch-depth from 0 to 1 so the runner ONLY downloads the current commit file snapshot, skipping old history entirely!
           fetch-depth: 1
