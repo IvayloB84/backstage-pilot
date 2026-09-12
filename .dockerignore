@@ -1,24 +1,32 @@
-# 📦 Block JavaScript dependency trees from cloning into build context
+# Block JavaScript dependency trees from cloning into build context
 node_modules
 packages/*/node_modules
 plugins/*/node_modules
 
-# 🏗️ Block generic output folders
+# Block generic output folders
 dist
 packages/app/dist
 plugins/*/dist
 
-# 🚨 CRITICAL EXCEPTIONS: Do NOT ignore the compiled production bundles!
+# Exception handling for backend production bundles
 packages/backend/dist/*
 !packages/backend/dist/skeleton.tar.gz
 !packages/backend/dist/bundle.tar.gz
 
-# 🧾 Block lockfiles, git history records, environments, and logs
+# Yarn 4 Modern Cache & State tracking
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Local configuration overrides (Security Best Practice)
+app-config.local.yaml
+app-config.production.yaml
+developer.yaml
+
+# System records, source control, and logs
 .git
 .github
+.vscode
 *.log
 .env
-.yarn/cache
-.yarn/install-state.gz
-# Forced pipeline re-run: Tue Jul 21 04:57:43 PM EEST 2026
-# Workflow optimization trace: Tue Jul 21 05:16:20 PM EEST 2026
