@@ -3999,22 +3999,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-permission-backend@npm:^0.7.14":
-  version: 0.7.14
-  resolution: "@backstage/plugin-permission-backend@npm:0.7.14"
+"@backstage/plugin-permission-backend@npm:^0.7.15":
+  version: 0.7.15
+  resolution: "@backstage/plugin-permission-backend@npm:0.7.15"
   dependencies:
-    "@backstage/backend-plugin-api": "npm:^1.9.3"
+    "@backstage/backend-plugin-api": "npm:^1.10.0"
     "@backstage/config": "npm:^1.3.8"
     "@backstage/errors": "npm:^1.3.1"
-    "@backstage/plugin-auth-node": "npm:^0.7.3"
-    "@backstage/plugin-permission-common": "npm:^0.9.9"
-    "@backstage/plugin-permission-node": "npm:^0.11.2"
+    "@backstage/plugin-auth-node": "npm:^0.7.4"
+    "@backstage/plugin-permission-common": "npm:^0.9.10"
+    "@backstage/plugin-permission-node": "npm:^0.11.3"
     dataloader: "npm:^2.0.0"
     express: "npm:^4.22.0"
     express-promise-router: "npm:^4.1.0"
     lodash: "npm:^4.17.21"
     zod: "npm:^3.25.76 || ^4.0.0"
-  checksum: 10c0/471d6096bcdbc9a81ce87091fcc19bf74e45cd67eeb8c0a4b77ecbeb59fdcc335d16e4dc6c201d4e52da2c46fd04d56b199459817c9ea88e1612550fd2f8cab2
+  checksum: 10c0/08ee4d3e6a0b958dd6ec99cf320604276b383156fe86c19240a55e5a77788843a0dd183c25423ba734c987cf8e0eb22f00e95b6833e067652d16d923aae23014
   languageName: node
   linkType: hard
 
@@ -14563,7 +14563,7 @@ __metadata:
     "@backstage/plugin-kubernetes-backend": "npm:^0.21.6"
     "@backstage/plugin-mcp-actions-backend": "npm:^0.2.0"
     "@backstage/plugin-notifications-backend": "npm:^0.6.7"
-    "@backstage/plugin-permission-backend": "npm:^0.7.14"
+    "@backstage/plugin-permission-backend": "npm:^0.7.15"
     "@backstage/plugin-permission-backend-module-allow-all-policy": "npm:^0.2.21"
     "@backstage/plugin-permission-common": "npm:^0.9.9"
     "@backstage/plugin-permission-node": "npm:^0.11.2"
