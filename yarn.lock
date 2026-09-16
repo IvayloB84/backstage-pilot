@@ -4946,14 +4946,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-user-settings-backend@npm:^0.4.5":
-  version: 0.4.5
-  resolution: "@backstage/plugin-user-settings-backend@npm:0.4.5"
+"@backstage/plugin-user-settings-backend@npm:^0.4.6":
+  version: 0.4.6
+  resolution: "@backstage/plugin-user-settings-backend@npm:0.4.6"
   dependencies:
-    "@backstage/backend-plugin-api": "npm:^1.9.3"
+    "@backstage/backend-plugin-api": "npm:^1.10.0"
     "@backstage/errors": "npm:^1.3.1"
-    "@backstage/plugin-auth-node": "npm:^0.7.3"
-    "@backstage/plugin-signals-node": "npm:^0.2.3"
+    "@backstage/plugin-auth-node": "npm:^0.7.4"
+    "@backstage/plugin-signals-node": "npm:^0.2.4"
     "@backstage/plugin-user-settings-common": "npm:^0.1.0"
     "@backstage/types": "npm:^1.2.2"
     express: "npm:^4.22.0"
@@ -4961,7 +4961,7 @@ __metadata:
     knex: "npm:^3.0.0"
     p-limit: "npm:^3.1.0"
     zod: "npm:^3.25.76 || ^4.0.0"
-  checksum: 10c0/c5dead18ef09dd7c578414dbca501b508a8aee5565aae89d32ee15d7c819f90f9f727dbc16e1d2399a93ac81c4b71f5239289afece67cfb9ab875415a3fc3c41
+  checksum: 10c0/7b31627f8341a3b54ce43d99aa1f950217676e07cca9e739f30dfa314c83cc1047711b09bb28d27724e4d28b7f2d5638b490840e74ec0bfe451000440a831549
   languageName: node
   linkType: hard
 
@@ -14579,7 +14579,7 @@ __metadata:
     "@backstage/plugin-search-backend-node": "npm:^1.4.6"
     "@backstage/plugin-signals-backend": "npm:^0.3.18"
     "@backstage/plugin-techdocs-backend": "npm:^2.2.2"
-    "@backstage/plugin-user-settings-backend": "npm:^0.4.5"
+    "@backstage/plugin-user-settings-backend": "npm:^0.4.6"
     "@roadiehq/backstage-plugin-argo-cd-backend": "npm:^4.8.0"
     "@roadiehq/scaffolder-backend-module-http-request": "npm:^5.8.0"
     "@roadiehq/scaffolder-backend-module-utils": "npm:^4.1.2"
