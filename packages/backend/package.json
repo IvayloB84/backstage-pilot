@@ -52,7 +52,7 @@
     "@backstage/plugin-search-backend-node": "^1.4.6",
     "@backstage/plugin-signals-backend": "^0.3.17",
     "@backstage/plugin-techdocs-backend": "^2.2.2",
-    "@backstage/plugin-user-settings-backend": "^0.4.5",
+    "@backstage/plugin-user-settings-backend": "^0.4.6",
     "@roadiehq/backstage-plugin-argo-cd-backend": "^4.8.0",
     "@roadiehq/scaffolder-backend-module-http-request": "^5.8.0",
     "@roadiehq/scaffolder-backend-module-utils": "^4.1.2",
