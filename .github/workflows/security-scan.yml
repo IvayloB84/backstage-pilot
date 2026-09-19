@@ -30,7 +30,9 @@ jobs:
       - name: Run TruffleHog Secret Scanner
         uses: trufflesecurity/trufflehog@main
         with:
-          path: ./
+          base: ""
+          head: ${{ github.sha }} 
+          # path: ./
           extra_args: --results=verified
 
       - name: Validate App Configuration Formatting Schema
