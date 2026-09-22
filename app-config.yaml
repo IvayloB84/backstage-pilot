@@ -9,6 +9,10 @@ app:
 visitTracking:
   enabled: true
 
+home:
+  visitTracking:
+    enabled: true
+
 backend:
   baseUrl: http://localhost:7007
   listen:
