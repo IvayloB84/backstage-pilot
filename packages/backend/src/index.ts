@@ -1,8 +1,13 @@
 import * as dotenv from 'dotenv';
 import path from 'path';
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
-
 import { createBackend } from '@backstage/backend-defaults';
+import { resolvePackagePath } from '@backstage/backend-plugin-api';
+
+// Find the path safely using Backstage's API instead of __dirname
+const packagePath = resolvePackagePath('backend', 'package.json');
+const backendDir = path.dirname(packagePath);
+
+dotenv.config({ path: path.resolve(backendDir, '../../../.env') });
 
 const backend = createBackend();
 
