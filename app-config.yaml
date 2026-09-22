@@ -3,6 +3,8 @@ app:
   baseUrl: http://localhost:7007
   packages: all
   extensions:
+    - visitTracking:
+        enabled: true
     - entity-content:catalog/kubernetes:
         disabled: true
 
@@ -22,6 +24,13 @@ backend:
   auth:
     keys:
       - secret: "${BACKEND_SECRET}"
+
+  csp:
+    connect-src:
+      - "'self'"
+      - 'http:'
+      - 'https:'
+      - 'https://appspot.com'
 
   database:
     client: pg
