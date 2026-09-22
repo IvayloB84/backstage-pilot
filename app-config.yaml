@@ -3,15 +3,9 @@ app:
   baseUrl: http://localhost:7007
   packages: all
   extensions:
+    - api:home/visits: true
     - entity-content:catalog/kubernetes:
         disabled: true
-
-visitTracking:
-  enabled: true
-
-home:
-  visitTracking:
-    enabled: true
 
 backend:
   baseUrl: http://localhost:7007
