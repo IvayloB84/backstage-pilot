@@ -57,7 +57,7 @@
     "@roadiehq/scaffolder-backend-module-http-request": "^5.8.0",
     "@roadiehq/scaffolder-backend-module-utils": "^4.1.2",
     "app": "link:../app",
-    "dotenv": "^17.4.2",
+    "dotenv": "^18.0.1",
     "node-gyp": "^10.0.0",
     "pg": "^8.11.3"
   },
