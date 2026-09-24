@@ -14,7 +14,7 @@
     "lint": "backstage-cli package lint"
   },
   "dependencies": {
-    "@backstage-community/plugin-tech-radar": "^1.20.0",
+    "@backstage-community/plugin-tech-radar": "1.22.0",
     "@backstage/cli": "^0.36.6",
     "@backstage/core-app-api": "^1.20.5",
     "@backstage/core-components": "^0.18.14",
@@ -47,7 +47,7 @@
     "@roadiehq/backstage-plugin-argo-cd": "^2.12.5",
     "react": "^18.0.2",
     "react-dom": "^18.0.2",
-    "react-router": "^6.30.2",
+    "react-router": "8.4.0",
     "react-router-dom": "^6.30.2"
   },
   "devDependencies": {
@@ -58,7 +58,7 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.0.0",
     "@types/react-dom": "*",
-    "cross-env": "^7.0.0"
+    "cross-env": "10.1.0"
   },
   "browserslist": {
     "production": [
