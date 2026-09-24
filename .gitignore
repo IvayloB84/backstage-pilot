@@ -79,3 +79,4 @@ efault/
 build-and-load.sh
 .vault-unseal-key
 backstage-realm.json
+catalog/
