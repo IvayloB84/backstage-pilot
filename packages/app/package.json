@@ -46,7 +46,7 @@
     "@material-ui/icons": "^4.9.1",
     "@roadiehq/backstage-plugin-argo-cd": "^2.12.5",
     "react": "^18.0.2",
-    "react-dom": "^18.0.2",
+    "react-dom": "^19.3.0",
     "react-router": "8.4.0",
     "react-router-dom": "^6.30.2"
   },
