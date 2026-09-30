@@ -1397,16 +1397,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:0.5.0"
+"@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:0.6.0"
   dependencies:
-    "@backstage/backend-plugin-api": "npm:^1.9.3"
-    "@backstage/plugin-auth-node": "npm:^0.7.3"
+    "@backstage/backend-plugin-api": "npm:^1.10.0"
+    "@backstage/plugin-auth-node": "npm:^0.7.4"
     jose: "npm:^5.0.0"
     openid-client: "npm:^5.6.5"
     zod: "npm:^3.25.76 || ^4.0.0"
-  checksum: 10c0/6666c5799eb79f991c18578986f392dfba9e07f5d1718f0d1e32f4d5504ebfbc5b20bae5a6e8e424fe5b1937b735e6fb8a1b90d0d4c2ffab7a384d0be35420b9
+  checksum: 10c0/9c5e4d343a906308a3902964f4fca9e8e7329002c210e82a3bea5c7d7b89faa710004538616edf9d93cf5044ee9f163352f1169a9fdaf96da326fc13e894657e
   languageName: node
   linkType: hard
 
@@ -3271,7 +3271,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-auth-node@npm:^0.7.6":
+"@backstage/plugin-auth-node@npm:^0.7.4, @backstage/plugin-auth-node@npm:^0.7.6":
   version: 0.7.6
   resolution: "@backstage/plugin-auth-node@npm:0.7.6"
   dependencies:
@@ -15302,7 +15302,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "backend@workspace:packages/backend"
   dependencies:
-    "@backstage-community/plugin-auth-backend-module-keycloak-provider": "npm:^0.5.0"
+    "@backstage-community/plugin-auth-backend-module-keycloak-provider": "npm:^0.6.0"
     "@backstage-community/plugin-catalog-backend-module-keycloak": "npm:3.23.1"
     "@backstage/backend-defaults": "npm:^0.18.0"
     "@backstage/backend-plugin-api": "npm:^1.10.1"
