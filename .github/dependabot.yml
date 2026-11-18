@@ -6,9 +6,45 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      # Group all safe minor and patch updates into a single weekly PR
+      backstage-and-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Backstage 1.57 requires React 18
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react-dom"
+        update-types: ["version-update:semver-major"]
+      # Backstage 1.57 requires React Router v6
+      - dependency-name: "react-router"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-router-dom"
+        update-types: ["version-update:semver-major"]
+      # Keep TypeScript on v5 until Backstage CLI supports v7
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      # Keep jsdom aligned with Jest 30
+      - dependency-name: "jsdom"
+        update-types: ["version-update:semver-major"]
+      # Keep node-gyp on v10 to avoid native compilation breaks
+      - dependency-name: "node-gyp"
+        update-types: ["version-update:semver-major"]
 
   # Optional: Keep your GitHub Actions workflows secure as well
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
