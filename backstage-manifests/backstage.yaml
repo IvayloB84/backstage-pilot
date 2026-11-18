@@ -48,6 +48,9 @@ spec:
             periodSeconds: 20
           securityContext:
             allowPrivilegeEscalation: false
+          env:
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: "0"
           envFrom:
             - secretRef:
                 name: backstage-app-config
