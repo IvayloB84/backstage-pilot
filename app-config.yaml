@@ -43,7 +43,7 @@ backend:
 proxy:
   endpoints:
     '/argocd/api':
-      target: http://argocd-server/api/v1/
+      target: https://argocd-server.argocd.svc.cluster.local/api/v1/
       changeOrigin: true
       secure: false
       allowedHeaders:
@@ -76,7 +76,7 @@ argocd:
     - type: 'config'
       instances:
         - name: main-argo
-          url: http://argocd-server.argocd.svc.cluster.local
+          url: https://argocd-server.argocd.svc.cluster.local
           token: "${ARGOCD_TOKEN}"
           secure: false
 

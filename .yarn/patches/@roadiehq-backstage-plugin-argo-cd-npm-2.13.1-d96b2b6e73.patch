@@ -1,0 +1,13 @@
+diff --git a/dist/Router.esm.js b/dist/Router.esm.js
+index f2142e97a3534c20ff026e97112dac17fe653555..4e377de5b22ee26e6c08655279f431fc7b5f05a6 100644
+--- a/dist/Router.esm.js
++++ b/dist/Router.esm.js
+@@ -8,7 +8,7 @@ import { isArgocdAvailable } from './conditions.esm.js';
+ 
+ const Router = () => {
+   const { entity } = useEntity();
+-  return !isArgocdAvailable(entity) ? /* @__PURE__ */ jsx(MissingAnnotationEmptyState, { annotation: ARGOCD_ANNOTATION_APP_NAME }) : /* @__PURE__ */ jsx(Routes, { children: /* @__PURE__ */ jsx(Route, { path: "/", element: /* @__PURE__ */ jsx(ArgoCDHistoryCard, {}) }) });
++  return !isArgocdAvailable(entity) ? /* @__PURE__ */ jsx(MissingAnnotationEmptyState, { annotation: ARGOCD_ANNOTATION_APP_NAME }) : /* @__PURE__ */ jsx(Routes, { children: /* @__PURE__ */ jsx(Route, { path: "/*", element: /* @__PURE__ */ jsx(ArgoCDHistoryCard, {}) }) });
+ };
+ 
+ export { Router };

@@ -44,7 +44,7 @@
     "@backstage/ui": "^0.20.0",
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.9.1",
-    "@roadiehq/backstage-plugin-argo-cd": "^2.13.1",
+    "@roadiehq/backstage-plugin-argo-cd": "patch:@roadiehq/backstage-plugin-argo-cd@npm%3A2.13.1#~/.yarn/patches/@roadiehq-backstage-plugin-argo-cd-npm-2.13.1-d96b2b6e73.patch",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^6.22.0",
