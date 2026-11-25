@@ -1237,35 +1237,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:0.6.0"
+"@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "@backstage-community/plugin-auth-backend-module-keycloak-provider@npm:0.6.1"
   dependencies:
     "@backstage/backend-plugin-api": "npm:^1.10.0"
     "@backstage/plugin-auth-node": "npm:^0.7.4"
     jose: "npm:^5.0.0"
     openid-client: "npm:^5.6.5"
     zod: "npm:^3.25.76 || ^4.0.0"
-  checksum: 10c0/9c5e4d343a906308a3902964f4fca9e8e7329002c210e82a3bea5c7d7b89faa710004538616edf9d93cf5044ee9f163352f1169a9fdaf96da326fc13e894657e
+  checksum: 10c0/6859479b0a8a8b82385fda375cc9a1e9afb4d0250d8666a6d41b6f68ed521631d07bbdf3efd94facd2023487bccd2cb7e7f02261cef9f3ef99527dcbcf3972bf
   languageName: node
   linkType: hard
 
-"@backstage-community/plugin-catalog-backend-module-keycloak@npm:3.23.1":
-  version: 3.23.1
-  resolution: "@backstage-community/plugin-catalog-backend-module-keycloak@npm:3.23.1"
+"@backstage-community/plugin-catalog-backend-module-keycloak@npm:3.24.0":
+  version: 3.24.0
+  resolution: "@backstage-community/plugin-catalog-backend-module-keycloak@npm:3.24.0"
   dependencies:
     "@backstage/backend-plugin-api": "npm:^1.10.0"
     "@backstage/catalog-model": "npm:^1.10.0"
     "@backstage/errors": "npm:^1.3.1"
     "@backstage/plugin-catalog-backend-module-logs": "npm:^0.1.25"
     "@backstage/plugin-catalog-node": "npm:^2.2.4"
-    "@keycloak/keycloak-admin-client": "npm:26.7.3"
+    "@keycloak/keycloak-admin-client": "npm:26.8.1"
     "@opentelemetry/api": "npm:^1.9.0"
     jsonwebtoken: "npm:^9.0.0"
     lodash: "npm:^4.17.21"
     p-limit: "npm:^6.1.0"
     uuid: "npm:^13.0.0"
-  checksum: 10c0/64ef28942c80d7bbab6792f8799e04c8e0f44fff521e55c293135af67a1d3a5d697f22bf0b8c043562f148cd0a180dd1e1b805dc96c82edf5eff61d37f3f862d
+  checksum: 10c0/622ea291fcdb98b9ead9bb656d6af78a8ddcc7bf6c94661c3a18ba599159131d214e5da42ef6b4dd496b7f246b91f4d27680317b6e3d822c58ead61f0c24253d
   languageName: node
   linkType: hard
 
@@ -7099,9 +7099,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@keycloak/keycloak-admin-client@npm:26.7.3":
-  version: 26.7.3
-  resolution: "@keycloak/keycloak-admin-client@npm:26.7.3"
+"@keycloak/keycloak-admin-client@npm:26.8.1":
+  version: 26.8.1
+  resolution: "@keycloak/keycloak-admin-client@npm:26.8.1"
   dependencies:
     "@microsoft/kiota-abstractions": "npm:1.0.0-preview.103"
     "@microsoft/kiota-http-fetchlibrary": "npm:1.0.0-preview.103"
@@ -7111,7 +7111,7 @@ __metadata:
     "@microsoft/kiota-serialization-text": "npm:1.0.0-preview.103"
     camelize-ts: "npm:^3.0.0"
     url-template: "npm:^3.1.1"
-  checksum: 10c0/39c967ca39589fa99de60d6eab8626cd032c3ab7ea5e1bcd7bf17cebf109843cb1b7daa057a9e8a74138bba7f8ea0eec28ec0874a9fef2b2011d963fa8d0a60a
+  checksum: 10c0/c026e12d0be2a719fe451c1b1b25fbe313884ea0a24bb41a2ae6b54e23312cf8cf0bcc57f7d6a46bd95dc59e15d7b2ffc846a9e52b40a63d3a2118e719ca049e
   languageName: node
   linkType: hard
 
@@ -11892,12 +11892,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/user-event@npm:^14.6.10":
-  version: 14.6.12
-  resolution: "@testing-library/user-event@npm:14.6.12"
+"@testing-library/user-event@npm:^14.6.13":
+  version: 14.6.13
+  resolution: "@testing-library/user-event@npm:14.6.13"
   peerDependencies:
     "@testing-library/dom": ">=7.21.4"
-  checksum: 10c0/6b5b1c8219a17b00d6fcc968f9d257a62d3be3a5fa05b9373d26a965e272613f8a58c3d716b8ba226741fd1c77ecced6db23118020813ed2731e73ab944edbe3
+  checksum: 10c0/29cb1c17275ac8b0be3800fbcbcfd3b87c2fc7134aa91df4dc404e3962c4204e720c2286d654d15669eb9e0ee9428a9e246e162149ef9704ea6082b5e303ba85
   languageName: node
   linkType: hard
 
@@ -13729,7 +13729,7 @@ __metadata:
     "@testing-library/dom": "npm:^10.0.0"
     "@testing-library/jest-dom": "npm:^7.0.1"
     "@testing-library/react": "npm:^16.0.0"
-    "@testing-library/user-event": "npm:^14.6.10"
+    "@testing-library/user-event": "npm:^14.6.13"
     "@types/react-dom": "npm:^18.3.0"
     cross-env: "npm:10.1.0"
     react: "npm:^18.3.1"
@@ -14313,8 +14313,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "backend@workspace:packages/backend"
   dependencies:
-    "@backstage-community/plugin-auth-backend-module-keycloak-provider": "npm:^0.6.0"
-    "@backstage-community/plugin-catalog-backend-module-keycloak": "npm:3.23.1"
+    "@backstage-community/plugin-auth-backend-module-keycloak-provider": "npm:^0.6.1"
+    "@backstage-community/plugin-catalog-backend-module-keycloak": "npm:3.24.0"
     "@backstage/backend-defaults": "npm:^0.19.0"
     "@backstage/backend-plugin-api": "npm:^1.12.0"
     "@backstage/cli": "npm:^0.36.8"
