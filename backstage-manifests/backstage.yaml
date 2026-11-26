@@ -44,8 +44,9 @@ spec:
             httpGet:
               path: /.backstage/health/v1/liveness
               port: 7007
-            initialDelaySeconds: 90  # Keeps the pod alive during long initial load sequences
+            initialDelaySeconds: 240  # Keeps the pod alive during cold Node.js load
             periodSeconds: 20
+            failureThreshold: 6
           securityContext:
             allowPrivilegeEscalation: false
           env:
