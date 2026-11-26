@@ -40,8 +40,11 @@ FROM node:24-trixie-slim AS runner
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
-    apt-get install -y --no-install-recommends libsqlite3-dev && \
+    apt-get install -y --no-install-recommends libsqlite3-dev python3 python3-venv && \
+    python3 -m venv /opt/mkdocs-venv && \
+    /opt/mkdocs-venv/bin/pip install --no-cache-dir mkdocs-techdocs-core && \
     rm -rf /var/lib/apt/lists/*
+ENV PATH="/opt/mkdocs-venv/bin:$PATH"
 
 USER node
 WORKDIR /app
