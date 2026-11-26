@@ -133,3 +133,10 @@ integrations:
   github:
     - host: github.com
       token: ${GITHUB_TOKEN}
+
+techdocs:
+  builder: local
+  generator:
+    runIn: local
+  publisher:
+    type: local
